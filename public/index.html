@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBS Tally</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.png" type="image/png">
+  <link rel="stylesheet" href="logo.css">
+  <meta name="theme-color" content="#007aff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icon_256.png">
+  <style>
+    :root {
+      --bg-color: #f7f7fa;
+      --card-bg: #fff;
+      --text-color: #222;
+      --text-secondary: #555;
+      --border-color: #e0e0e0;
+      --shadow-color: rgba(0,0,0,0.12);
+      --input-bg: #fafbfc;
+      --header-color: #222;
+    }
+    
+    body.dark-mode {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #f0f0f0;
+      --text-secondary: #aaa;
+      --border-color: #333;
+      --shadow-color: rgba(0,0,0,0.5);
+      --input-bg: #2a2a2a;
+      --header-color: #f0f0f0;
+    }
+    
+    body {
+      font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+      background: var(--bg-color);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text-color);
+      transition: background 0.3s ease;
+    }
+    
+    .app-container {
+      position: relative;  /* Ensure relative positioning for absolute children */
+      background: var(--card-bg);
+      border-radius: 32px 32px 0 0;
+      box-shadow: 0 8px 32px var(--shadow-color);
+      width: 100%;
+      max-width: 600px;
+      margin-top: 40px;
+      padding: 32px 20px 24px 20px;
+      box-sizing: border-box;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: visible;  /* Allow the config button to be visible outside container */
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    h1 {
+      font-size: 2.1em;
+      font-weight: 700;
+      margin: 0 0 32px 0;
+      color: var(--header-color);
+      letter-spacing: -1px;
+      transition: color 0.3s ease;
+    }
+    form {
+      width: 100%;
+      margin-bottom: 32px;
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
+    label {
+      display: block;
+      font-size: 1.1em;
+      margin-bottom: 12px;
+      color: var(--text-secondary);
+      text-align: left;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid var(--border-color);
+      border-radius: 16px;
+      font-size: 1.1em;
+      margin-bottom: 16px;
+      background: var(--input-bg);
+      color: var(--text-color);
+      transition: all 0.2s;
+      box-sizing: border-box;
+    }
+    input[type="text"]:focus, input[type="password"]:focus {
+      border: 2px solid #007aff;
+      outline: none;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,122,255,0.1);
+    }
+    button {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(90deg, #007aff 60%, #00c6fb 100%);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      font-size: 1.1em;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,122,255,0.15);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    button:active {
+      background: #005ecb;
+      transform: scale(0.98);
+    }
+    #tallyList {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      width: 100%;
+      padding: 0 16px;
+      box-sizing: border-box;
+      margin-top: 24px;
+      max-width: 90%;
+    }
+    .tally-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 12px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      margin-bottom: 4px;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    .tally {
+      width: 120px;
+      height: 120px;
+      margin: 8px auto;
+      border-radius: 50%;
+      background: #444;
+      box-shadow: 0 0 32px #222;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2em;
+      color: #fff;
+      font-weight: 600;
+      border: 4px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .tally.active {
+      background: #ff3b30;
+      box-shadow: 0 0 48px rgba(255,59,48,0.4);
+      border-color: rgba(255,255,255,0.2);
+      animation: pulseLive 1.5s infinite;
+    }
+    
+    .tally.inactive {
+      background: #8e8e93;
+      box-shadow: 0 0 32px rgba(142,142,147,0.3);
+    }
+    
+    .tally.preview {
+      background: #ff9500;
+      box-shadow: 0 0 48px rgba(255,149,0,0.4);
+      color: #222;
+      border-color: rgba(255,255,255,0.2);
+      /* animation removed */
+    }
+    
+    @keyframes pulseLive {
+      0% { box-shadow: 0 0 48px rgba(255,59,48,0.4); transform: scale(1); }
+      50% { box-shadow: 0 0 64px rgba(255,59,48,0.7); transform: scale(1.05); }
+      100% { box-shadow: 0 0 48px rgba(255,59,48,0.4); transform: scale(1); }
+    }
+    
+    /* @keyframes pulsePreview removed */
+    .source-label {
+      font-weight: 700;
+      font-size: 1.1em;
+      margin-bottom: 8px;
+      color: var(--text-color);
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      padding: 0 4px;
+      transition: color 0.3s ease;
+    }
+    .tally-label {
+      font-size: 1em;
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease;
+    }
+    
+    .config-button {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 48px !important;
+      height: 48px;
+      background: #ffffff !important;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 14px !important;
+      padding: 12px;
+      cursor: pointer;
+      opacity: 0.95;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+      z-index: 1000;  /* Ensure button is always on top */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .config-button:hover {
+      opacity: 1;
+      background: #ffffff !important;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12) !important;
+    }
+    
+    .config-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+    }
+    
+    .config-button svg {
+      width: 24px;
+      height: 24px;
+      color: #333;
+    }
+    
+    .theme-toggle {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      width: 48px !important;
+      height: 48px;
+      background: var(--card-bg) !important;
+      border: 1px solid var(--border-color);
+      border-radius: 14px !important;
+      padding: 12px;
+      cursor: pointer;
+      opacity: 0.95;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px var(--shadow-color) !important;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-color);
+    }
+    
+    .theme-toggle:hover {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+    
+    .theme-toggle:active {
+      transform: translateY(0);
+    }
+    
+    .config-section {
+      width: 100%;
+      padding: 24px;
+      box-sizing: border-box;
+      display: none;
+      margin-bottom: 32px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: 0 8px 24px var(--shadow-color);
+    }
+    .config-section.visible {
+      display: block;
+    }
+    .config-section h2 {
+      font-size: 1.5em;
+      margin: 0 0 24px 0;
+      color: var(--header-color);
+      text-align: center;
+    }
+    
+    .input-group {
+      margin-bottom: 24px;
+    }
+    .input-group:last-child {
+      margin-bottom: 0;
+    }
+    
+    /* Connection status indicator */
+    .connection-status {
+      position: relative;
+      margin: 24px auto 0 auto;
+      width: fit-content;
+      display: flex;
+      align-items: center;
+      font-size: 0.9em;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px var(--shadow-color);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    
+    .status-content {
+      display: flex;
+      flex-direction: column;
+      margin-left: 8px;
+    }
+    
+    .status-title-top {
+      font-weight: 700;
+      font-size: 0.9em;
+      margin-bottom: 2px;
+    }
+    
+    #connectionText {
+      font-size: 0.8em;
+      opacity: 0.9;
+    }
+    
+    .connection-status.connected {
+      background: rgba(52, 199, 89, 0.15);
+      border-color: rgba(52, 199, 89, 0.3);
+      color: var(--text-color);
+    }
+    
+    .connection-status.disconnected {
+      background: rgba(255, 59, 48, 0.15);
+      border-color: rgba(255, 59, 48, 0.3);
+      color: var(--text-color);
+    }
+    
+    .connection-status.connecting {
+      background: rgba(255, 149, 0, 0.15);
+      border-color: rgba(255, 149, 0, 0.3);
+      color: var(--text-color);
+    }
+    
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+      position: relative;
+    }
+    
+    .status-connected {
+      background: #34c759;
+      box-shadow: 0 0 8px rgba(52, 199, 89, 0.5);
+    }
+    
+    .status-disconnected {
+      background: #ff3b30;
+      box-shadow: 0 0 8px rgba(255, 59, 48, 0.5);
+      animation: blink 2s infinite;
+    }
+    
+    .status-connecting {
+      background: #ff9500;
+      box-shadow: 0 0 8px rgba(255, 149, 0, 0.5);
+      animation: pulse 1.5s infinite;
+    }
+    
+    .status-connecting::after {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
+      border: 2px solid #ff9500;
+      border-radius: 50%;
+      border-left-color: transparent;
+      animation: spin 1.2s linear infinite;
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .status-area.connected::after {
+      content: '2/2 Connections';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 0.8em;
+      color: #34c759;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(52, 199, 89, 0.1);
+      border: 1px solid rgba(52, 199, 89, 0.3);
+    }
+    
+    .status-area.connecting::after {
+      content: '1/2 Connections';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 0.8em;
+      color: #ff9500;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(255, 149, 0, 0.1);
+      border: 1px solid rgba(255, 149, 0, 0.3);
+    }
+    
+    .status-area.disconnected::after {
+      content: '1/2 Connections';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 0.8em;
+      color: #ff3b30;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(255, 59, 48, 0.1);
+      border: 1px solid rgba(255, 59, 48, 0.3);
+    }
+    
+    .status-area {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+      padding: 16px 24px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 4px 12px var(--shadow-color);
+      width: calc(100% - 32px);
+      max-width: 500px;
+      transition: all 0.3s ease;
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+    
+    .status-area.connected {
+      background: rgba(52, 199, 89, 0.1);
+      border-color: rgba(52, 199, 89, 0.3);
+    }
+    
+    .status-area.disconnected {
+      background: rgba(255, 59, 48, 0.1);
+      border-color: rgba(255, 59, 48, 0.3);
+    }
+    
+    .status-area.connecting {
+      background: rgba(255, 149, 0, 0.1);
+      border-color: rgba(255, 149, 0, 0.3);
+    }
+    
+    .status-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      color: var(--text-secondary);
+      position: absolute;
+      right: 120px;
+    }
+    
+    .status-icon.connected {
+      color: #34c759;
+    }
+    
+    .status-icon.disconnected {
+      color: #ff3b30;
+    }
+    
+    .status-icon.connecting {
+      color: #ff9500;
+      animation: rotate 2s linear infinite;
+    }
+    
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .status-text {
+      flex: 1;
+    }
+    
+    .status-title {
+      font-size: 1.2em;
+      font-weight: 600;
+      color: var(--text-color);
+      margin-bottom: 4px;
+    }
+    
+    .status-details {
+      font-size: 0.9em;
+      color: var(--text-secondary);
+    }
+    
+    .status-actions {
+      display: flex;
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+    
+    .small-button {
+      width: auto !important;
+      height: 36px;
+      width: 36px !important;
+      border-radius: 50% !important;
+      padding: 0 !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--card-bg) !important;
+      border: 1px solid var(--border-color) !important;
+      box-shadow: 0 2px 8px var(--shadow-color) !important;
+      color: var(--text-secondary);
+    }
+    
+    .small-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow-color) !important;
+    }
+    
+    .small-button:active {
+      transform: translateY(0px);
+      box-shadow: 0 1px 4px var(--shadow-color) !important;
+    }
+    
+    @media (max-width: 500px) {
+      .app-container {
+        margin-top: 0;
+        border-radius: 0;
+        padding: 16px 12px 32px 12px;
+        min-height: 100vh;
+      }
+      
+      #tallyList {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(140px, 1fr));
+      }
+      
+      h1 {
+        font-size: 1.8em;
+        margin-bottom: 24px;
+        margin-top: 16px;
+      }
+      
+      form {
+        margin-bottom: 16px;
+        padding: 0 8px;
+      }
+      
+      input[type="text"], input[type="password"] {
+        padding: 12px;
+        font-size: 1em;
+        margin-bottom: 12px;
+        border-radius: 12px;
+      }
+      
+      button {
+        padding: 12px;
+        font-size: 1em;
+        border-radius: 12px;
+      }
+      
+      #tallyList {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        padding: 0 8px;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 12px;
+        justify-content: center;
+      }
+      
+      .tally-item {
+        padding: 16px;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+      
+      .tally {
+        width: 100px;
+        height: 100px;
+        margin: 8px auto;
+      }
+      
+      .source-label {
+        font-size: 1em;
+        margin-bottom: 8px;
+        padding: 0;
+        max-width: 100%;
+        font-weight: 700;
+        width: 100%;
+        text-align: center;
+      }
+      
+      .tally-label {
+        font-size: 0.9em;
+        margin-top: 8px;
+        font-weight: 600;
+        width: 100%;
+        text-align: center;
+      }
+      
+      .config-button {
+        top: 16px;
+        right: 16px;
+        width: 44px !important;
+        height: 44px;
+        padding: 10px;
+      }
+      .config-button svg {
+        width: 22px;
+        height: 22px;
+      }
+      
+      .theme-toggle {
+        top: 16px;
+        left: 16px;
+        width: 44px !important;
+        height: 44px;
+        padding: 10px;
+      }
+      
+      .connection-status {
+        margin: 16px auto 0 auto;
+        font-size: 0.8em;
+        padding: 4px 8px;
+      }
+      
+      .status-indicator {
+        width: 6px;
+        height: 6px;
+        margin-right: 4px;
+      }
+    }
+    
+    @media (max-width: 350px) {
+      #tallyList {
+        grid-template-columns: repeat(1, 1fr);
+        max-width: 240px;
+        margin: 12px auto;
+      }
+      
+      .tally {
+        width: 110px;
+        height: 110px;
+      }
+    }
+    
+    .tally-logo {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 24px auto;
+      background: url('tally_logo.png') no-repeat center center;
+      background-size: contain;
+    }
+    
+    .tally-logo.dark {
+      filter: brightness(0) invert(1);
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--card-bg);
+      color: var(--text-color);
+      padding: 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px var(--shadow-color);
+      display: flex;
+      align-items: center;
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      max-width: 90%;
+      border: 1px solid var(--border-color);
+    }
+    
+    .notification.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    
+    .notification-icon {
+      margin-right: 12px;
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+    
+    .notification-message {
+      font-size: 1em;
+      font-weight: 500;
+    }
+    
+    .notification.info .notification-icon {
+      color: #007aff;
+    }
+    
+    .notification.success .notification-icon {
+      color: #34c759;
+    }
+    
+    .notification.warning .notification-icon {
+      color: #ff9500;
+    }
+    
+    .notification.error .notification-icon {
+      color: #ff3b30;
+    }
+  </style>
+</head>
+<body>
+  <div id="notification" class="notification">
+    <div class="notification-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+    </div>
+    <div class="notification-message">Notification message</div>
+  </div>
+  
+  <div class="app-container">
+    <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon-light">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+    
+    <button class="config-button" id="configButton" title="OBS Settings">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/>
+        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+      </svg>
+    </button>
+    
+    <div id="configSection" class="config-section">
+      <h2>Connection Settings</h2>
+      
+      <div class="connection-status-panel" style="margin-bottom: 28px; padding: 18px; border-radius: 16px; background: var(--bg-color); border: 1px solid var(--border-color); box-shadow: 0 2px 8px var(--shadow-color);">
+        <div class="panel-header" style="display: flex; align-items: center; margin-bottom: 14px;">
+          <div id="settingsConnectionIndicator" class="status-indicator status-connecting" style="margin-right: 12px;"></div>
+          <h3 style="margin: 0; font-size: 1.2em;">Connection Status</h3>
+          <div style="margin-left: auto; padding: 6px 12px; border-radius: 12px; font-size: 0.9em; font-weight: bold; background-color: rgba(52, 199, 89, 0.15); color: #34c759;" id="connectionsCounter">2/2 Connections</div>
+        </div>
+        
+        <div style="display: flex; align-items: center;">
+          <div style="flex: 1;">
+            <div id="settingsStatusTitle" style="font-weight: 600; font-size: 1.1em; margin-bottom: 8px;">Successfully connected to server and OBS</div>
+            <div id="settingsStatusDetails" style="font-size: 0.95em; color: var(--text-secondary);">All connections established at ws://127.0.0.1:4455</div>
+          </div>
+          
+          <div class="status-actions" style="display: flex; margin-left: 16px;">
+            <button id="settingsTroubleshootBtn" class="small-button" title="Troubleshoot Connection" style="padding: 10px; border-radius: 50%;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+              </svg>
+            </button>
+            <button id="settingsVerifyOBSBtn" class="small-button" title="Verify OBS Status" style="margin-left: 10px; padding: 10px; border-radius: 50%;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <form id="obsConfigForm">
+        <div class="input-group" style="margin-bottom: 24px;">
+          <label for="obsAddress" style="margin-bottom: 10px; font-size: 1.05em;">WebSocket Address:</label>
+          <input type="text" id="obsAddress" name="address" placeholder="ws://127.0.0.1:4455" style="padding: 16px; font-size: 1em; border-radius: 12px;">
+        </div>
+        <div class="input-group" style="margin-bottom: 24px;">
+          <label for="obsPassword" style="margin-bottom: 10px; font-size: 1.05em;">Password (optional):</label>
+          <input type="password" id="obsPassword" name="password" placeholder="Leave empty if no password" style="padding: 16px; font-size: 1em; border-radius: 12px;">
+        </div>
+        <div class="input-group" style="margin-bottom: 32px;">
+          <label for="sources" style="margin-bottom: 10px; font-size: 1.05em;">Monitor sources (comma separated):</label>
+          <input type="text" id="sources" name="sources" placeholder="Phone, NDI Main Camera" style="padding: 16px; font-size: 1em; border-radius: 12px;">
+        </div>
+        <button type="submit" style="padding: 18px; font-size: 1.1em; border-radius: 14px; margin-top: 8px;">Save Settings</button>
+      </form>
+    </div>
+    
+    <h1>OBS Tally</h1>
+    
+    <div id="tallyList"></div>
+    
+    <!-- Hidden status area - kept for JS compatibility -->
+    <div class="status-area" id="statusArea" style="display: none;">
+      <h1>OBS Tally</h1>
+      <p id="statusTitleTop">Connecting to server...</p>
+      <div class="status-indicator status-connecting" id="bottomConnectionIndicator"></div>
+      <div class="status-text">
+        <div class="status-title" id="statusTitle">Connection Status</div>
+        <div class="status-details" id="statusDetails">Connected to server, waiting for OBS connection...</div>
+      </div>
+      <div class="status-icon" id="statusIconContainer">
+        <svg id="statusIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M16 16s-1.5-2-4-2-4 2-4 2"></path>
+          <line x1="9" y1="9" x2="9.01" y2="9"></line>
+          <line x1="15" y1="9" x2="15.01" y2="9"></line>
+        </svg>
+      </div>
+      <div class="status-actions">
+        <button id="troubleshootBtn" class="small-button" title="Troubleshoot Connection">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+          </svg>
+        </button>
+        <button id="verifyOBSBtn" class="small-button ml-8" title="Verify OBS Status" style="margin-left: 8px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </button>
+        <a href="/docs/connection-guide.md" class="small-button ml-8" title="Connection Guide" style="margin-left: 8px; text-decoration: none;" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </a>
+      </div>
+    </div>
+    
+    <!-- Connection status indicator inside the container -->
+    <div class="connection-status connected">
+      <div class="status-indicator status-connected" id="connectionIndicator"></div>
+      <div class="status-content">
+        <div class="status-title-top" id="statusTitleTop">Connected to OBS</div>
+      </div>
+      <a href="/diagnostics.html" title="Diagnostics" style="margin-left: 8px; color: inherit; text-decoration: none; font-size: 0.8em;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+      </a>
+    </div>
+  </div>
+  <script>
+    // Notification system
+    const notification = document.getElementById('notification');
+    const notificationMessage = notification.querySelector('.notification-message');
+    const notificationIcon = notification.querySelector('.notification-icon');
+    let notificationTimeout;
+    
+    function showNotification(message, type = 'info', duration = 3000) {
+      // Clear any existing timeout
+      if (notificationTimeout) {
+        clearTimeout(notificationTimeout);
+      }
+      
+      // Set message
+      notificationMessage.textContent = message;
+      
+      // Set type
+      notification.className = 'notification ' + type;
+      
+      // Set icon based on type
+      let iconSvg = '';
+      switch (type) {
+        case 'success':
+          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+          break;
+        case 'warning':
+          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
+          break;
+        case 'error':
+          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+          break;
+        default:
+          iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+      }
+      notificationIcon.innerHTML = iconSvg;
+      
+      // Show notification
+      notification.classList.add('show');
+      
+      // Auto-hide after duration
+      notificationTimeout = setTimeout(() => {
+        notification.classList.remove('show');
+      }, duration);
+    }
+    
+    // Register service worker for offline capability
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful');
+          })
+          .catch(error => {
+            console.log('ServiceWorker registration failed:', error);
+          });
+      });
+    }
+    
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const STORAGE_KEY_THEME = 'obs-tally-theme';
+    
+    // Initialize theme from local storage
+    function initTheme() {
+      const savedTheme = localStorage.getItem(STORAGE_KEY_THEME);
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        updateThemeIcon(true);
+      }
+    }
+    
+    function updateThemeIcon(isDark) {
+      themeToggle.innerHTML = isDark 
+        ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>'
+        : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';
+    }
+    
+    themeToggle.addEventListener('click', () => {
+      const isDarkMode = document.body.classList.toggle('dark-mode');
+      localStorage.setItem(STORAGE_KEY_THEME, isDarkMode ? 'dark' : 'light');
+      updateThemeIcon(isDarkMode);
+    });
+    
+    // Initialize theme
+    initTheme();
+    
+    // Troubleshoot button
+    const troubleshootBtn = document.getElementById('troubleshootBtn');
+    troubleshootBtn.addEventListener('click', async () => {
+      try {
+        showNotification('Testing OBS connection...', 'info');
+        const response = await fetch('/api/test-obs');
+        const data = await response.json();
+        
+        if (data.success) {
+          showNotification('Connection to OBS successful!', 'success');
+        } else {
+          // Show advanced diagnostics options
+          window.location.href = '/diagnostics.html';
+        }
+      } catch (err) {
+        showNotification('Connection test failed.', 'error');
+        console.error('Connection test error:', err);
+      }
+    });
+    
+    // Settings panel troubleshoot button
+    const settingsTroubleshootBtn = document.getElementById('settingsTroubleshootBtn');
+    if (settingsTroubleshootBtn) {
+      settingsTroubleshootBtn.addEventListener('click', async () => {
+        try {
+          showNotification('Testing OBS connection...', 'info');
+          const response = await fetch('/api/test-obs');
+          const data = await response.json();
+          
+          if (data.success) {
+            showNotification('Connection to OBS successful!', 'success');
+          } else {
+            // Show advanced diagnostics options
+            window.location.href = '/diagnostics.html';
+          }
+        } catch (err) {
+          showNotification('Connection test failed.', 'error');
+          console.error('Connection test error:', err);
+        }
+      });
+    }
+    
+    // Settings panel verify OBS button
+    const settingsVerifyOBSBtn = document.getElementById('settingsVerifyOBSBtn');
+    if (settingsVerifyOBSBtn) {
+      settingsVerifyOBSBtn.addEventListener('click', async () => {
+        try {
+          showNotification('Verifying OBS connection...', 'info');
+          const response = await fetch('/api/reconnect');
+          const data = await response.json();
+          
+          if (data.success) {
+            showNotification('OBS connection verification initiated', 'success');
+          } else {
+            showNotification(`Verification failed: ${data.error || 'Unknown error'}`, 'error');
+          }
+        } catch (err) {
+          showNotification('Verification request failed', 'error');
+          console.error('Verification error:', err);
+        }
+      });
+    }
+    
+    // Verify OBS Status button
+    const verifyOBSBtn = document.getElementById('verifyOBSBtn');
+    verifyOBSBtn.addEventListener('click', async () => {
+      try {
+        showNotification('Verifying OBS connection...', 'info');
+        const response = await fetch('/api/reconnect');
+        const data = await response.json();
+        
+        if (data.success) {
+          showNotification('OBS connection verification initiated', 'success');
+        } else {
+          showNotification(`Verification failed: ${data.error || 'Unknown error'}`, 'error');
+        }
+      } catch (err) {
+        showNotification('Verification request failed', 'error');
+        console.error('Verification error:', err);
+      }
+    });
+    
+    // Config section toggle
+    const configButton = document.getElementById('configButton');
+    const configSection = document.getElementById('configSection');
+    
+    function toggleConfigSection() {
+      configSection.classList.toggle('visible');
+    }
+    
+    configButton.addEventListener('click', toggleConfigSection);
+    
+    // Local storage keys
+    const STORAGE_KEY_ADDRESS = 'obs-tally-address';
+    const STORAGE_KEY_SOURCES = 'obs-tally-sources';
+    const STORAGE_KEY_CONFIG_VISIBLE = 'obs-tally-config-visible';
+    
+    // Show configuration automatically if no sources are configured
+    function shouldShowConfigOnLoad() {
+      // Check if there are saved sources
+      const savedSources = localStorage.getItem(STORAGE_KEY_SOURCES);
+      // Show config if no sources saved or explicitly set to show
+      return !savedSources || localStorage.getItem(STORAGE_KEY_CONFIG_VISIBLE) === 'true';
+    }
+    
+    // Initialize configuration visibility
+    if (shouldShowConfigOnLoad()) {
+      configSection.classList.add('visible');
+      // Reset the flag once shown
+      localStorage.removeItem(STORAGE_KEY_CONFIG_VISIBLE);
+    }
+
+    // Load OBS config - first from local storage, then from server
+    const savedAddress = localStorage.getItem(STORAGE_KEY_ADDRESS);
+    if (savedAddress) {
+      document.getElementById('obsAddress').value = savedAddress;
+    }
+    
+    fetch('/api/obs-config')
+      .then((r) => r.json())
+      .then((config) => {
+        document.getElementById('obsAddress').value = config.address;
+        // Save to local storage and variable
+        localStorage.setItem(STORAGE_KEY_ADDRESS, config.address);
+        obsAddress = config.address;
+        
+        if (config.password === '********') {
+          document.getElementById('obsPassword').placeholder = '(password saved)';
+        }
+      })
+      .catch((err) => {
+        console.error('Error loading OBS config:', err);
+      });
+
+    // Handle OBS config form
+    document.getElementById('obsConfigForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const address = document.getElementById('obsAddress').value.trim();
+      const password = document.getElementById('obsPassword').value;
+      const sources = document.getElementById('sources').value
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean);
+      
+      // Save to local storage
+      localStorage.setItem(STORAGE_KEY_ADDRESS, address);
+      localStorage.setItem(STORAGE_KEY_SOURCES, JSON.stringify(sources));
+      
+      // Update connection status to connecting
+      updateConnectionStatus('connecting', 'Updating settings...');
+      showNotification('Updating settings...', 'info');
+      
+      // First update the OBS connection config
+      try {
+        const configResponse = await fetch('/api/obs-config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ address, password })
+        });
+        
+        if (!configResponse.ok) {
+          throw new Error('Failed to update OBS config');
+        }
+        
+        // Then update the sources
+        const sourcesResponse = await fetch('/api/sources', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sources })
+        });
+        
+        if (!sourcesResponse.ok) {
+          throw new Error('Failed to update sources');
+        }
+        
+        configSection.classList.remove('visible');
+        showNotification('Settings updated successfully', 'success');
+        setTimeout(() => {
+          location.reload(); // Refresh to reconnect with new settings
+        }, 1000);
+      } catch (err) {
+        console.error('Error updating settings:', err);
+        showNotification('Failed to update settings: ' + err.message, 'error');
+      }
+    };
+
+    // WebSocket connection for tally
+    const wsProtocol = location.protocol === 'https:' ? 'wss' : 'ws';
+    const ws = new WebSocket(`${wsProtocol}://${location.host}`);
+    let currentSources = [];
+    
+    // Connection status indicators and elements
+    const connectionIndicator = document.getElementById('connectionIndicator');
+    const statusArea = document.getElementById('statusArea');
+    const statusIcon = document.getElementById('statusIcon');
+    const statusTitle = document.getElementById('statusTitle');
+    const statusDetails = document.getElementById('statusDetails');
+    let obsAddress = '';
+    
+    // Status area reconnection button
+    function addReconnectButton() {
+      // First check if the button already exists and remove it if it does
+      const existingReconnectBtn = document.getElementById('reconnectBtn');
+      if (existingReconnectBtn) {
+        existingReconnectBtn.remove();
+      }
+      
+      // Create reconnect button
+      const reconnectBtn = document.createElement('button');
+      reconnectBtn.id = 'reconnectBtn';
+      reconnectBtn.className = 'small-button ml-8';
+      reconnectBtn.title = 'Reconnect to OBS';
+      reconnectBtn.style.marginLeft = '8px';
+      reconnectBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+      </svg>`;
+      
+      reconnectBtn.addEventListener('click', async () => {
+        try {
+          showNotification('Attempting to reconnect to OBS...', 'info');
+          const response = await fetch('/api/reconnect');
+          const data = await response.json();
+          
+          if (data.success) {
+            showNotification('Reconnection initiated', 'success');
+          } else {
+            showNotification(`Reconnection failed: ${data.error || 'Unknown error'}`, 'error');
+          }
+        } catch (err) {
+          showNotification('Reconnection request failed', 'error');
+          console.error('Reconnection error:', err);
+        }
+      });
+      
+      // Add to actions container
+      document.querySelector('.status-actions').appendChild(reconnectBtn);
+    }
+    
+    function updateConnectionStatus(status, message) {
+      // Update the indicator dot in the top bar
+      connectionIndicator.className = 'status-indicator';
+      
+      // Update the top bar container class
+      const connectionStatusElement = document.querySelector('.connection-status');
+      connectionStatusElement.classList.remove('connected', 'disconnected', 'connecting');
+      
+      // Update the central status area
+      statusArea.classList.remove('connected', 'disconnected', 'connecting');
+      const bottomConnectionIndicator = document.getElementById('bottomConnectionIndicator');
+      bottomConnectionIndicator.className = 'status-indicator';
+      const statusIconContainer = document.getElementById('statusIconContainer');
+      statusIconContainer.classList.remove('connected', 'disconnected', 'connecting');
+      
+      // Update the settings panel connection status
+      const settingsConnectionIndicator = document.getElementById('settingsConnectionIndicator');
+      if (settingsConnectionIndicator) {
+        settingsConnectionIndicator.className = 'status-indicator';
+        const settingsStatusTitle = document.getElementById('settingsStatusTitle');
+        const settingsStatusDetails = document.getElementById('settingsStatusDetails');
+        const connectionsCounter = document.getElementById('connectionsCounter');
+        
+        if (status === 'connected') {
+          settingsConnectionIndicator.classList.add('status-connected');
+          settingsStatusTitle.textContent = 'Successfully connected to server and OBS';
+          settingsStatusDetails.textContent = `All connections established at ${obsAddress || 'default address'}`;
+          connectionsCounter.textContent = '2/2 Connections';
+          connectionsCounter.style.background = 'rgba(52, 199, 89, 0.1)';
+          connectionsCounter.style.color = '#34c759';
+          connectionsCounter.style.border = '1px solid rgba(52, 199, 89, 0.3)';
+        } else if (status === 'disconnected') {
+          settingsConnectionIndicator.classList.add('status-disconnected');
+          settingsStatusTitle.textContent = 'OBS Connection Failed';
+          settingsStatusDetails.textContent = `Connected to server, but cannot connect to OBS at ${obsAddress || 'default address'}`;
+          connectionsCounter.textContent = '1/2 Connections';
+          connectionsCounter.style.background = 'rgba(255, 59, 48, 0.1)';
+          connectionsCounter.style.color = '#ff3b30';
+          connectionsCounter.style.border = '1px solid rgba(255, 59, 48, 0.3)';
+        } else {
+          settingsConnectionIndicator.classList.add('status-connecting');
+          settingsStatusTitle.textContent = 'Connecting to OBS';
+          settingsStatusDetails.textContent = `Connected to server, attempting to connect to OBS at ${obsAddress || 'default address'}`;
+          connectionsCounter.textContent = '1/2 Connections';
+          connectionsCounter.style.background = 'rgba(255, 149, 0, 0.1)';
+          connectionsCounter.style.color = '#ff9500';
+          connectionsCounter.style.border = '1px solid rgba(255, 149, 0, 0.3)';
+        }
+      }
+      
+      if (status === 'connected') {
+        // Update top indicator
+        connectionIndicator.classList.add('status-connected');
+        connectionStatusElement.classList.add('connected');
+        document.getElementById('statusTitleTop').textContent = 'Connected to OBS';
+        
+        // Update bottom status area
+        bottomConnectionIndicator.classList.add('status-connected');
+        statusArea.classList.add('connected');
+        statusIconContainer.classList.add('connected');
+        statusTitle.textContent = 'Connection Status';
+        statusDetails.textContent = `Successfully connected to server and OBS at ${obsAddress || 'default address'}`;
+        statusIcon.innerHTML = '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>';
+        
+        // Remove reconnect button if it exists
+        const reconnectBtn = document.getElementById('reconnectBtn');
+        if (reconnectBtn) {
+          reconnectBtn.remove();
+        }
+      } else if (status === 'disconnected') {
+        // Update top indicator
+        connectionIndicator.classList.add('status-disconnected');
+        connectionStatusElement.classList.add('disconnected');
+        document.getElementById('statusTitleTop').textContent = 'OBS Disconnected';
+        
+        // Update bottom status area
+        bottomConnectionIndicator.classList.add('status-disconnected');
+        statusArea.classList.add('disconnected');
+        statusIconContainer.classList.add('disconnected');
+        statusTitle.textContent = 'Connection Status';
+        statusDetails.textContent = `Connected to server, but cannot connect to OBS at ${obsAddress || 'default address'}. Make sure OBS is running and WebSockets are enabled in Tools > WebSocket Server Settings.`;
+        statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>';
+        
+        // Add reconnect button
+        addReconnectButton();
+      } else {
+        // Update top indicator
+        connectionIndicator.classList.add('status-connecting');
+        connectionStatusElement.classList.add('connecting');
+        document.getElementById('statusTitleTop').textContent = 'Connecting to OBS';
+        
+        // Update bottom status area
+        bottomConnectionIndicator.classList.add('status-connecting');
+        statusArea.classList.add('connecting');
+        statusIconContainer.classList.add('connecting');
+        statusTitle.textContent = 'Connection Status';
+        statusDetails.textContent = `Successfully connected to tally server. Attempting to connect to OBS at ${obsAddress || 'default address'}...`;
+        statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><path d="M16 16s-1.5-2-4-2-4 2-4 2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line>';
+      }
+    }
+    
+    ws.onopen = () => {
+      updateConnectionStatus('connecting', 'Connected to server, waiting for OBS...');
+      showNotification('Connected to tally server - waiting for OBS connection', 'info');
+      console.log('%c[SUCCESS] Connected to server WebSocket (still waiting for OBS connection)', 'color: orange; font-weight: bold');
+    };
+    
+    ws.onclose = () => {
+      updateConnectionStatus('disconnected', 'Server disconnected');
+      showNotification('Server connection lost. Reconnecting...', 'warning');
+      // Try to reconnect after 5 seconds
+      setTimeout(() => {
+        location.reload();
+      }, 5000);
+    };
+    
+    ws.onerror = () => {
+      updateConnectionStatus('disconnected', 'Server error');
+      showNotification('Server connection error. Check network status.', 'error');
+    };
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      
+      // Check if we received OBS connection status
+      if (data.obsConnectionStatus) {
+        if (data.obsConnectionStatus === 'connected') {
+          updateConnectionStatus('connected', 'Connected to OBS');
+          showNotification('Connected to OBS Studio', 'success');
+          console.log('%c[SUCCESS] OBS WebSocket connection established', 'color: green; font-weight: bold');
+        } else if (data.obsConnectionStatus === 'connecting') {
+          updateConnectionStatus('connecting', 'Connected to server, connecting to OBS...');
+        } else {
+          // Disconnected state
+          updateConnectionStatus('disconnected', 'Connected to server, OBS disconnected');
+          
+          // If we have an error message, show it
+          if (data.obsConnectionError) {
+            const errorMsg = data.obsConnectionError;
+            showNotification(`Unable to connect to OBS: ${errorMsg}`, 'error');
+            
+            // Update status details with more specific error information
+            if (errorMsg.includes('ECONNREFUSED')) {
+              statusDetails.textContent = `Connected to server, but connection to OBS was refused. Make sure OBS is running and WebSockets are enabled in Tools > WebSocket Server Settings.`;
+            } else if (errorMsg.includes('Authentication')) {
+              statusDetails.textContent = `Connected to server, but authentication with OBS failed. Please check the WebSocket password in your settings.`;
+            } else if (errorMsg.includes('timeout')) {
+              statusDetails.textContent = `Connected to server, but connection to OBS timed out. Check if OBS is running and network connectivity is stable.`;
+            } else {
+              statusDetails.textContent = `Connected to server, but error connecting to OBS: ${errorMsg}. Verify OBS is running and WebSockets are enabled in Tools > WebSocket Server Settings.`;
+            }
+          } else {
+            showNotification('Connected to server, but unable to connect to OBS Studio', 'warning');
+          }
+        }
+      }
+      
+      if (!data.sources || !data.status) return;
+      
+      currentSources = data.sources;
+      const status = data.status;
+      const tallyList = document.getElementById('tallyList');
+      tallyList.innerHTML = '';
+
+      currentSources.forEach((source) => {
+        const s = status[source] || { status: 'Idle' };
+        
+        // Container for each tally item
+        const item = document.createElement('div');
+        item.className = 'tally-item';
+
+        // Source label above the circle
+        const label = document.createElement('div');
+        label.className = 'source-label';
+        label.textContent = source;
+
+        // Tally light circle
+        const div = document.createElement('div');
+        div.className = 'tally';
+        if (s.status === 'Live') div.classList.add('active');
+        else if (s.status === 'Preview') div.classList.add('preview');
+        else div.classList.add('inactive');
+
+        // Status label below the circle
+        const sub = document.createElement('div');
+        sub.className = 'tally-label';
+        if (s.status === 'Live') sub.textContent = 'LIVE';
+        else if (s.status === 'Preview') sub.textContent = 'PREVIEW';
+        else sub.textContent = 'IDLE';
+
+        item.appendChild(label);
+        item.appendChild(div);
+        item.appendChild(sub);
+        tallyList.appendChild(item);
+      });
+    };
+
+    // Load initial sources - first from local storage, then from server
+    const savedSources = localStorage.getItem(STORAGE_KEY_SOURCES);
+    if (savedSources) {
+      try {
+        const parsedSources = JSON.parse(savedSources);
+        if (Array.isArray(parsedSources) && parsedSources.length > 0) {
+          document.getElementById('sources').value = parsedSources.join(', ');
+        }
+      } catch (err) {
+        console.error('Error parsing saved sources:', err);
+      }
+    }
+    
+    fetch('/api/sources')
+      .then((r) => r.json())
+      .then((data) => {
+        document.getElementById('sources').value = data.sources.join(', ');
+        // Save to local storage
+        localStorage.setItem(STORAGE_KEY_SOURCES, JSON.stringify(data.sources));
+      })
+      .catch((err) => {
+        console.error('Error loading sources:', err);
+      });
+  </script>
+</body>
+</html>

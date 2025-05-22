@@ -1,0 +1,56 @@
+{
+  "name": "OBS Tally",
+  "short_name": "OBS Tally",
+  "description": "Tally light system for OBS with real-time updates",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f7fa",
+  "theme_color": "#007aff",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "icon.iconset/icon_16x16.png",
+      "sizes": "16x16",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.iconset/icon_32x32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.iconset/icon_64x64.png",
+      "sizes": "64x64",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.iconset/icon_128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon_256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icon_256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}

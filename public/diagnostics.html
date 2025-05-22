@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBS Tally - Diagnostics</title>
+  <link rel="icon" href="icon.png" type="image/png">
+  <style>
+    body {
+      font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+      background: #f7f7fa;
+      margin: 0;
+      padding: 20px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    h1 {
+      margin-top: 0;
+      color: #007aff;
+    }
+    
+    h2 {
+      margin-top: 30px;
+      color: #555;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    pre {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 5px;
+      overflow: auto;
+      font-family: monospace;
+      font-size: 14px;
+    }
+    
+    ul {
+      padding-left: 20px;
+    }
+    
+    li {
+      margin-bottom: 10px;
+    }
+    
+    .status {
+      padding: 15px;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+    
+    .error {
+      background: #fff2f2;
+      border: 1px solid #ffcdd2;
+    }
+    
+    .success {
+      background: #f2fff2;
+      border: 1px solid #c8e6c9;
+    }
+    
+    .warning {
+      background: #fffde7;
+      border: 1px solid #fff9c4;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #007aff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      margin: 10px 10px 10px 0;
+    }
+    
+    .btn:hover {
+      background: #0062cc;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    
+    th, td {
+      text-align: left;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    th {
+      background-color: #f8f9fa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>OBS Tally - Diagnostics</h1>
+    
+    <p>This page helps diagnose connection issues between OBS Tally and OBS Studio.</p>
+    
+    <h2>Connection Status</h2>
+    <div id="connectionStatus" class="status warning">
+      Checking connection status...
+    </div>
+    
+    <div class="status warning">
+      <strong>Important:</strong> "Connected to server WebSocket" only means your browser is connected to the tally server.
+      You must also see "OBS WebSocket: Connected" in the table below for the full system to work.
+    </div>
+    
+    <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 10px; border: 1px solid #dee2e6;">
+      <h3 style="margin-top: 0;">Connection Flow</h3>
+      <div style="display: flex; justify-content: space-between; align-items: center; text-align: center; margin: 20px 0;">
+        <div style="flex: 1;">
+          <div style="padding: 15px; background: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 0 10px;">
+            <strong>Your Browser</strong>
+          </div>
+        </div>
+        <div style="flex: 0 0 auto; padding: 0 15px;">
+          <div id="browserServerConnection">
+            <span style="display: inline-block; width: 50px; height: 2px; background: #aaa;"></span>
+            <span id="connectionIcon1" style="color: orange;">⟶</span>
+          </div>
+        </div>
+        <div style="flex: 1;">
+          <div style="padding: 15px; background: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 0 10px;">
+            <strong>Tally Server</strong>
+          </div>
+        </div>
+        <div style="flex: 0 0 auto; padding: 0 15px;">
+          <div id="serverObsConnection">
+            <span style="display: inline-block; width: 50px; height: 2px; background: #aaa;"></span>
+            <span id="connectionIcon2" style="color: orange;">⟶</span>
+          </div>
+        </div>
+        <div style="flex: 1;">
+          <div style="padding: 15px; background: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 0 10px;">
+            <strong>OBS Studio</strong>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p><span id="connectionIcon1Desc" style="color: orange;">●</span> Connection 1: Browser to Tally Server</p>
+        <p><span id="connectionIcon2Desc" style="color: orange;">●</span> Connection 2: Tally Server to OBS</p>
+        <p><small>Both connections must be green for the tally system to work properly.</small></p>
+      </div>
+    </div>
+    
+    <h2>System Information</h2>
+    <div id="systemInfo">
+      <table>
+        <tr>
+          <th>Server WebSocket</th>
+          <td id="serverWsStatus">Checking...</td>
+        </tr>
+        <tr>
+          <th>OBS WebSocket</th>
+          <td id="obsWsStatus">Checking...</td>
+        </tr>
+        <tr>
+          <th>OBS WebSocket Address</th>
+          <td id="obsAddress">Loading...</td>
+        </tr>
+        <tr>
+          <th>Configured Sources</th>
+          <td id="configuredSources">Loading...</td>
+        </tr>
+        <tr>
+          <th>Browser</th>
+          <td id="browserInfo">-</td>
+        </tr>
+        <tr>
+          <th>Network Type</th>
+          <td id="networkType">-</td>
+        </tr>
+      </table>
+    </div>
+    
+    <h2>Common Issues</h2>
+    <ul>
+      <li><strong>Server connected but "Waiting for OBS"</strong> - This is normal if OBS is not yet running. The tally server is running correctly, but it cannot connect to OBS.</li>
+      <li><strong>OBS not running</strong> - Make sure OBS Studio is running before connecting.</li>
+      <li><strong>WebSocket plugin not enabled</strong> - In OBS, go to Tools → WebSocket Server Settings and ensure the server is enabled.</li>
+      <li><strong>Incorrect WebSocket address</strong> - The default is ws://127.0.0.1:4455 when running on the same machine.</li>
+      <li><strong>Password mismatch</strong> - If you've set a password in OBS WebSocket settings, make sure it matches in the tally settings.</li>
+      <li><strong>Firewall blocking connection</strong> - Check if your firewall is blocking the connection on the specified port.</li>
+    </ul>
+    
+    <h2>Actions</h2>
+    <div>
+      <a href="/" class="btn">Back to Tally</a>
+      <a href="#" id="testObsBtn" class="btn">Test OBS Connection</a>
+      <a href="/api/reconnect" id="reconnectBtn" class="btn">Force Reconnect</a>
+    </div>
+    
+    <h2>Connection Logs</h2>
+    <pre id="connectionLogs">Loading logs...</pre>
+  </div>
+  
+  <script>
+    // System info
+    document.getElementById('browserInfo').textContent = navigator.userAgent;
+    
+    if ('connection' in navigator) {
+      document.getElementById('networkType').textContent = navigator.connection.effectiveType || 'Unknown';
+    }
+    
+    // WebSocket connection
+    const wsProtocol = location.protocol === 'https:' ? 'wss' : 'ws';
+    const ws = new WebSocket(`${wsProtocol}://${location.host}`);
+    let connectionLogs = [];
+    
+    function addLog(message, type = 'info') {
+      const timestamp = new Date().toLocaleTimeString();
+      connectionLogs.push(`[${timestamp}] [${type.toUpperCase()}] ${message}`);
+      
+      // Keep only the last 50 logs
+      if (connectionLogs.length > 50) {
+        connectionLogs.shift();
+      }
+      
+      document.getElementById('connectionLogs').textContent = connectionLogs.join('\n');
+    }
+    
+    ws.onopen = () => {
+      document.getElementById('serverWsStatus').textContent = 'Connected';
+      addLog('Connected to server WebSocket', 'success');
+      addLog('Note: This only means you are connected to the tally server, not to OBS itself', 'info');
+      
+      // Update connection diagram
+      document.getElementById('connectionIcon1').style.color = '#34c759';
+      document.getElementById('connectionIcon1Desc').style.color = '#34c759';
+    };
+    
+    ws.onclose = () => {
+      document.getElementById('serverWsStatus').textContent = 'Disconnected';
+      addLog('Server WebSocket connection closed', 'error');
+      
+      // Update connection diagram
+      document.getElementById('connectionIcon1').style.color = '#ff3b30';
+      document.getElementById('connectionIcon1Desc').style.color = '#ff3b30';
+    };
+    
+    ws.onerror = (error) => {
+      document.getElementById('serverWsStatus').textContent = 'Error';
+      addLog('Server WebSocket error: ' + error, 'error');
+    };
+    
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      
+      if (data.obsConnectionStatus) {
+        document.getElementById('obsWsStatus').textContent = 
+          data.obsConnectionStatus.charAt(0).toUpperCase() + data.obsConnectionStatus.slice(1);
+        
+        const statusDiv = document.getElementById('connectionStatus');
+        
+        if (data.obsConnectionStatus === 'connected') {
+          statusDiv.className = 'status success';
+          statusDiv.textContent = 'Connected to OBS Studio successfully.';
+          addLog('OBS WebSocket connected', 'success');
+          
+          // Update connection diagram
+          document.getElementById('connectionIcon2').style.color = '#34c759';
+          document.getElementById('connectionIcon2Desc').style.color = '#34c759';
+        } else if (data.obsConnectionStatus === 'connecting') {
+          statusDiv.className = 'status warning';
+          statusDiv.textContent = 'Server is connected and attempting to connect to OBS Studio...';
+          addLog('Attempting to connect to OBS', 'info');
+          
+          // Update connection diagram
+          document.getElementById('connectionIcon2').style.color = '#ff9500';
+          document.getElementById('connectionIcon2Desc').style.color = '#ff9500';
+        } else {
+          statusDiv.className = 'status error';
+          statusDiv.innerHTML = 'Server is running correctly, but disconnected from OBS Studio. ';
+          
+          // Update connection diagram
+          document.getElementById('connectionIcon2').style.color = '#ff3b30';
+          document.getElementById('connectionIcon2Desc').style.color = '#ff3b30';
+          
+          if (data.obsConnectionError) {
+            statusDiv.innerHTML += `<br><strong>Error:</strong> ${data.obsConnectionError}`;
+            addLog('OBS connection error: ' + data.obsConnectionError, 'error');
+          }
+        }
+      }
+      
+      if (data.sources) {
+        document.getElementById('configuredSources').textContent = data.sources.join(', ');
+      }
+    };
+    
+    // Load OBS config
+    fetch('/api/obs-config')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('obsAddress').textContent = data.address;
+        addLog('Loaded OBS config: ' + data.address, 'info');
+      })
+      .catch(error => {
+        addLog('Error loading OBS config: ' + error, 'error');
+      });
+    
+    // Test OBS connection
+    document.getElementById('testObsBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      addLog('Testing OBS connection...', 'info');
+      
+      fetch('/api/test-obs')
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            addLog('OBS connection test successful', 'success');
+          } else {
+            addLog('OBS connection test failed: ' + data.error, 'error');
+          }
+        })
+        .catch(error => {
+          addLog('Error testing OBS connection: ' + error, 'error');
+        });
+    });
+    
+    // Force reconnect
+    document.getElementById('reconnectBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      addLog('Forcing OBS reconnection...', 'info');
+      
+      fetch('/api/reconnect')
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            addLog('OBS reconnection initiated', 'success');
+          } else {
+            addLog('OBS reconnection failed: ' + data.error, 'error');
+          }
+        })
+        .catch(error => {
+          addLog('Error during reconnection: ' + error, 'error');
+        });
+    });
+  </script>
+</body>
+</html>
