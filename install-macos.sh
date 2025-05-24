@@ -133,42 +133,23 @@ echo ""
 echo -e "${GREEN}🎉 Installation Complete!${NC}"
 echo "=========================="
 echo ""
-echo -e "${YELLOW}📱 Available Launch Options:${NC}"
-echo ""
 
+# Check if the command launcher exists
 if [ -f "Start OBS Tally.command" ]; then
-    echo -e "1. ${BLUE}Simple Launcher${NC}: Double-click 'Start OBS Tally.command'"
-fi
-
-if [ -d "OBS Tally.app" ]; then
-    echo -e "2. ${BLUE}macOS App Bundle${NC}: Double-click 'OBS Tally.app'"
-    echo -e "   ${YELLOW}💡 Tip: Drag to Applications folder for easy access${NC}"
-fi
-
-echo -e "3. ${BLUE}Terminal${NC}: Run 'npm start' in this directory"
-echo -e "4. ${BLUE}VS Code Task${NC}: Use the 'Start Tally Server' task"
-
-echo ""
-echo -e "${YELLOW}🔧 Setup Options:${NC}"
-echo "• Run './create-launch-agent.sh' for auto-start on login"
-echo "• The app will be available at http://localhost:3005"
-echo ""
-
-# Offer to create Applications shortcut
-echo -e "${BLUE}📂 Would you like to create a shortcut in Applications? (y/n)${NC}"
-read -r response
-if [[ "$response" =~ ^[Yy]$ ]]; then
-    if [ -d "OBS Tally.app" ]; then
-        if ln -sf "$(pwd)/OBS Tally.app" /Applications/; then
-            echo -e "${GREEN}✅ Shortcut created in Applications folder${NC}"
-        else
-            echo -e "${YELLOW}⚠️  Could not create shortcut (requires admin permissions)${NC}"
-            echo "You can manually drag 'OBS Tally.app' to Applications"
-        fi
-    fi
+    echo -e "${YELLOW}🚀 Launch OBS Tally:${NC}"
+    echo -e "   ${BLUE}Double-click${NC} 'Start OBS Tally.command'"
+    echo ""
+    echo -e "${BLUE}ℹ️  The launcher will:${NC}"
+    echo "   • Start the tally server"
+    echo "   • Open your web browser to http://localhost:3005"
+    echo "   • Show server logs in Terminal"
+    echo "   • Stop with Ctrl+C"
+else
+    echo -e "${YELLOW}⚠️  'Start OBS Tally.command' not found${NC}"
+    echo -e "${BLUE}Alternative:${NC} Run 'npm start' in this directory"
 fi
 
 echo ""
-echo -e "${GREEN}🚀 Ready to launch! Choose any option above to start OBS Tally.${NC}"
+echo -e "${GREEN}🎯 Ready to go! Double-click 'Start OBS Tally.command' to launch.${NC}"
 echo "Visit the README.md for detailed usage instructions."
 echo ""

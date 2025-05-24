@@ -30,7 +30,7 @@ A web-based tally light system that displays the live/preview status of camera s
 
 ### Installation
 
-#### Option A: macOS Standalone App (Recommended for macOS users)
+#### Option A: macOS Simple Launcher (Recommended for macOS users)
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/kingson87/OBS-Tally.git
@@ -41,12 +41,10 @@ A web-based tally light system that displays the live/preview status of camera s
    ```bash
    ./install-macos.sh
    ```
-   This creates native macOS apps you can double-click to launch!
+   This sets up dependencies and creates a simple launcher!
 
-3. **Choose your preferred launch method:**
-   - 📱 **App Bundle**: Double-click `OBS Tally.app` (drag to Applications folder)
-   - 🖱️ **Simple Launcher**: Double-click `Start OBS Tally.command`
-   - 🚀 **Auto-start**: Run `./create-launch-agent.sh` for login auto-start
+3. **Launch OBS Tally:**
+   Double-click `Start OBS Tally.command` to launch the server and open your browser
 
 #### Option B: Standard Installation
 1. **Clone and install dependencies:**
@@ -101,35 +99,25 @@ Access via the gear icon ⚙️:
 - **🖥️ Fullscreen Mode**: Visit `/fullscreen.html` for a clean, distraction-free view
 - **📱 Mobile Install**: Use your browser's "Add to Home Screen" option
 
-## macOS Standalone Applications
+## macOS Simple Launcher
 
-For macOS users, several standalone launch options are available:
+For macOS users, a convenient double-click launcher is available:
 
-### 🍎 Native App Bundle (`OBS Tally.app`)
-- Double-click to launch like any macOS application
-- Drag to Applications folder for easy access
-- Includes proper app icon and system integration
-- Automatically opens web interface in your default browser
+### 🖱️ Command Launcher (`Start OBS Tally.command`) 
+- **Usage**: Double-click to start in Terminal
+- **Features**:
+  - Shows server status and logs
+  - Automatically opens web browser
+  - Easy to stop with Ctrl+C
+  - Great for debugging and development
+- **Best for**: All macOS users who want a simple, reliable launcher
 
-### 🖱️ Simple Command Launcher (`Start OBS Tally.command`)
-- Double-click to start in Terminal
-- Shows server status and logs
-- Easy to stop with Ctrl+C
-- Great for debugging and development
-
-### 🚀 Auto-Start Service (LaunchAgent)
-- Run `./create-launch-agent.sh` to set up
-- Automatically starts OBS Tally when you log in
-- Runs in background without Terminal window
-- Perfect for dedicated studio computers
-
-### 📂 Installation Helper
+### 📂 Installation
 The `install-macos.sh` script:
 - Verifies Node.js installation
 - Installs dependencies automatically
 - Tests server functionality
-- Creates all standalone launchers
-- Optionally adds shortcut to Applications folder
+- Creates the simple launcher
 
 ## Configuration
 
