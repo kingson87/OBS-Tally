@@ -46,6 +46,8 @@ if kill -0 $SERVER_PID 2>/dev/null; then
     echo "🎉 Launch complete! Terminal will close automatically."
     
     # Close terminal window automatically
+    sleep 1
+    osascript -e 'tell application "Terminal" to close (every window whose name contains ".command")' &
     exit 0
 else
     echo "❌ Failed to start server"
