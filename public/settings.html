@@ -360,6 +360,73 @@
       flex: 1;
       min-width: 200px;
     }
+
+    /* Help & Support section styling */
+    .help-content {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .help-section {
+      margin-bottom: 24px;
+    }
+
+    .help-section h3 {
+      font-size: 1.1em;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .help-item {
+      margin-bottom: 16px;
+      font-size: 0.95em;
+    }
+
+    .help-item strong {
+      color: var(--text-primary);
+    }
+
+    .help-link {
+      color: var(--button-bg);
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .help-link:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+
+    .quick-setup-card {
+      padding: 20px;
+      background: var(--bg-color);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 8px var(--shadow-color);
+    }
+
+    .quick-setup-card h4 {
+      margin: 0 0 12px 0;
+      font-size: 1em;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .setup-steps {
+      margin: 0;
+      padding-left: 20px;
+      font-size: 0.95em;
+    }
+
+    .setup-steps li {
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+
+    .setup-steps li:last-child {
+      margin-bottom: 0;
+    }
   </style>
 </head>
 <body>
@@ -403,19 +470,7 @@
             <div id="settingsStatusDetails" style="font-size: 0.95em; color: var(--text-secondary);">All connections established at ws://127.0.0.1:4455</div>
           </div>
           
-          <div class="status-actions">
-            <button id="settingsTroubleshootBtn" class="small-button" title="Troubleshoot Connection">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-              </svg>
-            </button>
-            <button id="settingsVerifyOBSBtn" class="small-button" title="Verify OBS Connection">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-              </svg>
-            </button>
-          </div>
+
         </div>
       </div>
       
@@ -451,24 +506,33 @@
           </button>
           <span class="server-control-description">This will stop the tally server completely</span>
         </div>
-          <span class="server-control-description">This will stop the tally server completely</span>
-        </div>
       </div>
     </div>
 
     <div class="settings-card">
       <h2 class="section-title">Help & Support</h2>
-      <div style="color: var(--text-secondary); line-height: 1.6;">
-        <p style="margin-bottom: 16px;"><strong>WebSocket Address:</strong> The URL where OBS WebSocket server is running. Default is <span class="console-style">ws://127.0.0.1:4455</span></p>
-        <p style="margin-bottom: 16px;"><strong>Password:</strong> Optional password if you've secured your OBS WebSocket server in Tools > WebSocket Server Settings</p>
-        <p style="margin-bottom: 16px;"><strong>Monitor Sources:</strong> Comma-separated list of OBS source names exactly as they appear in OBS</p>
-        <p style="margin-bottom: 24px;"><strong>Troubleshooting:</strong> Use the diagnostic tools above or visit the <a href="/diagnostics.html" style="color: var(--button-bg); text-decoration: none;">diagnostics page</a> for detailed connection information.</p>
+      <div class="help-content">
+        <div class="help-section">
+          <h3>Configuration Reference</h3>
+          <div class="help-item">
+            <strong>WebSocket Address:</strong> The URL where OBS WebSocket server is running. Default is <span class="console-style">ws://127.0.0.1:4455</span>
+          </div>
+          <div class="help-item">
+            <strong>Password:</strong> Optional password if you've secured your OBS WebSocket server in Tools → WebSocket Server Settings
+          </div>
+          <div class="help-item">
+            <strong>Monitor Sources:</strong> Comma-separated list of OBS source names exactly as they appear in OBS
+          </div>
+          <div class="help-item">
+            <strong>Troubleshooting:</strong> Use the diagnostic tools above or visit the <a href="/diagnostics.html" class="help-link">diagnostics page</a> for detailed connection information.
+          </div>
+        </div>
         
-        <div style="padding: 16px; background: var(--bg-color); border-radius: 12px; border: 1px solid var(--border-color);">
-          <p style="margin: 0; font-size: 0.95em;"><strong>Quick Setup:</strong></p>
-          <ol style="margin: 8px 0 0 20px; font-size: 0.95em;">
+        <div class="quick-setup-card">
+          <h4>Quick Setup</h4>
+          <ol class="setup-steps">
             <li>Make sure OBS Studio is running</li>
-            <li>In OBS, go to Tools > WebSocket Server Settings</li>
+            <li>In OBS, go to Tools → WebSocket Server Settings</li>
             <li>Enable the WebSocket server</li>
             <li>Note the Server Port (usually 4455)</li>
             <li>Set a password if desired</li>
@@ -595,48 +659,7 @@
       }
     };
 
-    // Settings panel troubleshoot button
-    const settingsTroubleshootBtn = document.getElementById('settingsTroubleshootBtn');
-    if (settingsTroubleshootBtn) {
-      settingsTroubleshootBtn.addEventListener('click', async () => {
-        try {
-          showNotification('Testing OBS connection...', 'info');
-          const response = await fetch('/api/test-obs');
-          const data = await response.json();
-          
-          if (data.success) {
-            showNotification('Connection to OBS successful!', 'success');
-          } else {
-            // Show advanced diagnostics options
-            window.location.href = '/diagnostics.html';
-          }
-        } catch (err) {
-          showNotification('Connection test failed.', 'error');
-          console.error('Connection test error:', err);
-        }
-      });
-    }
-    
-    // Settings panel verify OBS button
-    const settingsVerifyOBSBtn = document.getElementById('settingsVerifyOBSBtn');
-    if (settingsVerifyOBSBtn) {
-      settingsVerifyOBSBtn.addEventListener('click', async () => {
-        try {
-          showNotification('Verifying OBS connection...', 'info');
-          const response = await fetch('/api/reconnect');
-          const data = await response.json();
-          
-          if (data.success) {
-            showNotification('Reconnection initiated', 'success');
-          } else {
-            showNotification(`Reconnection failed: ${data.error || 'Unknown error'}`, 'error');
-          }
-        } catch (err) {
-          showNotification('Reconnection request failed', 'error');
-          console.error('Reconnection error:', err);
-        }
-      });
-    }
+
 
     // Shutdown button
     const shutdownBtn = document.getElementById('shutdownBtn');

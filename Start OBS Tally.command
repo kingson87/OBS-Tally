@@ -39,7 +39,16 @@ if kill -0 $SERVER_PID 2>/dev/null; then
     
     # Open browser
     open "http://localhost:3005"
+    
+    # Give browser a moment to open
+    sleep 2
+    
+    echo "🎉 Launch complete! Terminal will close automatically."
+    
+    # Close terminal window automatically
+    exit 0
 else
     echo "❌ Failed to start server"
+    read -p "Press Enter to exit..."
     exit 1
 fi
