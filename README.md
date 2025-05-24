@@ -72,7 +72,25 @@ A web-based tally light system that displays the live/preview status of camera s
 3. **Launch OBS Tally:**
    Simply double-click `Start OBS Tally.command` - the server starts and your browser opens automatically!
 
-#### Option B: Standard Installation
+#### Option B: Windows Quick Setup
+1. **Clone the repository:**
+   ```powershell
+   git clone https://github.com/kingson87/OBS-Tally.git
+   cd OBS-Tally
+   ```
+
+2. **Install dependencies:**
+   ```powershell
+   npm install
+   ```
+
+3. **Launch OBS Tally:**
+   Double-click `Start OBS Tally.bat` to start the server and open your browser automatically.
+
+4. **Shutdown OBS Tally:**
+   Double-click `Stop OBS Tally.bat` to gracefully stop the server (or use the shutdown button in the web settings).
+
+#### Option C: Standard Installation (Cross-platform)
 1. **Clone and install dependencies:**
    ```bash
    git clone https://github.com/kingson87/OBS-Tally.git
