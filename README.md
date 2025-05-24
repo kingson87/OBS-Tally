@@ -1,143 +1,201 @@
 # OBS Tally
 
-This project provides a web-based tally light system that displays the status of camera/sources from OBS using the obs-websocket plugin. It consists of a Node.js backend and a responsive HTML/JavaScript frontend for real-time tally status updates.
+A web-based tally light system that displays the live/preview status of camera sources from OBS Studio using the obs-websocket plugin. Features a Node.js backend with real-time WebSocket communication and a responsive Progressive Web App frontend.
 
 ## Features
-- Connects to OBS via obs-websocket-js
-- WebSocket server for real-time updates
-- Responsive mobile-friendly UI to display tally status
-- Multiple camera/source support
-- Configuration UI for OBS WebSocket settings
-- Live/Preview/Idle status indicators
-- OBS connection status monitoring with auto-reconnect
-- Client-side settings persistence using local storage
-- Light and dark mode for different studio environments
-- Diagnostic tools for troubleshooting connections
-- Progressive Web App support for offline access
-- Easily accessible from any device on the local network
-- Automatic port selection if default port is in use
+
+### Core Functionality
+- 🔴 **Live Tally Indicators** - Red light when source is in Program (LIVE)
+- 🟡 **Preview Indicators** - Amber light when source is in Preview 
+- ⚪ **Idle Status** - Gray light when source is inactive
+- 📱 **Mobile-Optimized** - Responsive design works on phones, tablets, and desktop
+- 🌐 **Network Access** - Connect from any device on your local network
+- ⚡ **Real-time Updates** - Instant status changes via WebSocket connection
+
+### Advanced Features
+- 🔧 **Easy Configuration** - Web-based settings panel for OBS connection
+- 🔄 **Auto-Reconnect** - Automatic recovery from connection drops
+- 🌙 **Dark/Light Modes** - Optimized for different studio lighting conditions
+- 📊 **Diagnostics** - Built-in troubleshooting tools and connection monitoring
+- 💾 **Settings Persistence** - Your configuration is saved locally
+- 📱 **PWA Support** - Install as a native app on mobile devices
+- 🎯 **Multiple Sources** - Monitor unlimited camera/source feeds
+- 🚀 **Smart Port Management** - Automatically handles port conflicts
 
 ## Quick Setup
-The easiest way to get started is to use the included install script:
 
-```sh
-# Make the script executable (first time only)
-chmod +x install.sh
+### Prerequisites
+- OBS Studio with obs-websocket plugin (included in OBS 28+)
+- Node.js installed on your system
 
-# Run the installation
-./install.sh
-```
+### Installation
 
-Once installed, you can launch the application using the setup script:
-
-```sh
-# Make the script executable (first time only)
-chmod +x setup.sh
-
-# Run the setup script
-./setup.sh
-```
-
-Alternatively, you can use npm:
-
-```sh
-# Install dependencies
-npm install
-
-# Start the server
-npm start
-```
-
-## Manual Setup
-1. Ensure OBS is running with the obs-websocket plugin enabled.
-2. Install dependencies:
-   ```sh
+1. **Clone and install dependencies:**
+   ```bash
+   git clone https://github.com/kingson87/OBS-Tally.git
+   cd OBS-Tally
    npm install
    ```
-3. Start the server:
-   ```sh
+
+2. **Start the server:**
+   ```bash
+   npm start
+   ```
+   Or directly with Node.js:
+   ```bash
    node index.js
    ```
-4. Open your browser to `http://localhost:3000` to view the tally light status.
-5. Click the gear icon to configure the OBS WebSocket connection settings and camera sources.
+
+3. **Access the web interface:**
+   Open your browser to `http://localhost:3005`
+
+4. **Configure OBS connection:**
+   - Click the gear icon ⚙️ to open settings
+   - Verify the WebSocket address (default: `ws://127.0.0.1:4455`)
+   - Add your camera source names (comma-separated)
+   - Save settings
+
+### OBS Studio Setup
+1. Open OBS Studio
+2. Go to **Tools** → **obs-websocket Settings**
+3. Ensure **Enable WebSocket server** is checked
+4. Note the Server Port (default: 4455)
+5. Set a password if desired (optional but recommended for security)
+
+## Usage
+
+### Web Interface
+The main interface shows your configured camera sources with color-coded status:
+- 🔴 **Red** = Source is LIVE (in Program)
+- 🟡 **Amber** = Source is in PREVIEW  
+- ⚪ **Gray** = Source is IDLE
+
+### Settings Panel
+Access via the gear icon ⚙️:
+- **OBS WebSocket Address**: The WebSocket URL (default: `ws://127.0.0.1:4455`)
+- **Password**: Enter if you've secured your OBS WebSocket server
+- **Monitor Sources**: Comma-separated list of OBS source names to track
+- **Theme**: Toggle between light and dark modes
+
+### Additional Features
+- **📊 Diagnostics**: Visit `/diagnostics.html` for connection troubleshooting
+- **🖥️ Fullscreen Mode**: Visit `/fullscreen.html` for a clean, distraction-free view
+- **📱 Mobile Install**: Use your browser's "Add to Home Screen" option
 
 ## Configuration
-- **OBS WebSocket Address**: Set the WebSocket URL (default: ws://127.0.0.1:4455)
-- **Password**: Optional password if you've secured your OBS WebSocket server
-- **Monitor Sources**: Comma-separated list of OBS source names to monitor
 
-### Server Port
-By default, the tally server runs on port 3000. If this port is in use:
-1. The server will automatically try the next available port (3001, 3002, etc.)
-2. You can manually specify a port using the PORT environment variable:
-   ```
-   PORT=8080 node index.js
-   ```
+### Environment Variables
+- `PORT`: Set a custom port (default: 3005)
+  ```bash
+  PORT=8080 node index.js
+  ```
 
-## Desktop Application
-This project can also be run as a desktop application using Electron:
+### Network Access
+To access from other devices on your network:
+1. Find your computer's IP address
+2. Replace `localhost` with your IP: `http://192.168.1.100:3005`
+3. Ensure your firewall allows connections on the chosen port
 
-```sh
-# Run as desktop app on macOS
-npm run macapp
+## Development
 
-# Run as desktop app on Windows
-npm run winapp
+### Project Structure
+```
+├── index.js              # Main server application
+├── package.json           # Dependencies and scripts
+├── obs-config.json        # OBS connection configuration
+├── public/               # Web frontend files
+│   ├── index.html        # Main tally interface
+│   ├── settings.html     # Configuration panel
+│   ├── diagnostics.html  # Connection troubleshooting
+│   ├── fullscreen.html   # Clean fullscreen view
+│   └── manifest.json     # PWA configuration
+└── docs/                 # Documentation
+    ├── user-guide.md     # Detailed usage instructions
+    └── connection-guide.md # Connection troubleshooting
 ```
 
-### Building Distributable Applications
-
-You can package the application for distribution on macOS and Windows:
-
-```sh
-# Package for macOS
-npm run package-mac
-# or
-npm run build-mac
-
-# Package for Windows
-npm run package-win
-# or
-npm run build-win
-
-# Package for both platforms
-npm run package-all
-# or
-npm run build
-```
-
-The setup script also includes options for packaging:
-
-```sh
-# Run the setup script and choose packaging options
-./setup.sh
-```
-
-## To Do
-- Prepare for M5Stack Plus2 adaptation
-- Add authentication for public networks
+### Technology Stack
+- **Backend**: Node.js, Express.js, obs-websocket-js
+- **Frontend**: Vanilla JavaScript, WebSocket API, CSS3
+- **Real-time Communication**: WebSocket (ws library)
+- **PWA Features**: Service Worker, Web App Manifest
 
 ## Troubleshooting
 
-If you experience connection issues:
+### Common Issues
 
-1. Visit the diagnostics page at `/diagnostics.html`
-2. Verify that OBS Studio is running and the WebSocket Server is enabled in Tools > WebSocket Server Settings
-3. Check that the WebSocket address matches the one configured in OBS
-4. If using a password, ensure it matches what's set in OBS
-5. Check network/firewall settings if connecting from a different machine
-6. Use the "Force Reconnect" button to reinitiate the connection
+**🔌 Connection Problems**
+1. Verify OBS Studio is running
+2. Check that obs-websocket is enabled in **Tools** → **obs-websocket Settings**
+3. Confirm the WebSocket address and port match OBS settings
+4. Test the connection using the diagnostics page (`/diagnostics.html`)
+
+**🚫 Port Already in Use**
+The server automatically attempts to clear port conflicts. If issues persist:
+```bash
+# Kill any process using port 3005
+lsof -ti:3005 | xargs kill -9
+
+# Or use a different port
+PORT=8080 node index.js
+```
+
+**📱 Mobile Access Issues**
+- Ensure your mobile device is on the same network
+- Use your computer's IP address instead of `localhost`
+- Check firewall settings on your computer
+
+**⚡ Performance Issues**
+- Close unnecessary browser tabs
+- Reduce the number of monitored sources
+- Use a wired network connection when possible
 
 ### Understanding Connection States
 
-The system has two separate connections:
-1. **Browser to Tally Server**: Shown as "Connected to server" when your browser can reach the Node.js tally server
-2. **Tally Server to OBS**: Shown as "Connected to OBS" when the tally server successfully connects to OBS
+The system manages two separate connections:
 
-If you see a console message "[SUCCESS] Connected to server WebSocket", this only means your browser is connected to the tally server - it does NOT mean OBS is connected. You must check the "OBS WebSocket" status in the diagnostics page or look for "Connected to OBS" in the connection status area to confirm the full system is working.
+1. **🌐 Browser ↔ Tally Server**: Shows as "Connected to server"
+2. **📺 Tally Server ↔ OBS**: Shows as "Connected to OBS"
 
-If you see "Connected to server, waiting for OBS..." this means your browser is successfully connected to the tally server, but the server cannot connect to OBS. This is normal if OBS is not running or the WebSocket Server is not enabled.
+Both must be active for the system to work properly. The diagnostics page provides detailed information about each connection.
 
-For detailed connection information, see the [connection guide](docs/connection-guide.md).
+### Getting Help
 
-For more detailed help, see the [user guide](docs/user-guide.md).
+For detailed troubleshooting steps, see:
+- 📖 [User Guide](docs/user-guide.md) - Complete usage instructions
+- 🔧 [Connection Guide](docs/connection-guide.md) - Detailed connection troubleshooting
+
+## Contributing
+
+We welcome contributions! Please:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Built with [obs-websocket-js](https://github.com/obs-websocket-community-projects/obs-websocket-js)
+- Inspired by professional broadcast tally systems
+- Thanks to the OBS Studio community
+
+## Roadmap
+
+### Upcoming Features
+- 🔐 Authentication for public network deployment
+- 📱 M5Stack hardware tally light support
+- 🎨 Custom theme support
+- 📈 Usage analytics and monitoring
+- 🔊 Audio cue support
+- 🌍 Multi-language support
+
+### Version History
+- **v1.0.0** - Initial release with core tally functionality
+- PWA support and responsive design
+- Real-time WebSocket communication
+- Comprehensive diagnostics tools

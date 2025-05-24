@@ -141,8 +141,36 @@
       border-radius: 20px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.08);
       margin-bottom: 4px;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
+      transition: all 0.3s ease;
+      user-select: none; /* Prevent text selection on double click */
+      position: relative; /* For pseudo-element positioning */
     }
+
+    .tally-item::after {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+      border: 3px solid var(--text-color);
+      border-radius: 22px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .tally-item.waiting-for-double-tap::after {
+      opacity: 0.2;
+      animation: pulseBorder 1.5s infinite;
+    }
+
+    @keyframes pulseBorder {
+      0% { opacity: 0.1; }
+      50% { opacity: 0.3; }
+      100% { opacity: 0.1; }
+    }
+
     .tally {
       width: 120px;
       height: 120px;
@@ -188,7 +216,7 @@
       100% { box-shadow: 0 0 48px rgba(255,59,48,0.4); transform: scale(1); }
     }
     
-    /* @keyframes pulsePreview removed */
+
     .source-label {
       font-weight: 700;
       font-size: 1.1em;
@@ -280,32 +308,7 @@
       transform: translateY(0);
     }
     
-    .config-section {
-      width: 100%;
-      padding: 24px;
-      box-sizing: border-box;
-      display: none;
-      margin-bottom: 32px;
-      background: var(--card-bg);
-      border-radius: 20px;
-      box-shadow: 0 8px 24px var(--shadow-color);
-    }
-    .config-section.visible {
-      display: block;
-    }
-    .config-section h2 {
-      font-size: 1.5em;
-      margin: 0 0 24px 0;
-      color: var(--header-color);
-      text-align: center;
-    }
-    
-    .input-group {
-      margin-bottom: 24px;
-    }
-    .input-group:last-child {
-      margin-bottom: 0;
-    }
+
     
     /* Connection status indicator */
     .connection-status {
@@ -708,54 +711,28 @@
     
     .notification {
       position: fixed;
-      top: 20px;
+      bottom: 20px; /* Changed from top: 20px */
       left: 50%;
       transform: translateX(-50%);
-      background: var(--card-bg);
-      color: var(--text-color);
-      padding: 16px 24px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px var(--shadow-color);
-      display: flex;
-      align-items: center;
-      z-index: 2000;
+      background-color: #333;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      z-index: 1001;
       opacity: 0;
-      transition: opacity 0.3s, transform 0.3s;
-      max-width: 90%;
-      border: 1px solid var(--border-color);
-    }
-    
-    .notification.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-    
-    .notification-icon {
-      margin-right: 12px;
-      width: 24px;
-      height: 24px;
-      flex-shrink: 0;
-    }
-    
-    .notification-message {
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease; /* Changed from top to bottom transition */
       font-size: 1em;
       font-weight: 500;
+      max-width: 90%;
+      text-align: center;
     }
-    
-    .notification.info .notification-icon {
-      color: #007aff;
-    }
-    
-    .notification.success .notification-icon {
-      color: #34c759;
-    }
-    
-    .notification.warning .notification-icon {
-      color: #ff9500;
-    }
-    
-    .notification.error .notification-icon {
-      color: #ff3b30;
+
+    .notification.show {
+      opacity: 1;
+      visibility: visible;
+      bottom: 70px; /* Changed from top: 70px */
     }
   </style>
 </head>
@@ -786,61 +763,12 @@
       </svg>
     </button>
     
-    <button class="config-button" id="configButton" title="OBS Settings">
+    <button class="config-button" id="configButton" title="Settings" onclick="window.location.href='/settings.html'">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/>
         <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
       </svg>
     </button>
-    
-    <div id="configSection" class="config-section">
-      <h2>Connection Settings</h2>
-      
-      <div class="connection-status-panel" style="margin-bottom: 28px; padding: 18px; border-radius: 16px; background: var(--bg-color); border: 1px solid var(--border-color); box-shadow: 0 2px 8px var(--shadow-color);">
-        <div class="panel-header" style="display: flex; align-items: center; margin-bottom: 14px;">
-          <div id="settingsConnectionIndicator" class="status-indicator status-connecting" style="margin-right: 12px;"></div>
-          <h3 style="margin: 0; font-size: 1.2em;">Connection Status</h3>
-          <div style="margin-left: auto; padding: 6px 12px; border-radius: 12px; font-size: 0.9em; font-weight: bold; background-color: rgba(52, 199, 89, 0.15); color: #34c759;" id="connectionsCounter">2/2 Connections</div>
-        </div>
-        
-        <div style="display: flex; align-items: center;">
-          <div style="flex: 1;">
-            <div id="settingsStatusTitle" style="font-weight: 600; font-size: 1.1em; margin-bottom: 8px;">Successfully connected to server and OBS</div>
-            <div id="settingsStatusDetails" style="font-size: 0.95em; color: var(--text-secondary);">All connections established at ws://127.0.0.1:4455</div>
-          </div>
-          
-          <div class="status-actions" style="display: flex; margin-left: 16px;">
-            <button id="settingsTroubleshootBtn" class="small-button" title="Troubleshoot Connection" style="padding: 10px; border-radius: 50%;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-              </svg>
-            </button>
-            <button id="settingsVerifyOBSBtn" class="small-button" title="Verify OBS Status" style="margin-left: 10px; padding: 10px; border-radius: 50%;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <form id="obsConfigForm">
-        <div class="input-group" style="margin-bottom: 24px;">
-          <label for="obsAddress" style="margin-bottom: 10px; font-size: 1.05em;">WebSocket Address:</label>
-          <input type="text" id="obsAddress" name="address" placeholder="ws://127.0.0.1:4455" style="padding: 16px; font-size: 1em; border-radius: 12px;">
-        </div>
-        <div class="input-group" style="margin-bottom: 24px;">
-          <label for="obsPassword" style="margin-bottom: 10px; font-size: 1.05em;">Password (optional):</label>
-          <input type="password" id="obsPassword" name="password" placeholder="Leave empty if no password" style="padding: 16px; font-size: 1em; border-radius: 12px;">
-        </div>
-        <div class="input-group" style="margin-bottom: 32px;">
-          <label for="sources" style="margin-bottom: 10px; font-size: 1.05em;">Monitor sources (comma separated):</label>
-          <input type="text" id="sources" name="sources" placeholder="Phone, NDI Main Camera" style="padding: 16px; font-size: 1em; border-radius: 12px;">
-        </div>
-        <button type="submit" style="padding: 18px; font-size: 1.1em; border-radius: 14px; margin-top: 8px;">Save Settings</button>
-      </form>
-    </div>
     
     <h1>OBS Tally</h1>
     
@@ -864,18 +792,7 @@
         </svg>
       </div>
       <div class="status-actions">
-        <button id="troubleshootBtn" class="small-button" title="Troubleshoot Connection">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-          </svg>
-        </button>
-        <button id="verifyOBSBtn" class="small-button ml-8" title="Verify OBS Status" style="margin-left: 8px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-          </svg>
-        </button>
-        <a href="/docs/connection-guide.md" class="small-button ml-8" title="Connection Guide" style="margin-left: 8px; text-decoration: none;" target="_blank">
+        <a href="/docs/connection-guide.md" class="small-button" title="Connection Guide" style="text-decoration: none;" target="_blank">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="12" y1="8" x2="12" y2="12"></line>
@@ -901,6 +818,22 @@
     </div>
   </div>
   <script>
+    // Global app state
+    let currentSources = [];
+    let darkMode = localStorage.getItem('darkMode') === 'true';
+    let serverConnected = false;
+    let obsConnected = false;
+    let lastObsConnectionStatus = null; // Track last OBS connection status
+    let lastObsConnectionError = null; // Track last OBS connection error
+    let lastNotificationTime = 0; // Track when notifications were last shown
+    let isInitialConnection = true; // Track if this is the first connection (page load)
+    const NOTIFICATION_COOLDOWN = 10000; // Minimum time between similar notifications (10 seconds)
+    
+    // Apply dark mode if enabled
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    }
+    
     // Notification system
     const notification = document.getElementById('notification');
     const notificationMessage = notification.querySelector('.notification-message');
@@ -985,197 +918,107 @@
     
     // Initialize theme
     initTheme();
-    
-    // Troubleshoot button
-    const troubleshootBtn = document.getElementById('troubleshootBtn');
-    troubleshootBtn.addEventListener('click', async () => {
-      try {
-        showNotification('Testing OBS connection...', 'info');
-        const response = await fetch('/api/test-obs');
-        const data = await response.json();
-        
-        if (data.success) {
-          showNotification('Connection to OBS successful!', 'success');
-        } else {
-          // Show advanced diagnostics options
-          window.location.href = '/diagnostics.html';
-        }
-      } catch (err) {
-        showNotification('Connection test failed.', 'error');
-        console.error('Connection test error:', err);
-      }
-    });
-    
-    // Settings panel troubleshoot button
-    const settingsTroubleshootBtn = document.getElementById('settingsTroubleshootBtn');
-    if (settingsTroubleshootBtn) {
-      settingsTroubleshootBtn.addEventListener('click', async () => {
-        try {
-          showNotification('Testing OBS connection...', 'info');
-          const response = await fetch('/api/test-obs');
-          const data = await response.json();
-          
-          if (data.success) {
-            showNotification('Connection to OBS successful!', 'success');
-          } else {
-            // Show advanced diagnostics options
-            window.location.href = '/diagnostics.html';
-          }
-        } catch (err) {
-          showNotification('Connection test failed.', 'error');
-          console.error('Connection test error:', err);
+
+    // Double-tap/click detection for tally items
+    let lastTapTime = 0;
+    let lastTapSource = ''; // Track which source was last tapped
+    const DOUBLE_TAP_DELAY = 500; // Increased to 500ms for better mobile usability
+    let isDebugMode = false;
+
+    function handleTallyItemInteraction(event, sourceName) {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTapTime;
+      const target = event.currentTarget;
+      
+      // Remove waiting class from any other items
+      document.querySelectorAll('.tally-item.waiting-for-double-tap').forEach(item => {
+        if (item !== target) {
+          item.classList.remove('waiting-for-double-tap');
         }
       });
-    }
-    
-    // Settings panel verify OBS button
-    const settingsVerifyOBSBtn = document.getElementById('settingsVerifyOBSBtn');
-    if (settingsVerifyOBSBtn) {
-      settingsVerifyOBSBtn.addEventListener('click', async () => {
-        try {
-          showNotification('Verifying OBS connection...', 'info');
-          const response = await fetch('/api/reconnect');
-          const data = await response.json();
-          
-          if (data.success) {
-            showNotification('OBS connection verification initiated', 'success');
-          } else {
-            showNotification(`Verification failed: ${data.error || 'Unknown error'}`, 'error');
-          }
-        } catch (err) {
-          showNotification('Verification request failed', 'error');
-          console.error('Verification error:', err);
-        }
-      });
-    }
-    
-    // Verify OBS Status button
-    const verifyOBSBtn = document.getElementById('verifyOBSBtn');
-    verifyOBSBtn.addEventListener('click', async () => {
-      try {
-        showNotification('Verifying OBS connection...', 'info');
-        const response = await fetch('/api/reconnect');
-        const data = await response.json();
+      
+      // Only count as potential double-tap if it's the same source
+      if (sourceName !== lastTapSource) {
+        lastTapTime = currentTime;
+        lastTapSource = sourceName;
+        target.classList.add('waiting-for-double-tap');
+        setTimeout(() => {
+          target.classList.remove('waiting-for-double-tap');
+        }, DOUBLE_TAP_DELAY);
         
-        if (data.success) {
-          showNotification('OBS connection verification initiated', 'success');
-        } else {
-          showNotification(`Verification failed: ${data.error || 'Unknown error'}`, 'error');
+        if (isDebugMode) {
+          showNotification(`First tap on ${sourceName}`, 'info', 500);
         }
-      } catch (err) {
-        showNotification('Verification request failed', 'error');
-        console.error('Verification error:', err);
+        return;
+      }
+
+      if (tapLength < DOUBLE_TAP_DELAY && tapLength > 0) {
+        // Double tap/click detected
+        event.preventDefault();
+        target.classList.remove('waiting-for-double-tap');
+        
+        // Trigger vibration if available (for mobile devices)
+        if ('vibrate' in navigator) {
+          navigator.vibrate(100);
+        }
+        
+        if (isDebugMode) {
+          showNotification(`Double-tap detected! (${tapLength}ms)`, 'success', 1000);
+        }
+        
+        openFullscreenTally(sourceName);
+      } else {
+        target.classList.add('waiting-for-double-tap');
+        setTimeout(() => {
+          target.classList.remove('waiting-for-double-tap');
+        }, DOUBLE_TAP_DELAY);
+        
+        if (isDebugMode) {
+          showNotification(`First tap on ${sourceName}`, 'info', 500);
+        }
+      }
+      
+      lastTapTime = currentTime;
+      lastTapSource = sourceName;
+
+      // For touch events, prevent zooming
+      if (event.type === 'touchend') {
+        event.preventDefault();
+      }
+    }
+
+    // Debug mode can be enabled by typing 'debug' on the keyboard
+    let debugBuffer = '';
+    document.addEventListener('keypress', (e) => {
+      debugBuffer += e.key;
+      if (debugBuffer.length > 5) debugBuffer = debugBuffer.slice(-5);
+      if (debugBuffer === 'debug') {
+        isDebugMode = !isDebugMode;
+        showNotification(`Debug mode ${isDebugMode ? 'enabled' : 'disabled'}`, 'info', 2000);
+        debugBuffer = '';
       }
     });
-    
+
+    function openFullscreenTally(sourceName) {
+      if (sourceName) {
+        const encodedSourceName = encodeURIComponent(sourceName);
+        // Use location.href instead of window.open to avoid popup blocking
+        window.location.href = `/fullscreen.html?source=${encodedSourceName}`;
+      } else {
+        console.error('Source name is undefined, cannot open fullscreen tally.');
+        showNotification('Could not open fullscreen view: Source name missing.', 'error');
+      }    }
+
     // Config section toggle
     const configButton = document.getElementById('configButton');
-    const configSection = document.getElementById('configSection');
-    
-    function toggleConfigSection() {
-      configSection.classList.toggle('visible');
-    }
-    
-    configButton.addEventListener('click', toggleConfigSection);
     
     // Local storage keys
     const STORAGE_KEY_ADDRESS = 'obs-tally-address';
     const STORAGE_KEY_SOURCES = 'obs-tally-sources';
-    const STORAGE_KEY_CONFIG_VISIBLE = 'obs-tally-config-visible';
-    
-    // Show configuration automatically if no sources are configured
-    function shouldShowConfigOnLoad() {
-      // Check if there are saved sources
-      const savedSources = localStorage.getItem(STORAGE_KEY_SOURCES);
-      // Show config if no sources saved or explicitly set to show
-      return !savedSources || localStorage.getItem(STORAGE_KEY_CONFIG_VISIBLE) === 'true';
-    }
-    
-    // Initialize configuration visibility
-    if (shouldShowConfigOnLoad()) {
-      configSection.classList.add('visible');
-      // Reset the flag once shown
-      localStorage.removeItem(STORAGE_KEY_CONFIG_VISIBLE);
-    }
-
-    // Load OBS config - first from local storage, then from server
-    const savedAddress = localStorage.getItem(STORAGE_KEY_ADDRESS);
-    if (savedAddress) {
-      document.getElementById('obsAddress').value = savedAddress;
-    }
-    
-    fetch('/api/obs-config')
-      .then((r) => r.json())
-      .then((config) => {
-        document.getElementById('obsAddress').value = config.address;
-        // Save to local storage and variable
-        localStorage.setItem(STORAGE_KEY_ADDRESS, config.address);
-        obsAddress = config.address;
-        
-        if (config.password === '********') {
-          document.getElementById('obsPassword').placeholder = '(password saved)';
-        }
-      })
-      .catch((err) => {
-        console.error('Error loading OBS config:', err);
-      });
-
-    // Handle OBS config form
-    document.getElementById('obsConfigForm').onsubmit = async (e) => {
-      e.preventDefault();
-      const address = document.getElementById('obsAddress').value.trim();
-      const password = document.getElementById('obsPassword').value;
-      const sources = document.getElementById('sources').value
-        .split(',')
-        .map((s) => s.trim())
-        .filter(Boolean);
-      
-      // Save to local storage
-      localStorage.setItem(STORAGE_KEY_ADDRESS, address);
-      localStorage.setItem(STORAGE_KEY_SOURCES, JSON.stringify(sources));
-      
-      // Update connection status to connecting
-      updateConnectionStatus('connecting', 'Updating settings...');
-      showNotification('Updating settings...', 'info');
-      
-      // First update the OBS connection config
-      try {
-        const configResponse = await fetch('/api/obs-config', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ address, password })
-        });
-        
-        if (!configResponse.ok) {
-          throw new Error('Failed to update OBS config');
-        }
-        
-        // Then update the sources
-        const sourcesResponse = await fetch('/api/sources', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sources })
-        });
-        
-        if (!sourcesResponse.ok) {
-          throw new Error('Failed to update sources');
-        }
-        
-        configSection.classList.remove('visible');
-        showNotification('Settings updated successfully', 'success');
-        setTimeout(() => {
-          location.reload(); // Refresh to reconnect with new settings
-        }, 1000);
-      } catch (err) {
-        console.error('Error updating settings:', err);
-        showNotification('Failed to update settings: ' + err.message, 'error');
-      }
-    };
 
     // WebSocket connection for tally
     const wsProtocol = location.protocol === 'https:' ? 'wss' : 'ws';
     const ws = new WebSocket(`${wsProtocol}://${location.host}`);
-    let currentSources = [];
     
     // Connection status indicators and elements
     const connectionIndicator = document.getElementById('connectionIndicator');
@@ -1327,17 +1170,35 @@
     
     ws.onopen = () => {
       updateConnectionStatus('connecting', 'Connected to server, waiting for OBS...');
-      showNotification('Connected to tally server - waiting for OBS connection', 'info');
+      // Only show notification on reconnection, not on initial page load
+      if (!isInitialConnection) {
+        showNotification('Reconnected to tally server - waiting for OBS connection', 'info');
+      }
+      isInitialConnection = false;
+      serverConnected = true;
       console.log('%c[SUCCESS] Connected to server WebSocket (still waiting for OBS connection)', 'color: orange; font-weight: bold');
     };
     
     ws.onclose = () => {
       updateConnectionStatus('disconnected', 'Server disconnected');
       showNotification('Server connection lost. Reconnecting...', 'warning');
-      // Try to reconnect after 5 seconds
-      setTimeout(() => {
-        location.reload();
-      }, 5000);
+      
+      // Instead of page refresh, show manual reconnect button
+      const manualReconnectBtn = document.createElement('button');
+      manualReconnectBtn.className = 'button button-primary';
+      manualReconnectBtn.textContent = 'Reconnect';
+      manualReconnectBtn.onclick = () => {
+        window.location.reload();
+      };
+      
+      const statusArea = document.querySelector('.status-area');
+      if (statusArea) {
+        // Add reconnect button if not already present
+        if (!document.getElementById('manual-reconnect-btn')) {
+          manualReconnectBtn.id = 'manual-reconnect-btn';
+          statusArea.appendChild(manualReconnectBtn);
+        }
+      }
     };
     
     ws.onerror = () => {
@@ -1350,20 +1211,39 @@
       
       // Check if we received OBS connection status
       if (data.obsConnectionStatus) {
+        const now = Date.now();
+        const isNewStatus = data.obsConnectionStatus !== lastObsConnectionStatus;
+        const isNewError = data.obsConnectionError !== lastObsConnectionError;
+        const passedCooldown = (now - lastNotificationTime) > NOTIFICATION_COOLDOWN;
+        
+        // Update tracking variables
+        lastObsConnectionStatus = data.obsConnectionStatus;
+        lastObsConnectionError = data.obsConnectionError;
+        
+        // Always update the visual status indicator
         if (data.obsConnectionStatus === 'connected') {
+          obsConnected = true;
           updateConnectionStatus('connected', 'Connected to OBS');
-          showNotification('Connected to OBS Studio', 'success');
-          console.log('%c[SUCCESS] OBS WebSocket connection established', 'color: green; font-weight: bold');
+          
+          // Only show notification if this is a state change or cooldown passed
+          if ((isNewStatus || passedCooldown) && !obsConnected) {
+            showNotification('Connected to OBS Studio', 'success');
+            lastNotificationTime = now;
+            console.log('%c[SUCCESS] OBS WebSocket connection established', 'color: green; font-weight: bold');
+          }
         } else if (data.obsConnectionStatus === 'connecting') {
+          obsConnected = false;
           updateConnectionStatus('connecting', 'Connected to server, connecting to OBS...');
         } else {
           // Disconnected state
+          obsConnected = false;
           updateConnectionStatus('disconnected', 'Connected to server, OBS disconnected');
           
-          // If we have an error message, show it
-          if (data.obsConnectionError) {
+          // If we have an error message and either it's new or past cooldown, show it
+          if (data.obsConnectionError && (isNewError || passedCooldown)) {
             const errorMsg = data.obsConnectionError;
             showNotification(`Unable to connect to OBS: ${errorMsg}`, 'error');
+            lastNotificationTime = now;
             
             // Update status details with more specific error information
             if (errorMsg.includes('ECONNREFUSED')) {
@@ -1417,6 +1297,11 @@
         item.appendChild(label);
         item.appendChild(div);
         item.appendChild(sub);
+
+        // Add double-tap/click event listeners for fullscreen mode
+        item.addEventListener('click', (event) => handleTallyItemInteraction(event, source));
+        item.addEventListener('touchend', (event) => handleTallyItemInteraction(event, source));
+
         tallyList.appendChild(item);
       });
     };
@@ -1446,4 +1331,69 @@
       });
   </script>
 </body>
-</html>
+</body>
+<script>
+// Register service worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(function(reg) {
+        console.log('Service worker registered.', reg);
+      });
+  });
+}
+
+// PWA install prompt logic
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const btn = document.getElementById('install-btn');
+  if (btn) btn.style.display = 'inline-block';
+});
+
+function showInstallPrompt() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => {
+      deferredPrompt = null;
+      const btn = document.getElementById('install-btn');
+      if (btn) btn.style.display = 'none';
+    });
+  }
+}
+</script>
+<button id="install-btn" style="display:none;position:fixed;bottom:24px;right:24px;z-index:1000;padding:12px 20px;font-size:1rem;background:#007aff;color:#fff;border:none;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.15);cursor:pointer;">Install OBS Tally</button>
+<script>
+document.getElementById('install-btn').addEventListener('click', showInstallPrompt);
+</script>
+
+<!-- System information and diagnostics link -->
+<script src="platform-probe.js"></script>
+<a href="diagnostics.html" id="diagnostics-link" style="display:none;position:fixed;bottom:24px;left:24px;z-index:1000;padding:6px 12px;font-size:0.8rem;background:rgba(0,122,255,0.1);color:#007aff;text-decoration:none;border:1px solid rgba(0,122,255,0.3);border-radius:8px;cursor:pointer;">System Info</a>
+<script>
+  // Show diagnostics link for a short time on load, and when hovering near the bottom left
+  document.addEventListener('DOMContentLoaded', function() {
+    const diagnLink = document.getElementById('diagnostics-link');
+    
+    // Run platform detection
+    const platform = window.OBSTally.detectPlatform();
+    
+    // Show diagnostics link after a delay
+    setTimeout(() => {
+      diagnLink.style.display = 'block';
+      
+      // Hide after 5 seconds
+      setTimeout(() => {
+        diagnLink.style.display = 'none';
+      }, 5000);
+    }, 3000);
+    
+    // Show when mouse is in the bottom left corner
+    document.addEventListener('mousemove', function(e) {
+      if (e.clientX < 100 && e.clientY > window.innerHeight - 100) {
+        diagnLink.style.display = 'block';
+      }
+    });
+  });
+</script>

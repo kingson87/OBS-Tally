@@ -1,71 +1,45 @@
 {
   "name": "obs-tally",
   "version": "1.0.0",
-  "description": "Web-based tally light system for OBS using obs-websocket-js.",
-  "main": "electron.js",
+  "description": "Web-based tally light system for OBS Studio using obs-websocket-js with real-time status updates and responsive design.",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "macapp": "electron electron.js",
-    "winapp": "electron electron.js",
     "start": "node index.js",
-    "setup": "./setup.sh",
-    "create-icons": "node scripts/create-icons.js",
-    "fix-mac-app": "node scripts/fixapp.js",
-    "package-mac": "electron-packager . \"OBS Tally\" --platform=darwin --arch=x64 --icon=public/icon.icns --out=dist --overwrite && npm run fix-mac-app",
-    "package-win": "npm run create-icons && electron-packager . \"OBS Tally\" --platform=win32 --arch=x64 --icon=public/icon.ico --out=dist --overwrite",
-    "package-all": "npm run create-icons && npm run package-mac && npm run package-win",
-    "build": "electron-builder build --mac --win",
-    "build-mac": "electron-builder build --mac",
-    "build-win": "electron-builder build --win",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "docs": "open docs/user-guide.md"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "obs",
+    "tally",
+    "broadcast",
+    "websocket",
+    "streaming",
+    "camera",
+    "live",
+    "preview",
+    "studio",
+    "production",
+    "pwa"
+  ],
+  "author": "kingson87",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kingson87/OBS-Tally.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kingson87/OBS-Tally/issues"
+  },
+  "homepage": "https://github.com/kingson87/OBS-Tally#readme",
   "dependencies": {
     "express": "^5.1.0",
     "obs-websocket-js": "^5.0.6",
     "ws": "^8.18.2"
   },
-  "devDependencies": {
-    "electron": "^36.2.1",
-    "electron-builder": "^24.13.3",
-    "electron-packager": "^17.1.2",
-    "png-to-ico": "^2.1.8"
-  },
-  "build": {
-    "appId": "com.obstally.app",
-    "productName": "OBS Tally",
-    "mac": {
-      "category": "public.app-category.video",
-      "icon": "public/icon.icns",
-      "target": [
-        "dmg"
-      ]
-    },
-    "win": {
-      "icon": "public/icon.ico",
-      "target": [
-        "nsis",
-        "portable"
-      ]
-    },
-    "files": [
-      "**/*",
-      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
-      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
-      "!**/node_modules/*.d.ts",
-      "!**/node_modules/.bin",
-      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
-      "!.editorconfig",
-      "!**/._*",
-      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
-      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
-      "!**/{appveyor.yml,.travis.yml,circle.yml}",
-      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
-    ]
-  },
   "directories": {
     "doc": "docs"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   }
 }

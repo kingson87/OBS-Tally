@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBS Fullscreen Tally</title>
+  <link rel="icon" href="icon.png" type="image/png">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: white;
+    }
+    #tally-display {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+    .status-idle { background-color: #8e8e93; }
+    .status-preview { background-color: #ff9500; }
+    .status-live { background-color: #ff3b30; }
+    .status-unknown { background-color: #333; }
+
+    #source-name {
+      font-size: 10vw; /* Responsive font size */
+      font-weight: bold;
+      margin-bottom: 2vw;
+      text-shadow: 0 0 10px rgba(0,0,0,0.5);
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+    #source-status {
+      font-size: 7vw; /* Responsive font size */
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 8px rgba(0,0,0,0.5);
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+
+    /* Pulse animation for live status */
+    .pulse-live {
+      animation: pulseLiveText 1.5s infinite;
+    }
+    @keyframes pulseLiveText {
+      0% {
+        text-shadow: 0 0 32px rgba(255,59,48,0.4), 0 0 10px rgba(0,0,0,0.5);
+        color: #fff;
+        transform: scale(1);
+      }
+      50% {
+        text-shadow: 0 0 64px rgba(255,59,48,0.7), 0 0 20px rgba(0,0,0,0.7);
+        color: #fff0f0;
+        transform: scale(1.05);
+      }
+      100% {
+        text-shadow: 0 0 32px rgba(255,59,48,0.4), 0 0 10px rgba(0,0,0,0.5);
+        color: #fff;
+        transform: scale(1);
+      }
+    }
+    }
+    .connecting-message {
+      font-size: 5vw;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div id="tally-display" class="status-unknown">
+    <div id="source-name">Connecting...</div>
+    <div id="source-status"></div>
+    <div id="connecting-message" class="connecting-message">Waiting for server connection...</div>
+  </div>
+
+  <script>
+    // Double-click or double-tap anywhere to return to home
+    let lastTapTime = 0;
+    const DOUBLE_TAP_DELAY = 500;
+    function handleFullscreenDoubleTap(event) {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTapTime;
+      if (tapLength < DOUBLE_TAP_DELAY && tapLength > 0) {
+        event.preventDefault();
+        window.location.href = '/';
+      }
+      lastTapTime = currentTime;
+    }
+    // Listen for both mouse and touch events on the whole display
+    document.addEventListener('click', handleFullscreenDoubleTap);
+    document.addEventListener('touchend', handleFullscreenDoubleTap);
+    const tallyDisplay = document.getElementById('tally-display');
+    const sourceNameElement = document.getElementById('source-name');
+    const sourceStatusElement = document.getElementById('source-status');
+    const connectingMessageElement = document.getElementById('connecting-message');
+
+    let targetSourceName = '';
+    let obsConnectionStatus = 'disconnected'; // Track OBS connection status
+
+    function getSourceNameFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      const source = params.get('source');
+      if (source) {
+        targetSourceName = decodeURIComponent(source);
+        sourceNameElement.textContent = targetSourceName; // Initial display
+        connectingMessageElement.textContent = 'Waiting for tally data...';
+      } else {
+        sourceNameElement.textContent = 'Error';
+        sourceStatusElement.textContent = 'No source specified in URL';
+        connectingMessageElement.style.display = 'none';
+        tallyDisplay.className = 'status-unknown';
+      }
+      return source;
+    }
+
+    function updateDisplay(sourceData) {
+      if (!sourceData || !sourceData.source) {
+        // If OBS is disconnected, reflect that instead of "Idle"
+        if (obsConnectionStatus !== 'connected' && obsConnectionStatus !== 'connecting') {
+            sourceStatusElement.textContent = 'OBS Disconnected';
+            tallyDisplay.className = 'status-unknown';
+        } else {
+            sourceStatusElement.textContent = 'Not Found';
+            tallyDisplay.className = 'status-unknown';
+        }
+        return;
+      }
+
+      sourceNameElement.textContent = sourceData.source;
+      sourceStatusElement.textContent = sourceData.status;
+
+      // Remove animation classes first
+      sourceNameElement.classList.remove('pulse-live');
+      sourceStatusElement.classList.remove('pulse-live');
+
+      switch (sourceData.status.toLowerCase()) {
+        case 'live':
+          tallyDisplay.className = 'status-live';
+          sourceNameElement.classList.add('pulse-live');
+          sourceStatusElement.classList.add('pulse-live');
+          break;
+        case 'preview':
+          tallyDisplay.className = 'status-preview';
+          break;
+        case 'idle':
+          tallyDisplay.className = 'status-idle';
+          break;
+        default:
+          tallyDisplay.className = 'status-unknown';
+          break;
+      }
+    }
+
+    function connectWebSocket() {
+      if (!targetSourceName) return;
+
+      const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const wsURL = `${wsProtocol}//${location.host}`;
+      const ws = new WebSocket(wsURL);
+
+      ws.onopen = () => {
+        console.log('Connected to WebSocket server.');
+        connectingMessageElement.style.display = 'none';
+        // Initial request or message if needed, though server pushes updates
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          obsConnectionStatus = data.obsConnectionStatus || obsConnectionStatus;
+
+          if (data.sources && data.status) {
+            const sourceInfo = data.status[targetSourceName];
+            if (sourceInfo) {
+              updateDisplay(sourceInfo);
+            } else {
+              // Source not found in this update, could be due to config change
+              // or if OBS is disconnected
+              if (obsConnectionStatus !== 'connected' && obsConnectionStatus !== 'connecting') {
+                sourceStatusElement.textContent = 'OBS Disconnected';
+                tallyDisplay.className = 'status-unknown';
+              } else {
+                sourceStatusElement.textContent = 'Idle (Not in OBS)';
+                tallyDisplay.className = 'status-idle'; // Or status-unknown
+              }
+            }
+          } else if (data.obsConnectionStatus) {
+            // Handle OBS connection status changes if the source is not found
+            // or to update the general state.
+            if (obsConnectionStatus !== 'connected' && obsConnectionStatus !== 'connecting') {
+                const currentStatus = sourceStatusElement.textContent.toLowerCase();
+                if (currentStatus !== 'live' && currentStatus !== 'preview') {
+                    sourceStatusElement.textContent = 'OBS Disconnected';
+                    tallyDisplay.className = 'status-unknown';
+                }
+            } else if (obsConnectionStatus === 'connected' && sourceStatusElement.textContent === 'OBS Disconnected') {
+                // If OBS reconnects, reset to waiting for data for this source
+                sourceStatusElement.textContent = 'Waiting for data...';
+                tallyDisplay.className = 'status-unknown';
+            }
+          }
+        } catch (error) {
+          console.error('Error processing message or parsing JSON:', error);
+          sourceNameElement.textContent = targetSourceName;
+          sourceStatusElement.textContent = 'Error';
+          tallyDisplay.className = 'status-unknown';
+          connectingMessageElement.textContent = 'Error processing data.';
+          connectingMessageElement.style.display = 'block';
+        }
+      };
+
+      ws.onclose = () => {
+        console.log('WebSocket connection closed. Attempting to reconnect...');
+        sourceNameElement.textContent = targetSourceName;
+        sourceStatusElement.textContent = 'Disconnected';
+        tallyDisplay.className = 'status-unknown';
+        connectingMessageElement.textContent = 'Connection lost. Reconnecting...';
+        connectingMessageElement.style.display = 'block';
+        setTimeout(connectWebSocket, 3000); // Attempt to reconnect after 3 seconds
+      };
+
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+        sourceNameElement.textContent = targetSourceName;
+        sourceStatusElement.textContent = 'Connection Error';
+        tallyDisplay.className = 'status-unknown';
+        connectingMessageElement.textContent = 'Could not connect to server.';
+        connectingMessageElement.style.display = 'block';
+        // Reconnect attempt will be handled by onclose
+      };
+    }
+
+    if (getSourceNameFromURL()) {
+      connectWebSocket();
+    }
+  </script>
+</body>
+</html>

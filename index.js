@@ -8,9 +8,73 @@ const path = require('path');
 const net = require('net');
 
 // Server configuration - allow port to be set via environment variable
-const DEFAULT_PORT = 3000;
+const DEFAULT_PORT = 3005;
 const PORT = process.env.PORT || DEFAULT_PORT;
-const MAX_PORT_ATTEMPTS = 10; // Try up to 10 ports before giving up
+
+// Check if port is available before starting server
+function checkPort(port) {
+    return new Promise((resolve, reject) => {
+        const tester = net.createServer()
+            .once('error', err => {
+                if (err.code === 'EADDRINUSE') {
+                    resolve(false);
+                } else {
+                    reject(err);
+                }
+            })
+            .once('listening', () => {
+                tester.once('close', () => resolve(true))
+                    .close();
+            })
+            .listen(port);
+    });
+}
+
+// Kill any process running on the specified port
+async function killProcessOnPort(port) {
+    const { exec } = require('child_process');
+    return new Promise((resolve) => {
+        // Find process using lsof and kill it
+        exec(`lsof -ti:${port}`, (error, stdout) => {
+            if (error || !stdout.trim()) {
+                // No process found on port or error occurred
+                resolve();
+                return;
+            }
+            
+            // Split PIDs by newlines and filter out empty lines
+            const pids = stdout.trim().split('\n').filter(pid => pid.trim());
+            
+            if (pids.length === 0) {
+                resolve();
+                return;
+            }
+            
+            console.log(`Found ${pids.length} process(es) running on port ${port}: ${pids.join(', ')}`);
+            
+            // Kill all processes
+            let killedCount = 0;
+            let totalPids = pids.length;
+            
+            pids.forEach(pid => {
+                exec(`kill -9 ${pid.trim()}`, (killError) => {
+                    killedCount++;
+                    
+                    if (killError) {
+                        console.log(`Could not kill process ${pid}: ${killError.message}`);
+                    } else {
+                        console.log(`Successfully killed process ${pid} on port ${port}`);
+                    }
+                    
+                    // Resolve when all processes have been attempted
+                    if (killedCount === totalPids) {
+                        resolve();
+                    }
+                });
+            });
+        });
+    });
+}
 
 const app = express();
 const server = http.createServer(app);
@@ -18,6 +82,16 @@ const wss = new WebSocket.Server({ server });
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Get system info for logging and diagnostics
+const systemInfo = {
+  platform: process.platform,
+  arch: process.arch,
+  isAppleSilicon: process.arch === 'arm64' && process.platform === 'darwin',
+  nodeVersion: process.version
+};
+
+console.log('System information:', systemInfo);
 
 // Serve documentation files
 app.get('/docs/:filename', (req, res) => {
@@ -46,8 +120,8 @@ const obsConfigPath = path.join(__dirname, 'obs-config.json');
 let obsConnectionStatus = 'disconnected';
 let obsConnectionError = null;
 let reconnectAttempts = 0;
-const MAX_RECONNECT_ATTEMPTS = 5;
-const RECONNECT_DELAY = 5000; // 5 seconds
+const MAX_RECONNECT_ATTEMPTS = 3; // Reduced number of attempts
+const RECONNECT_DELAY = 10000; // Increased to 10 seconds
 let reconnectTimer = null;
 
 // Load OBS config from file
@@ -115,7 +189,7 @@ async function connectOBS() {
       console.log(`Reconnect attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS} in ${RECONNECT_DELAY/1000} seconds`);
       reconnectTimer = setTimeout(connectOBS, RECONNECT_DELAY);
     } else {
-      console.log('Max reconnect attempts reached. Giving up automatic reconnection.');
+      console.log('Auto-reconnection stopped. Manual reconnect available.');
       // Still broadcast the current status to clients
       broadcastTally();
     }
@@ -236,11 +310,13 @@ async function updateTallyForSources() {
 }
 
 function broadcastTally() {
+  // Only include obsConnectionError in the status update when actually disconnected
+  // This reduces duplicate notifications
   const msg = JSON.stringify({ 
     sources: tallySources, 
     status: tallyStatus,
     obsConnectionStatus,
-    obsConnectionError,
+    obsConnectionError: obsConnectionStatus === 'disconnected' ? obsConnectionError : null,
     timestamp: new Date().toISOString() // Add timestamp for client-side verification
   });
   wss.clients.forEach(client => {
@@ -319,6 +395,18 @@ app.get('/api/reconnect', async (req, res) => {
   }
 });
 
+// API endpoint for system diagnostics and platform detection
+app.get('/api/system-info', (req, res) => {
+  const info = {
+    ...systemInfo,
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    timestamp: new Date().toISOString(),
+    obsConnectionStatus
+  };
+  res.json(info);
+});
+
 wss.on('connection', ws => {
   // Send initial state including OBS connection status
   ws.send(JSON.stringify({ 
@@ -339,46 +427,49 @@ wss.on('connection', ws => {
   });
 });
 
-// Function to check if a port is in use
-function isPortAvailable(port) {
-  return new Promise((resolve) => {
-    const tester = net.createServer()
-      .once('error', () => resolve(false))
-      .once('listening', () => {
-        tester.close();
-        resolve(true);
-      })
-      .listen(port);
-  });
-}
-
-// Function to find an available port and start the server
-async function startServer(port, attempts = 0) {
-  // Check if the port is available
-  const available = await isPortAvailable(port);
-  
-  if (!available) {
-    console.log(`⚠️ Port ${port} is already in use.`);
+// Function to start the server on the specified port
+async function startServer() {
+  try {
+    console.log(`Checking if port ${PORT} is available...`);
+    const isAvailable = await checkPort(PORT);
     
-    if (attempts < MAX_PORT_ATTEMPTS) {
-      const nextPort = port + 1;
-      console.log(`Trying port ${nextPort}...`);
-      return startServer(nextPort, attempts + 1);
-    } else {
-      console.error(`❌ Failed to find an available port after ${MAX_PORT_ATTEMPTS} attempts.`);
-      console.log('\nTo specify a custom port, use:');
-      console.log('PORT=8080 node index.js    (Replace 8080 with desired port)');
-      process.exit(1);
+    if (!isAvailable) {
+      console.log(`Port ${PORT} is in use, attempting to clear it...`);
+      await killProcessOnPort(PORT);
+      
+      // Wait a moment for the process to be killed
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Check again if port is now available
+      const isNowAvailable = await checkPort(PORT);
+      if (!isNowAvailable) {
+        console.error(`Error: Port ${PORT} is still in use after attempting to clear it`);
+        process.exit(1);
+      }
+      console.log(`Port ${PORT} is now available`);
     }
+
+    server.listen(PORT, () => {
+      console.log(`Server started on port ${PORT}`);
+      console.log(`Open http://localhost:${PORT} in your browser`);
+      
+      // Try to connect to OBS, but don't let it fail the server start
+      try {
+        connectOBS().catch(err => {
+          console.log(`OBS connection failed, but server is still running: ${err.message}`);
+        });
+      } catch (obsErr) {
+        console.log(`OBS connection error caught, but server will continue: ${obsErr.message}`);
+      }
+    }).on('error', (err) => {
+      console.error(`❌ Server error:`, err.message);
+      process.exit(1);
+    });
+  } catch (err) {
+    console.error(`❌ Unexpected error starting server:`, err.message);
+    process.exit(1);
   }
-  
-  // Port is available, start the server
-  server.listen(port, () => {
-    console.log(`\n✅ OBS Tally Server running at http://localhost:${port}`);
-    console.log(`Access from other devices on the network using this machine's IP address`);
-    connectOBS();
-  });
 }
 
 // Start the server
-startServer(PORT);
+startServer();

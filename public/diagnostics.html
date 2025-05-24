@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OBS Tally - Diagnostics</title>
   <link rel="icon" href="icon.png" type="image/png">
+
   <style>
     body {
       font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
@@ -105,6 +106,30 @@
     th {
       background-color: #f8f9fa;
     }
+    
+    .info-box {
+      background: #e9f7fe;
+      border: 1px solid #b3e5fc;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+    
+    .server-details {
+      background: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      overflow-x: auto;
+    }
+    
+    pre {
+      white-space: pre-wrap;
+      margin: 0;
+      font-family: 'SF Mono', Monaco, Consolas, 'Courier New', monospace;
+      font-size: 14px;
+    }
+
   </style>
 </head>
 <body>
@@ -116,6 +141,16 @@
     <h2>Connection Status</h2>
     <div id="connectionStatus" class="status warning">
       Checking connection status...
+    </div>
+    
+
+    
+    <h2>Server Information</h2>
+    <div id="serverInfo" class="info-box">
+      <p>Retrieving server information...</p>
+      <div class="server-details">
+        <pre id="serverDetails">Loading...</pre>
+      </div>
     </div>
     
     <div class="status warning">
@@ -213,16 +248,35 @@
   </div>
   
   <script>
-    // System info
-    document.getElementById('browserInfo').textContent = navigator.userAgent;
-    
-    if ('connection' in navigator) {
-      document.getElementById('networkType').textContent = navigator.connection.effectiveType || 'Unknown';
-    }
-    
-    // WebSocket connection
-    const wsProtocol = location.protocol === 'https:' ? 'wss' : 'ws';
-    const ws = new WebSocket(`${wsProtocol}://${location.host}`);
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded, initializing diagnostics...');
+      
+      // System info
+      document.getElementById('browserInfo').textContent = navigator.userAgent;
+
+      const networkTypeTd = document.getElementById('networkType');
+      if ('connection' in navigator && navigator.connection) {
+        const effectiveType = navigator.connection.effectiveType;
+        if (effectiveType) {
+          networkTypeTd.textContent = effectiveType;
+          addLog(`Network effectiveType: ${effectiveType}`, 'info');
+        } else {
+          networkTypeTd.textContent = 'Effective type not available';
+          addLog('navigator.connection.effectiveType is not available.', 'warn');
+        }
+      } else {
+        networkTypeTd.textContent = 'API not supported';
+        addLog('navigator.connection API is not supported in this browser.', 'warn');
+      }
+
+      // Initialize WebSocket connection
+      initializeWebSocket();
+      
+      // Load server info immediately
+      loadServerInfo();
+    });
+
     let connectionLogs = [];
     
     function addLog(message, type = 'info') {
@@ -234,79 +288,134 @@
         connectionLogs.shift();
       }
       
-      document.getElementById('connectionLogs').textContent = connectionLogs.join('\n');
+      const logsElement = document.getElementById('connectionLogs');
+      if (logsElement) {
+        logsElement.textContent = connectionLogs.join('\n');
+      }
     }
-    
-    ws.onopen = () => {
-      document.getElementById('serverWsStatus').textContent = 'Connected';
-      addLog('Connected to server WebSocket', 'success');
-      addLog('Note: This only means you are connected to the tally server, not to OBS itself', 'info');
+
+    function initializeWebSocket() {
+      console.log('Initializing WebSocket connection...');
       
-      // Update connection diagram
-      document.getElementById('connectionIcon1').style.color = '#34c759';
-      document.getElementById('connectionIcon1Desc').style.color = '#34c759';
-    };
-    
-    ws.onclose = () => {
-      document.getElementById('serverWsStatus').textContent = 'Disconnected';
-      addLog('Server WebSocket connection closed', 'error');
+      // WebSocket connection
+      const wsProtocol = location.protocol === 'https:' ? 'wss' : 'ws';
+      const ws = new WebSocket(`${wsProtocol}://${location.host}`);
       
-      // Update connection diagram
-      document.getElementById('connectionIcon1').style.color = '#ff3b30';
-      document.getElementById('connectionIcon1Desc').style.color = '#ff3b30';
-    };
-    
-    ws.onerror = (error) => {
-      document.getElementById('serverWsStatus').textContent = 'Error';
-      addLog('Server WebSocket error: ' + error, 'error');
-    };
-    
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+      let wsConnected = false;
       
-      if (data.obsConnectionStatus) {
-        document.getElementById('obsWsStatus').textContent = 
-          data.obsConnectionStatus.charAt(0).toUpperCase() + data.obsConnectionStatus.slice(1);
-        
-        const statusDiv = document.getElementById('connectionStatus');
-        
-        if (data.obsConnectionStatus === 'connected') {
-          statusDiv.className = 'status success';
-          statusDiv.textContent = 'Connected to OBS Studio successfully.';
-          addLog('OBS WebSocket connected', 'success');
-          
-          // Update connection diagram
-          document.getElementById('connectionIcon2').style.color = '#34c759';
-          document.getElementById('connectionIcon2Desc').style.color = '#34c759';
-        } else if (data.obsConnectionStatus === 'connecting') {
-          statusDiv.className = 'status warning';
-          statusDiv.textContent = 'Server is connected and attempting to connect to OBS Studio...';
-          addLog('Attempting to connect to OBS', 'info');
-          
-          // Update connection diagram
-          document.getElementById('connectionIcon2').style.color = '#ff9500';
-          document.getElementById('connectionIcon2Desc').style.color = '#ff9500';
-        } else {
-          statusDiv.className = 'status error';
-          statusDiv.innerHTML = 'Server is running correctly, but disconnected from OBS Studio. ';
-          
-          // Update connection diagram
-          document.getElementById('connectionIcon2').style.color = '#ff3b30';
-          document.getElementById('connectionIcon2Desc').style.color = '#ff3b30';
-          
-          if (data.obsConnectionError) {
-            statusDiv.innerHTML += `<br><strong>Error:</strong> ${data.obsConnectionError}`;
-            addLog('OBS connection error: ' + data.obsConnectionError, 'error');
-          }
+      ws.onopen = () => {
+        console.log('WebSocket connected');
+        wsConnected = true;
+        const serverWsElement = document.getElementById('serverWsStatus');
+        if (serverWsElement) {
+          serverWsElement.textContent = 'Connected';
         }
-      }
+        addLog('Connected to server WebSocket', 'success');
+        addLog('Note: This only means you are connected to the tally server, not to OBS itself', 'info');
+        
+        // Update connection diagram
+        const icon1 = document.getElementById('connectionIcon1');
+        const desc1 = document.getElementById('connectionIcon1Desc');
+        if (icon1) icon1.style.color = '#34c759';
+        if (desc1) desc1.style.color = '#34c759';
+      };
       
-      if (data.sources) {
-        document.getElementById('configuredSources').textContent = data.sources.join(', ');
-      }
-    };
-    
-    // Load OBS config
+      ws.onclose = () => {
+        console.log('WebSocket disconnected');
+        wsConnected = false;
+        const serverWsElement = document.getElementById('serverWsStatus');
+        if (serverWsElement) {
+          serverWsElement.textContent = 'Disconnected';
+        }
+        addLog('Server WebSocket connection closed', 'error');
+        
+        // Update connection diagram
+        const icon1 = document.getElementById('connectionIcon1');
+        const desc1 = document.getElementById('connectionIcon1Desc');
+        if (icon1) icon1.style.color = '#ff3b30';
+        if (desc1) desc1.style.color = '#ff3b30';
+      };
+      
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+        const serverWsElement = document.getElementById('serverWsStatus');
+        if (serverWsElement) {
+          serverWsElement.textContent = 'Error';
+        }
+        addLog('Server WebSocket error: ' + error, 'error');
+      };
+      
+      ws.onmessage = (event) => {
+        try {
+          console.log("WebSocket message received:", event.data);
+          const data = JSON.parse(event.data);
+          
+          if (data.obsConnectionStatus) {
+            const obsWsElement = document.getElementById('obsWsStatus');
+            if (obsWsElement) {
+              obsWsElement.textContent = 
+                data.obsConnectionStatus.charAt(0).toUpperCase() + data.obsConnectionStatus.slice(1);
+            }
+            
+            const statusDiv = document.getElementById('connectionStatus');
+            
+            if (data.obsConnectionStatus === 'connected') {
+              if (statusDiv) {
+                statusDiv.className = 'status success';
+                statusDiv.textContent = 'Connected to OBS Studio successfully.';
+              }
+              addLog('OBS WebSocket connected', 'success');
+              
+              // Update connection diagram
+              const icon2 = document.getElementById('connectionIcon2');
+              const desc2 = document.getElementById('connectionIcon2Desc');
+              if (icon2) icon2.style.color = '#34c759';
+              if (desc2) desc2.style.color = '#34c759';
+            } else if (data.obsConnectionStatus === 'connecting') {
+              if (statusDiv) {
+                statusDiv.className = 'status warning';
+                statusDiv.textContent = 'Server is connected and attempting to connect to OBS Studio...';
+              }
+              addLog('Attempting to connect to OBS', 'info');
+              
+              // Update connection diagram
+              const icon2 = document.getElementById('connectionIcon2');
+              const desc2 = document.getElementById('connectionIcon2Desc');
+              if (icon2) icon2.style.color = '#ff9500';
+              if (desc2) desc2.style.color = '#ff9500';
+            } else {
+              if (statusDiv) {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = 'Server is running correctly, but disconnected from OBS Studio. ';
+              }
+              
+              // Update connection diagram
+              const icon2 = document.getElementById('connectionIcon2');
+              const desc2 = document.getElementById('connectionIcon2Desc');
+              if (icon2) icon2.style.color = '#ff3b30';
+              if (desc2) desc2.style.color = '#ff3b30';
+              
+              if (data.obsConnectionError && statusDiv) {
+                statusDiv.innerHTML += `<br><strong>Error:</strong> ${data.obsConnectionError}`;
+                addLog('OBS connection error: ' + data.obsConnectionError, 'error');
+              }
+            }
+          }
+          
+          if (data.sources) {
+            const sourcesElement = document.getElementById('configuredSources');
+            if (sourcesElement) {
+              sourcesElement.textContent = data.sources.length > 0 ? 
+                data.sources.join(', ') : 'No sources configured';
+            }
+          }
+        } catch (error) {
+          console.error("Error handling WebSocket message:", error);
+          addLog('Error processing server message: ' + error.message, 'error');
+        }
+      };
+    }
+
     fetch('/api/obs-config')
       .then(response => response.json())
       .then(data => {
@@ -354,6 +463,93 @@
           addLog('Error during reconnection: ' + error, 'error');
         });
     });
+    
+    // Load OBS config
+    fetch('/api/obs-config')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('obsAddress').textContent = data.address;
+        addLog('Loaded OBS config: ' + data.address, 'info');
+      })
+      .catch(error => {
+        addLog('Error loading OBS config: ' + error, 'error');
+      });
+    
+    // Server information with retry mechanism
+    function loadServerInfo(retryCount = 0) {
+      console.log(`Loading server info (attempt ${retryCount + 1})`);
+      const serverDetails = document.getElementById('serverDetails');
+      const maxRetries = 3;
+
+      if (!serverDetails) {
+        console.error('serverDetails element not found');
+        return;
+      }
+
+      // Display loading message
+      serverDetails.innerHTML = '<div style="color:#666;">Loading server information...</div>';
+
+      fetch('/api/system-info')
+        .then(response => {
+          console.log('Server info response status:', response.status);
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("Server info received:", data);
+          
+          if (!data) {
+            throw new Error('Received empty data from server');
+          }
+          
+          // Create formatted HTML output
+          let html = `<table style="width:100%; border-collapse: collapse; font-size: 13px;">
+            <tr><td style="padding:8px; font-weight:bold; width:40%; border-bottom:1px solid #eee;">Platform:</td><td style="padding:8px; border-bottom:1px solid #eee;">${data.platform || 'Unknown'}</td></tr>
+            <tr><td style="padding:8px; font-weight:bold; border-bottom:1px solid #eee;">Architecture:</td><td style="padding:8px; border-bottom:1px solid #eee;">${data.arch || 'Unknown'}</td></tr>
+            <tr><td style="padding:8px; font-weight:bold; border-bottom:1px solid #eee;">Node.js Version:</td><td style="padding:8px; border-bottom:1px solid #eee;">${data.nodeVersion || 'Unknown'}</td></tr>
+            <tr><td style="padding:8px; font-weight:bold; border-bottom:1px solid #eee;">Apple Silicon:</td><td style="padding:8px; border-bottom:1px solid #eee;">${data.isAppleSilicon ? 'Yes' : 'No'}</td></tr>
+            <tr><td style="padding:8px; font-weight:bold; border-bottom:1px solid #eee;">OBS Connection Status:</td><td style="padding:8px; border-bottom:1px solid #eee;">${data.obsConnectionStatus || 'Unknown'}</td></tr>
+            <tr><td style="padding:8px; font-weight:bold; border-bottom:1px solid #eee;">Uptime:</td><td style="padding:8px; border-bottom:1px solid #eee;">${data.uptime ? `${data.uptime.toFixed(2)} seconds` : 'Unknown'}</td></tr>
+            <tr><td style="padding:8px; font-weight:bold;">Server Time:</td><td style="padding:8px;">${data.timestamp || new Date().toISOString()}</td></tr>
+          </table>`;
+              
+          // Also include the raw JSON data for debugging
+          html += '\n\n<details style="margin-top:15px;"><summary style="cursor:pointer; font-weight:bold;">Show raw data</summary>';
+          html += `<pre style="margin-top:10px; max-height:300px; overflow:auto; background:#f8f9fa; padding:10px; border-radius:5px;">${JSON.stringify(data, null, 2)}</pre>`;
+          html += '</details>';
+          
+          // Update the UI
+          serverDetails.innerHTML = html;
+          addLog('Server information loaded successfully', 'success');
+        })
+        .catch(error => {
+          console.error('Error loading server info:', error);
+          
+          if (retryCount < maxRetries) {
+            // Retry with exponential backoff
+            const delay = Math.pow(2, retryCount) * 1000;
+            serverDetails.innerHTML = `<div style="color:#ff9500;">Retrying in ${delay/1000}s... (${retryCount + 1}/${maxRetries})</div>`;
+            addLog(`Server info fetch failed, retrying in ${delay/1000}s: ${error.message}`, 'warn');
+            
+            setTimeout(() => loadServerInfo(retryCount + 1), delay);
+          } else {
+            serverDetails.innerHTML = `<div style="color:red;">Failed to load server information after ${maxRetries} attempts.<br>Error: ${error.message}<br><button id="retryBtn" style="margin-top:10px; padding:5px 10px; cursor:pointer;">Try Again</button></div>`;
+            addLog('Error loading server information: ' + error.message, 'error');
+            
+            // Add retry button handler
+            setTimeout(() => {
+              const retryBtn = document.getElementById('retryBtn');
+              if (retryBtn) {
+                retryBtn.addEventListener('click', () => loadServerInfo());
+              }
+            }, 100);
+          }
+        });
+    }
+
+
   </script>
 </body>
 </html>

@@ -70,8 +70,4 @@ Click the sun/moon icon in the top left to toggle between light and dark mode:
 - **Source not showing status**: Ensure the source name in settings exactly matches the name in OBS
 - **Connection keeps dropping**: Check your network stability or firewall settings
 
-## Desktop Application
-If you've installed the desktop application:
-1. Launch "OBS Tally" from your Applications folder
-2. The app will automatically start the server and open the interface
-3. Settings are automatically saved between sessions
+
