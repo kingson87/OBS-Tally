@@ -24,6 +24,9 @@ A web-based tally light system that displays the live/preview status of camera s
 - 🔄 **Background Operation** - Server runs in background mode for seamless use
 - 🛑 **Remote Shutdown** - Gracefully stop the server from any connected device
 - 🍎 **macOS Native Design** - Beautiful interface following macOS design principles
+🔗 **Easy Mobile Connect** - Scan a QR code or use a link to connect your phone
+📋 **Stacked URL & Copy Button** - Clean, vertical layout for server URL and copy button
+🍎 **macOS Native Design** - Beautiful interface following macOS design principles
 
 ## Quick Setup
 
@@ -105,6 +108,7 @@ Access via the gear icon ⚙️:
 - **🖥️ Fullscreen Mode**: Visit `/fullscreen.html` for a clean, distraction-free view
 - **📱 Mobile Install**: Use your browser's "Add to Home Screen" option
 - **🛑 Remote Shutdown**: Stop the server from any connected device via Settings
+- **🔗 Mobile Connect UI**: Scan a QR code or copy a link to connect your phone instantly. The server URL and copy button are now stacked vertically for clarity and ease of use, matching macOS design language.
 
 ## macOS Launcher
 
