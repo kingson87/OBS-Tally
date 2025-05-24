@@ -1,3 +1,23 @@
+## Windows Launcher
+
+For Windows users, a double-click batch launcher is provided:
+
+### 🚀 Start OBS Tally.bat
+- **Usage**: Double-click to launch the tally system
+- **Features**:
+  - **Background Operation**: Server runs in a new window
+  - **Auto-Launch**: Opens web browser to the tally interface immediately
+  - **Process Management**: Stores server PID in `.server.pid` for easy shutdown
+  - **Remote Shutdown**: Stop server gracefully via web settings or with the batch script
+  - **Persistent Operation**: Server continues running even after closing browser
+- **Perfect for**: Daily use, studio environments, and hands-off operation
+
+### 🔧 Server Management (Windows)
+- **Start**: Double-click `Start OBS Tally.bat`
+- **Stop**: Use the shutdown button in Settings page or double-click `Stop OBS Tally.bat` (kills the server using the PID file)
+- **Status**: Check if server is running:
+  - Open Task Manager and look for `node index.js` under Background processes
+
 # OBS Tally
 
 A web-based tally light system that displays the live/preview status of camera sources from OBS Studio using the obs-websocket plugin. Features a Node.js backend with real-time WebSocket communication and a responsive Progressive Web App frontend.
@@ -124,7 +144,7 @@ For macOS users, we provide a simple double-click launcher:
   - **Persistent Operation**: Server continues running even after closing browser
 - **Perfect for**: Daily use, studio environments, and hands-off operation
 
-### 🔧 Server Management
+### 🔧 Server Management (macOS)
 - **Start**: Double-click `Start OBS Tally.command`
 - **Stop**: Use the shutdown button in Settings page or run:
   ```bash
