@@ -21,6 +21,9 @@ A web-based tally light system that displays the live/preview status of camera s
 - 📱 **PWA Support** - Install as a native app on mobile devices
 - 🎯 **Multiple Sources** - Monitor unlimited camera/source feeds
 - 🚀 **Smart Port Management** - Automatically handles port conflicts
+- 🔄 **Background Operation** - Server runs in background mode for seamless use
+- 🛑 **Remote Shutdown** - Gracefully stop the server from any connected device
+- 🍎 **macOS Native Design** - Beautiful interface following macOS design principles
 
 ## Quick Setup
 
@@ -30,21 +33,21 @@ A web-based tally light system that displays the live/preview status of camera s
 
 ### Installation
 
-#### Option A: macOS Simple Launcher (Recommended for macOS users)
+#### Option A: macOS Quick Setup (Recommended)
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/kingson87/OBS-Tally.git
    cd OBS-Tally
    ```
 
-2. **Run the macOS installer:**
+2. **Run the installer:**
    ```bash
    ./install-macos.sh
    ```
-   This sets up dependencies and creates a simple launcher!
+   This sets up everything you need!
 
 3. **Launch OBS Tally:**
-   Double-click `Start OBS Tally.command` to launch the server and open your browser
+   Simply double-click `Start OBS Tally.command` - the server starts and your browser opens automatically!
 
 #### Option B: Standard Installation
 1. **Clone and install dependencies:**
@@ -93,31 +96,49 @@ Access via the gear icon ⚙️:
 - **Password**: Enter if you've secured your OBS WebSocket server
 - **Monitor Sources**: Comma-separated list of OBS source names to track
 - **Theme**: Toggle between light and dark modes
+- **Connection Status**: Real-time status of server and OBS connections
+- **Diagnostic Tools**: Quick troubleshooting and connection verification
+- **Server Control**: Gracefully shutdown the server remotely with confirmation
 
 ### Additional Features
 - **📊 Diagnostics**: Visit `/diagnostics.html` for connection troubleshooting
 - **🖥️ Fullscreen Mode**: Visit `/fullscreen.html` for a clean, distraction-free view
 - **📱 Mobile Install**: Use your browser's "Add to Home Screen" option
+- **🛑 Remote Shutdown**: Stop the server from any connected device via Settings
 
-## macOS Simple Launcher
+## macOS Launcher
 
-For macOS users, a convenient double-click launcher is available:
+For macOS users, we provide a simple double-click launcher:
 
-### 🖱️ Command Launcher (`Start OBS Tally.command`) 
-- **Usage**: Double-click to start in Terminal
+### 🚀 Start OBS Tally.command
+- **Usage**: Double-click to launch the tally system
 - **Features**:
-  - Shows server status and logs
-  - Automatically opens web browser
-  - Easy to stop with Ctrl+C
-  - Great for debugging and development
-- **Best for**: All macOS users who want a simple, reliable launcher
+  - **Background Operation**: Server runs automatically in the background
+  - **Auto-Launch**: Opens web browser to the tally interface immediately
+  - **Process Management**: Stores server PID for easy monitoring and control
+  - **Remote Shutdown**: Stop server gracefully via web settings or terminal
+  - **Persistent Operation**: Server continues running even after closing browser
+- **Perfect for**: Daily use, studio environments, and hands-off operation
 
-### 📂 Installation
-The `install-macos.sh` script:
-- Verifies Node.js installation
-- Installs dependencies automatically
-- Tests server functionality
-- Creates the simple launcher
+### 🔧 Server Management
+- **Start**: Double-click `Start OBS Tally.command`
+- **Stop**: Use the shutdown button in Settings page or run:
+  ```bash
+  # Stop server if PID file exists
+  if [ -f .server.pid ]; then kill $(cat .server.pid) && rm .server.pid; fi
+  ```
+- **Status**: Check if server is running:
+  ```bash
+  # Check if server process is active
+  ps aux | grep "node index.js" | grep -v grep
+  ```
+
+### 📂 Setup
+The `install-macos.sh` script handles everything:
+- Checks for Node.js installation
+- Installs all dependencies
+- Tests the server
+- Creates the launcher file
 
 ## Configuration
 
@@ -232,7 +253,16 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 - 🌍 Multi-language support
 
 ### Version History
+- **v1.2.0** - Background operation mode and remote shutdown
+  - Server runs in background with PID tracking
+  - Remote shutdown via web interface with confirmation
+  - Enhanced settings panel with connection diagnostics
+  - macOS native design improvements
+- **v1.1.0** - Enhanced diagnostics and PWA features
+  - Comprehensive connection troubleshooting tools
+  - Progressive Web App support
+  - Improved error handling and reconnection logic
 - **v1.0.0** - Initial release with core tally functionality
-- PWA support and responsive design
-- Real-time WebSocket communication
-- Comprehensive diagnostics tools
+  - Real-time tally light indicators
+  - WebSocket communication
+  - Responsive web interface

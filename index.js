@@ -407,6 +407,45 @@ app.get('/api/system-info', (req, res) => {
   res.json(info);
 });
 
+// API endpoint to shutdown the server
+app.post('/api/shutdown', (req, res) => {
+  console.log('Shutdown request received');
+  res.json({ success: true, message: 'Server shutting down...' });
+  
+  // Give response time to send
+  setTimeout(() => {
+    console.log('Shutting down server gracefully...');
+    
+    // Close OBS connection
+    if (obs && obsConnectionStatus === 'connected') {
+      obs.disconnect();
+    }
+    
+    // Close WebSocket connections
+    wss.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({ 
+          type: 'server-shutdown', 
+          message: 'Server is shutting down' 
+        }));
+        client.close();
+      }
+    });
+    
+    // Close HTTP server
+    server.close(() => {
+      console.log('Server stopped');
+      process.exit(0);
+    });
+    
+    // Force exit after 5 seconds if graceful shutdown fails
+    setTimeout(() => {
+      console.log('Force exiting...');
+      process.exit(0);
+    }, 5000);
+  }, 100);
+});
+
 wss.on('connection', ws => {
   // Send initial state including OBS connection status
   ws.send(JSON.stringify({ 

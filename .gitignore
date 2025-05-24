@@ -43,6 +43,7 @@ obs-config.json
 local/
 .cache/
 .temp/
+.server.pid
 
 # Editor files
 .vscode/*

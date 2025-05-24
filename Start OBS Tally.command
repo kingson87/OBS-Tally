@@ -16,18 +16,30 @@ if [ ! -d "node_modules" ]; then
     npm install
 fi
 
-# Start server
+# Start server in background
 echo "🌐 Starting server on http://localhost:3005"
-npm start &
+nohup npm start > /dev/null 2>&1 &
 SERVER_PID=$!
 
-# Wait and open browser
+# Store PID for later reference
+echo $SERVER_PID > .server.pid
+
+# Wait for server to start
 sleep 3
-open "http://localhost:3005"
 
-echo "✅ OBS Tally is running!"
-echo "🌐 Web interface: http://localhost:3005"
-echo "🛑 Press Ctrl+C to stop the server"
-
-# Wait for user to stop
-wait $SERVER_PID
+# Check if server is running
+if kill -0 $SERVER_PID 2>/dev/null; then
+    echo "✅ OBS Tally is running in background!"
+    echo "🌐 Web interface: http://localhost:3005"
+    echo "📝 Server PID: $SERVER_PID"
+    echo ""
+    echo "To stop the server:"
+    echo "  • Use the shutdown button in Settings"
+    echo "  • Or run: kill $SERVER_PID"
+    
+    # Open browser
+    open "http://localhost:3005"
+else
+    echo "❌ Failed to start server"
+    exit 1
+fi
