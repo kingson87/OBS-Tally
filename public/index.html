@@ -48,28 +48,28 @@
     }
     
     .app-container {
-      position: relative;  /* Ensure relative positioning for absolute children */
+      position: relative;
       background: var(--card-bg);
-      border-radius: 32px 32px 0 0;
-      box-shadow: 0 8px 32px var(--shadow-color);
+      border-radius: 24px;
+      box-shadow: 0 4px 24px var(--shadow-color);
       width: 100%;
-      max-width: 600px;
-      margin-top: 40px;
-      padding: 32px 20px 24px 20px;
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 24px 20px;
       box-sizing: border-box;
-      min-height: 80vh;
+      min-height: 70vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      overflow: visible;  /* Allow the config button to be visible outside container */
-      transition: background 0.3s ease, box-shadow 0.3s ease;
+      overflow: visible;
+      transition: all 0.3s ease;
     }
     h1 {
-      font-size: 2.1em;
-      font-weight: 700;
-      margin: 0 0 32px 0;
+      font-size: 1.8em;
+      font-weight: 600;
+      margin: 0 0 24px 0;
       color: var(--header-color);
-      letter-spacing: -1px;
+      letter-spacing: -0.5px;
       transition: color 0.3s ease;
     }
     form {
@@ -734,6 +734,289 @@
       visibility: visible;
       bottom: 70px; /* Changed from top: 70px */
     }
+    
+    /* Mobile Connection Section */
+    .mobile-connection-section {
+      width: 100%;
+      margin: 20px 0;
+      padding: 24px;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    
+    .section-header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    
+    .section-header h3 {
+      font-size: 1.15em;
+      font-weight: 600;
+      margin: 0 0 8px 0;
+      color: var(--header-color);
+      letter-spacing: -0.3px;
+    }
+    
+    .section-header p {
+      font-size: 0.9em;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.4;
+      max-width: 90%;
+      margin: 0 auto;
+    }
+    
+    .qr-container {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .qr-code-wrapper {
+      flex-shrink: 0;
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 130px;
+      height: 130px;
+      margin: 0 auto;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: all 0.2s ease;
+    }
+    
+    .qr-code {
+      width: 100px;
+      height: 100px;
+      border-radius: 4px;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+    
+    .qr-code-wrapper:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+    
+    .qr-code-wrapper:hover .qr-code {
+      transform: scale(1.03);
+    }
+    
+    .qr-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+      font-size: 0.8em;
+    }
+    
+    .loading-spinner {
+      animation: spin 2s linear infinite;
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .connection-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .server-url label {
+      display: block;
+      font-size: 0.9em;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      margin-left: 2px;
+    }
+    
+    .url-display {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 10px;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'SF Mono', Monaco, Consolas, monospace;
+      font-size: 0.9em;
+      white-space: nowrap;
+      min-width: 0;
+      position: relative;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    #serverUrlText {
+      display: flex;
+      min-width: 0;
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+      text-overflow: ellipsis;
+      padding: 0 10px;
+      background: #ffffff;
+      border-radius: 6px;
+      color: #333;
+      font-weight: normal;
+      letter-spacing: -0.1px;
+      border: 1px solid rgba(0,0,0,0.15);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'Helvetica Neue', sans-serif;
+      font-size: 0.95em;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      width: 100%;
+      box-sizing: border-box;
+      height: 36px;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    #serverUrlText::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .copy-button {
+      background: #ffffff;
+      border: 1px solid #d1d1d1;
+      color: #007AFF;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.9em;
+      transition: all 0.2s ease;
+      z-index: 1;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      height: 36px;
+      margin: 0;
+    }
+    
+    .copy-button:hover {
+      background: #f8f8f8;
+      border-color: #c5c5c5;
+    }
+    
+    .copy-button:active {
+      background: #f5f5f5;
+      border-color: #c0c0c0;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.05) inset;
+    }
+    
+    .copy-button svg {
+      width: 16px;
+      height: 16px;
+      color: #007AFF;
+    }
+    
+    .network-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8em;
+      color: var(--text-secondary);
+      padding: 8px 10px;
+      background: var(--card-bg);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      transition: all 0.2s ease;
+    }
+    
+    .network-status.success {
+      color: #34c759;
+      background: rgba(52, 199, 89, 0.08);
+      border-color: rgba(52, 199, 89, 0.25);
+    }
+    
+    .network-status.error {
+      color: #ff3b30;
+      background: rgba(255, 59, 48, 0.08);
+      border-color: rgba(255, 59, 48, 0.25);
+    }
+    
+    .network-status svg {
+      flex-shrink: 0;
+    }
+    
+    .mobile-instructions {
+      font-size: 0.85em;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* Hide mobile connection section on mobile devices */
+    @media (max-width: 700px), (pointer: coarse) {
+      #mobileConnectionSection {
+        display: none !important;
+      }
+    }
+    
+    /* Mobile responsive adjustments */
+    @media (max-width: 640px) {
+      .mobile-connection-section {
+        margin: 12px 0;
+        padding: 16px;
+      }
+      
+      .qr-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+        width: 100%;
+      }
+      
+      .qr-code-wrapper {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+      }
+      
+      .qr-code {
+        width: 96px;
+        height: 96px;
+        display: block;
+      }
+      
+      .connection-info {
+        width: 100%;
+      }
+      
+      .server-url {
+        width: 100%;
+      }
+      
+      .url-display {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
   </style>
 </head>
 <body>
@@ -774,32 +1057,55 @@
     
     <div id="tallyList"></div>
     
-    <!-- Hidden status area - kept for JS compatibility -->
-    <div class="status-area" id="statusArea" style="display: none;">
-      <h1>OBS Tally</h1>
-      <p id="statusTitleTop">Connecting to server...</p>
-      <div class="status-indicator status-connecting" id="bottomConnectionIndicator"></div>
-      <div class="status-text">
-        <div class="status-title" id="statusTitle">Connection Status</div>
-        <div class="status-details" id="statusDetails">Connected to server, waiting for OBS connection...</div>
+    <!-- Mobile Connection Section -->
+    <div class="mobile-connection-section" id="mobileConnectionSection" style="display: none;">
+      <div class="section-header">
+        <h3>Connect Mobile Device</h3>
+        <p>Scan the QR code or use the link below to connect your smartphone</p>
       </div>
-      <div class="status-icon" id="statusIconContainer">
-        <svg id="statusIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="M16 16s-1.5-2-4-2-4 2-4 2"></path>
-          <line x1="9" y1="9" x2="9.01" y2="9"></line>
-          <line x1="15" y1="9" x2="15.01" y2="9"></line>
-        </svg>
-      </div>
-      <div class="status-actions">
-        <a href="/docs/connection-guide.md" class="small-button" title="Connection Guide" style="text-decoration: none;" target="_blank">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="8" x2="12" y2="12"></line>
-            <line x1="12" y1="16" x2="12.01" y2="16"></line>
-          </svg>
-        </a>
-      </div>
+      <div class="qr-container">
+        <div class="qr-code-wrapper" id="qrCodeWrapper">
+          <div class="qr-loading">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="loading-spinner">
+              <line x1="12" y1="2" x2="12" y2="6"></line>
+              <line x1="12" y1="18" x2="12" y2="22"></line>
+              <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+              <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+              <line x1="2" y1="12" x2="6" y2="12"></line>
+              <line x1="18" y1="12" x2="22" y2="12"></line>
+              <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+              <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+            </svg>
+            <span>Generating QR Code...</span>
+          </div>
+          <img id="qrCodeImage" class="qr-code" alt="QR Code for mobile connection" style="display: none;">
+        </div>
+        <div class="connection-info">
+          <div class="server-url">
+            <label>Server URL:</label>
+            <div class="url-display" id="serverUrlDisplay">
+              <span id="serverUrlText">Detecting network...</span>
+              <button class="copy-button" id="copyUrlButton" title="Copy URL" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                </svg>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+          <div class="network-status" id="networkStatus">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>Checking network connection...</span>
+          </div>
+        </div>
+      </div>        <div class="mobile-instructions">
+          Connect your phone to the same Wi-Fi network, then scan the QR code or use the URL above.
+        </div>
     </div>
     
     <!-- Connection status indicator inside the container -->
@@ -1022,10 +1328,6 @@
     
     // Connection status indicators and elements
     const connectionIndicator = document.getElementById('connectionIndicator');
-    const statusArea = document.getElementById('statusArea');
-    const statusIcon = document.getElementById('statusIcon');
-    const statusTitle = document.getElementById('statusTitle');
-    const statusDetails = document.getElementById('statusDetails');
     let obsAddress = '';
     
     // Status area reconnection button
@@ -1068,103 +1370,25 @@
     }
     
     function updateConnectionStatus(status, message) {
-      // Update the indicator dot in the top bar
+      // Update the indicator dot in the connection status
       connectionIndicator.className = 'status-indicator';
       
-      // Update the top bar container class
+      // Update the connection status container class
       const connectionStatusElement = document.querySelector('.connection-status');
       connectionStatusElement.classList.remove('connected', 'disconnected', 'connecting');
       
-      // Update the central status area
-      statusArea.classList.remove('connected', 'disconnected', 'connecting');
-      const bottomConnectionIndicator = document.getElementById('bottomConnectionIndicator');
-      bottomConnectionIndicator.className = 'status-indicator';
-      const statusIconContainer = document.getElementById('statusIconContainer');
-      statusIconContainer.classList.remove('connected', 'disconnected', 'connecting');
-      
-      // Update the settings panel connection status
-      const settingsConnectionIndicator = document.getElementById('settingsConnectionIndicator');
-      if (settingsConnectionIndicator) {
-        settingsConnectionIndicator.className = 'status-indicator';
-        const settingsStatusTitle = document.getElementById('settingsStatusTitle');
-        const settingsStatusDetails = document.getElementById('settingsStatusDetails');
-        const connectionsCounter = document.getElementById('connectionsCounter');
-        
-        if (status === 'connected') {
-          settingsConnectionIndicator.classList.add('status-connected');
-          settingsStatusTitle.textContent = 'Successfully connected to server and OBS';
-          settingsStatusDetails.textContent = `All connections established at ${obsAddress || 'default address'}`;
-          connectionsCounter.textContent = '2/2 Connections';
-          connectionsCounter.style.background = 'rgba(52, 199, 89, 0.1)';
-          connectionsCounter.style.color = '#34c759';
-          connectionsCounter.style.border = '1px solid rgba(52, 199, 89, 0.3)';
-        } else if (status === 'disconnected') {
-          settingsConnectionIndicator.classList.add('status-disconnected');
-          settingsStatusTitle.textContent = 'OBS Connection Failed';
-          settingsStatusDetails.textContent = `Connected to server, but cannot connect to OBS at ${obsAddress || 'default address'}`;
-          connectionsCounter.textContent = '1/2 Connections';
-          connectionsCounter.style.background = 'rgba(255, 59, 48, 0.1)';
-          connectionsCounter.style.color = '#ff3b30';
-          connectionsCounter.style.border = '1px solid rgba(255, 59, 48, 0.3)';
-        } else {
-          settingsConnectionIndicator.classList.add('status-connecting');
-          settingsStatusTitle.textContent = 'Connecting to OBS';
-          settingsStatusDetails.textContent = `Connected to server, attempting to connect to OBS at ${obsAddress || 'default address'}`;
-          connectionsCounter.textContent = '1/2 Connections';
-          connectionsCounter.style.background = 'rgba(255, 149, 0, 0.1)';
-          connectionsCounter.style.color = '#ff9500';
-          connectionsCounter.style.border = '1px solid rgba(255, 149, 0, 0.3)';
-        }
-      }
-      
       if (status === 'connected') {
-        // Update top indicator
         connectionIndicator.classList.add('status-connected');
         connectionStatusElement.classList.add('connected');
         document.getElementById('statusTitleTop').textContent = 'Connected to OBS';
-        
-        // Update bottom status area
-        bottomConnectionIndicator.classList.add('status-connected');
-        statusArea.classList.add('connected');
-        statusIconContainer.classList.add('connected');
-        statusTitle.textContent = 'Connection Status';
-        statusDetails.textContent = `Successfully connected to server and OBS at ${obsAddress || 'default address'}`;
-        statusIcon.innerHTML = '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>';
-        
-        // Remove reconnect button if it exists
-        const reconnectBtn = document.getElementById('reconnectBtn');
-        if (reconnectBtn) {
-          reconnectBtn.remove();
-        }
       } else if (status === 'disconnected') {
-        // Update top indicator
         connectionIndicator.classList.add('status-disconnected');
         connectionStatusElement.classList.add('disconnected');
         document.getElementById('statusTitleTop').textContent = 'OBS Disconnected';
-        
-        // Update bottom status area
-        bottomConnectionIndicator.classList.add('status-disconnected');
-        statusArea.classList.add('disconnected');
-        statusIconContainer.classList.add('disconnected');
-        statusTitle.textContent = 'Connection Status';
-        statusDetails.textContent = `Connected to server, but cannot connect to OBS at ${obsAddress || 'default address'}. Make sure OBS is running and WebSockets are enabled in Tools > WebSocket Server Settings.`;
-        statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>';
-        
-        // Add reconnect button
-        addReconnectButton();
       } else {
-        // Update top indicator
         connectionIndicator.classList.add('status-connecting');
         connectionStatusElement.classList.add('connecting');
         document.getElementById('statusTitleTop').textContent = 'Connecting to OBS';
-        
-        // Update bottom status area
-        bottomConnectionIndicator.classList.add('status-connecting');
-        statusArea.classList.add('connecting');
-        statusIconContainer.classList.add('connecting');
-        statusTitle.textContent = 'Connection Status';
-        statusDetails.textContent = `Successfully connected to tally server. Attempting to connect to OBS at ${obsAddress || 'default address'}...`;
-        statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><path d="M16 16s-1.5-2-4-2-4 2-4 2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line>';
       }
     }
     
@@ -1183,22 +1407,10 @@
       updateConnectionStatus('disconnected', 'Server disconnected');
       showNotification('Server connection lost. Reconnecting...', 'warning');
       
-      // Instead of page refresh, show manual reconnect button
-      const manualReconnectBtn = document.createElement('button');
-      manualReconnectBtn.className = 'button button-primary';
-      manualReconnectBtn.textContent = 'Reconnect';
-      manualReconnectBtn.onclick = () => {
+      // Attempt automatic reconnection after a delay
+      setTimeout(() => {
         window.location.reload();
-      };
-      
-      const statusArea = document.querySelector('.status-area');
-      if (statusArea) {
-        // Add reconnect button if not already present
-        if (!document.getElementById('manual-reconnect-btn')) {
-          manualReconnectBtn.id = 'manual-reconnect-btn';
-          statusArea.appendChild(manualReconnectBtn);
-        }
-      }
+      }, 3000);
     };
     
     ws.onerror = () => {
@@ -1306,32 +1518,154 @@
       });
     };
 
-    // Load initial sources - first from local storage, then from server
-    const savedSources = localStorage.getItem(STORAGE_KEY_SOURCES);
-    if (savedSources) {
-      try {
-        const parsedSources = JSON.parse(savedSources);
-        if (Array.isArray(parsedSources) && parsedSources.length > 0) {
-          document.getElementById('sources').value = parsedSources.join(', ');
-        }
-      } catch (err) {
-        console.error('Error parsing saved sources:', err);
+    // Mobile connection functionality
+    function isMobileDevice() {
+      return /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|BlackBerry|webOS|Windows Phone/i.test(navigator.userAgent) || (window.innerWidth <= 700 && window.matchMedia('(pointer:coarse)').matches);
+    }
+
+    function initMobileConnection() {
+      const mobileSection = document.getElementById('mobileConnectionSection');
+      if (isMobileDevice()) {
+        mobileSection.style.display = 'none';
+        return;
       }
+      const qrCodeWrapper = document.getElementById('qrCodeWrapper');
+      const qrCodeImage = document.getElementById('qrCodeImage');
+      const qrLoading = qrCodeWrapper.querySelector('.qr-loading');
+      const serverUrlText = document.getElementById('serverUrlText');
+      const copyUrlButton = document.getElementById('copyUrlButton');
+      const networkStatus = document.getElementById('networkStatus');
+
+      // Show mobile connection section
+      mobileSection.style.display = 'block';
+
+      // Load network info and generate QR code
+      Promise.all([
+        fetch('/api/network-info').then(r => r.json()),
+        fetch('/api/qr-code').then(r => r.json())
+      ])
+      .then(([networkData, qrData]) => {
+        if (networkData.available && qrData.qrCode) {
+          // Update server URL
+          serverUrlText.textContent = networkData.serverURL;
+          copyUrlButton.style.display = 'block';
+
+          // Show QR code
+          qrCodeImage.src = qrData.qrCode;
+          qrCodeImage.style.display = 'block';
+          qrLoading.style.display = 'none';
+
+          // Update network status
+          networkStatus.className = 'network-status success';
+          networkStatus.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span>Network connected - ${networkData.localIP}</span>
+          `;
+
+          // Copy URL functionality
+          copyUrlButton.addEventListener('click', async () => {
+            // Visual feedback - change button text temporarily
+            const originalButtonContent = copyUrlButton.innerHTML;
+            copyUrlButton.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <span>Copied!</span>
+            `;
+            
+            try {
+              await navigator.clipboard.writeText(networkData.serverURL);
+              showNotification('URL copied to clipboard', 'success', 2000);
+            } catch (err) {
+              // Fallback for older browsers
+              const textArea = document.createElement('textarea');
+              textArea.value = networkData.serverURL;
+              document.body.appendChild(textArea);
+              textArea.select();
+              document.execCommand('copy');
+              document.body.removeChild(textArea);
+              showNotification('URL copied to clipboard', 'success', 2000);
+            }
+            
+            // Reset button after a short delay
+            setTimeout(() => {
+              copyUrlButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                </svg>
+                <span>Copy</span>
+              `;
+            }, 1500);
+          });
+        } else {
+          // Network not available
+          networkStatus.className = 'network-status error';
+          networkStatus.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="15" y1="9" x2="9" y2="15"></line>
+              <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+            <span>No network connection detected</span>
+          `;
+
+          serverUrlText.textContent = 'Network unavailable';
+          qrLoading.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="15" y1="9" x2="9" y2="15"></line>
+              <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+            <span>Network not available</span>
+          `;
+        }
+      })
+      .catch(err => {
+        console.error('Error loading mobile connection data:', err);
+        networkStatus.className = 'network-status error';
+        networkStatus.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+          <span>Failed to detect network</span>
+        `;
+
+        serverUrlText.textContent = 'Error detecting network';
+        qrLoading.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+          <span>Failed to generate QR code</span>
+        `;
+      });
     }
     
-    fetch('/api/sources')
-      .then((r) => r.json())
-      .then((data) => {
-        document.getElementById('sources').value = data.sources.join(', ');
-        // Save to local storage
-        localStorage.setItem(STORAGE_KEY_SOURCES, JSON.stringify(data.sources));
-      })
-      .catch((err) => {
-        console.error('Error loading sources:', err);
-      });
+    // Initialize mobile connection after WebSocket connects
+    ws.onopen = () => {
+      updateConnectionStatus('connecting', 'Connected to server, waiting for OBS...');
+      // Only show notification on reconnection, not on initial page load
+      if (!isInitialConnection) {
+        showNotification('Reconnected to tally server - waiting for OBS connection', 'info');
+      }
+      isInitialConnection = false;
+      serverConnected = true;
+      console.log('%c[SUCCESS] Connected to server WebSocket (still waiting for OBS connection)', 'color: orange; font-weight: bold');
+      
+      // Initialize mobile connection
+      initMobileConnection();
+    };
   </script>
-</body>
-</body>
+
+<!-- PWA Installation -->
 <script>
 // Register service worker for PWA
 if ('serviceWorker' in navigator) {
@@ -1363,10 +1697,8 @@ function showInstallPrompt() {
   }
 }
 </script>
-<button id="install-btn" style="display:none;position:fixed;bottom:24px;right:24px;z-index:1000;padding:12px 20px;font-size:1rem;background:#007aff;color:#fff;border:none;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.15);cursor:pointer;">Install OBS Tally</button>
-<script>
-document.getElementById('install-btn').addEventListener('click', showInstallPrompt);
-</script>
+
+<button id="install-btn" style="display:none;position:fixed;bottom:24px;right:24px;z-index:1000;padding:12px 20px;font-size:1rem;background:#007aff;color:#fff;border:none;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.15);cursor:pointer;" onclick="showInstallPrompt()">Install OBS Tally</button>
 
 <!-- System information and diagnostics link -->
 <script src="platform-probe.js"></script>
@@ -1397,3 +1729,6 @@ document.getElementById('install-btn').addEventListener('click', showInstallProm
     });
   });
 </script>
+
+</body>
+</html>

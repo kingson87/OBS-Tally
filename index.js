@@ -6,6 +6,8 @@ const OBSWebSocket = require('obs-websocket-js').default;
 const fs = require('fs');
 const path = require('path');
 const net = require('net');
+const os = require('os');
+const QRCode = require('qrcode');
 
 // Server configuration - allow port to be set via environment variable
 const DEFAULT_PORT = 3005;
@@ -74,6 +76,37 @@ async function killProcessOnPort(port) {
             });
         });
     });
+}
+
+// Get local network IP address
+function getLocalNetworkIP() {
+    const interfaces = os.networkInterfaces();
+    for (const name of Object.keys(interfaces)) {
+        for (const interface of interfaces[name]) {
+            // Skip loopback and non-IPv4 addresses
+            if (!interface.internal && interface.family === 'IPv4') {
+                // Prioritize common network interfaces
+                if (name.toLowerCase().includes('wifi') || 
+                    name.toLowerCase().includes('wireless') ||
+                    name.toLowerCase().includes('ethernet') ||
+                    name.toLowerCase().includes('en0') ||
+                    name.toLowerCase().includes('en1')) {
+                    return interface.address;
+                }
+            }
+        }
+    }
+    
+    // Fallback: return first non-internal IPv4 address
+    for (const name of Object.keys(interfaces)) {
+        for (const interface of interfaces[name]) {
+            if (!interface.internal && interface.family === 'IPv4') {
+                return interface.address;
+            }
+        }
+    }
+    
+    return null;
 }
 
 const app = express();
@@ -397,14 +430,72 @@ app.get('/api/reconnect', async (req, res) => {
 
 // API endpoint for system diagnostics and platform detection
 app.get('/api/system-info', (req, res) => {
+  const localIP = getLocalNetworkIP();
+  const serverURL = localIP ? `http://${localIP}:${PORT}` : null;
+  
   const info = {
     ...systemInfo,
     uptime: process.uptime(),
     memory: process.memoryUsage(),
     timestamp: new Date().toISOString(),
-    obsConnectionStatus
+    obsConnectionStatus,
+    network: {
+      localIP,
+      serverURL,
+      port: PORT
+    }
   };
   res.json(info);
+});
+
+// API endpoint for network connection info
+app.get('/api/network-info', (req, res) => {
+  const localIP = getLocalNetworkIP();
+  const serverURL = localIP ? `http://${localIP}:${PORT}` : null;
+  
+  res.json({
+    localIP,
+    serverURL,
+    port: PORT,
+    available: !!localIP
+  });
+});
+
+// API endpoint to generate QR code for mobile connection
+app.get('/api/qr-code', async (req, res) => {
+  try {
+    const localIP = getLocalNetworkIP();
+    
+    if (!localIP) {
+      return res.status(400).json({ 
+        error: 'No network connection available',
+        message: 'Could not detect local network IP address'
+      });
+    }
+    
+    const serverURL = `http://${localIP}:${PORT}`;
+    const qrCodeDataURL = await QRCode.toDataURL(serverURL, {
+      width: 256,
+      margin: 2,
+      color: {
+        dark: '#000000',
+        light: '#FFFFFF'
+      }
+    });
+    
+    res.json({
+      qrCode: qrCodeDataURL,
+      serverURL,
+      localIP,
+      port: PORT
+    });
+  } catch (error) {
+    console.error('QR Code generation error:', error);
+    res.status(500).json({ 
+      error: 'Failed to generate QR code',
+      message: error.message 
+    });
+  }
 });
 
 // API endpoint to shutdown the server
