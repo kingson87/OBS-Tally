@@ -45,6 +45,10 @@ local/
 .temp/
 .server.pid
 
+# Logs
+logs/
+*.log
+
 # Editor files
 .vscode/*
 !.vscode/settings.json

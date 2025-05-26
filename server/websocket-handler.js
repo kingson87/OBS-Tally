@@ -1,92 +1,131 @@
-```javascript
 const WebSocket = require('ws');
 
-// ...existing code...
+let wss = null;
 
-// Modify the device connection handler
-wss.on('connection', (ws, req) => {
-  const ip = req.socket.remoteAddress;
-  console.log(`New connection from ${ip}`);
+// Initialize WebSocket server
+function initializeWebSocketServer(server) {
+  wss = new WebSocket.Server({ server });
   
-  // Set initial status as online when connection is established
-  ws.isAlive = true;
-  
-  // Store the device in our devices map
-  const deviceId = getDeviceId(req);
-  if (deviceId) {
-    devices.set(deviceId, { ws, status: 'online', lastSeen: Date.now() });
-    broadcastDeviceStatus(deviceId, 'online');
-    console.log(`Device ${deviceId} connected and marked as online`);
-  }
-  
-  // Setup ping-pong for connection health check
-  ws.on('pong', () => {
-    ws.isAlive = true;
-    if (deviceId) {
-      // Update last seen timestamp and ensure status is online
-      const device = devices.get(deviceId);
-      if (device) {
-        device.lastSeen = Date.now();
-        if (device.status !== 'online') {
-          device.status = 'online';
-          broadcastDeviceStatus(deviceId, 'online');
-          console.log(`Device ${deviceId} status updated to online`);
+  wss.on('connection', (ws) => {
+    console.log('New WebSocket client connected');
+    
+    ws.on('message', (message) => {
+      try {
+        const data = JSON.parse(message);
+        console.log('Received WebSocket message:', data);
+        
+        // Handle client messages if needed
+        if (data.type === 'ping') {
+          ws.send(JSON.stringify({ type: 'pong', timestamp: new Date().toISOString() }));
         }
+      } catch (error) {
+        console.error('Error parsing WebSocket message:', error);
       }
-    }
+    });
+    
+    ws.on('close', () => {
+      console.log('WebSocket client disconnected');
+    });
+    
+    ws.on('error', (error) => {
+      console.error('WebSocket error:', error);
+    });
   });
   
-  // Handle disconnection
-  ws.on('close', () => {
-    if (deviceId) {
-      console.log(`Device ${deviceId} disconnected`);
-      devices.delete(deviceId);
-      broadcastDeviceStatus(deviceId, 'offline');
-    }
-  });
-
-  // ...existing code...
-});
-
-// Add a function to broadcast device status to all clients
-function broadcastDeviceStatus(deviceId, status) {
-  const statusUpdate = JSON.stringify({
-    type: 'device-status',
-    deviceId: deviceId,
-    status: status
-  });
-  
-  // Send to all connected clients
-  wss.clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(statusUpdate);
-    }
-  });
+  return wss;
 }
 
-// Make sure we have a periodic check for stale connections
-const interval = setInterval(() => {
-  wss.clients.forEach(ws => {
-    if (ws.isAlive === false) {
-      // Handle timeout for non-responsive clients
-      return ws.terminate();
-    }
-    
-    ws.isAlive = false;
-    ws.ping();
+// Enhanced function to broadcast device status to all clients
+function broadcastDeviceStatus(deviceId, status, additionalData = {}) {
+  const statusUpdate = JSON.stringify({
+    type: 'device-status-update',
+    deviceId: deviceId,
+    status: status,
+    timestamp: new Date().toISOString(),
+    ...additionalData
   });
   
-  // Check for devices that haven't responded in a while
-  devices.forEach((device, deviceId) => {
-    const now = Date.now();
-    // If device hasn't been seen in 30 seconds, mark as offline
-    if (now - device.lastSeen > 30000 && device.status !== 'offline') {
-      device.status = 'offline';
-      broadcastDeviceStatus(deviceId, 'offline');
-      console.log(`Device ${deviceId} marked as offline due to inactivity`);
-    }
-  });
-}, 10000);
+  console.log('Broadcasting device status:', deviceId, '->', status);
+  
+  if (wss) {
+    wss.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(statusUpdate);
+      }
+    });
+  }
+}
 
-// ...existing code...
-```
+// Enhanced function to broadcast firmware update progress
+function broadcastFirmwareProgress(deviceId, stage, progress = null, message = null, error = null) {
+  const progressUpdate = JSON.stringify({
+    type: 'firmware-progress',
+    deviceId: deviceId,
+    stage: stage,
+    progress: progress,
+    message: message,
+    error: error,
+    timestamp: new Date().toISOString(),
+    retry: stage === 'retrying'
+  });
+  
+  console.log('Broadcasting firmware progress:', deviceId, '->', stage, progress ? `(${progress}%)` : '', message || '');
+  
+  if (wss) {
+    wss.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(progressUpdate);
+      }
+    });
+  }
+}
+
+// Function to broadcast ESP32-specific connection status
+function broadcastESP32Status(deviceId, status, details = {}) {
+  const statusUpdate = JSON.stringify({
+    type: 'esp32-status',
+    deviceId: deviceId,
+    status: status,
+    details: details,
+    timestamp: new Date().toISOString()
+  });
+  
+  console.log('Broadcasting ESP32 status:', deviceId, '->', status);
+  
+  if (wss) {
+    wss.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(statusUpdate);
+      }
+    });
+  }
+}
+
+// Function to broadcast OBS-specific status updates
+function broadcastOBSStatus(status, details = {}) {
+  const statusUpdate = JSON.stringify({
+    type: 'obs-status',
+    status: status,
+    details: details,
+    timestamp: new Date().toISOString()
+  });
+  
+  console.log('Broadcasting OBS status:', status);
+  
+  if (wss) {
+    wss.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(statusUpdate);
+      }
+    });
+  }
+}
+
+// Export functions for use in main application
+module.exports = {
+  initializeWebSocketServer,
+  broadcastDeviceStatus,
+  broadcastFirmwareProgress,
+  broadcastESP32Status,
+  broadcastOBSStatus
+};
