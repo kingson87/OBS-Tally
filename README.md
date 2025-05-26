@@ -294,17 +294,76 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 - 🔊 Audio cue support
 - 🌍 Multi-language support
 
+## ESP32 Support
+
+OBS Tally includes comprehensive support for ESP32-based tally light devices, allowing you to build physical tally indicators that connect wirelessly to your OBS instance.
+
+### Hardware Features
+- 🚦 **LED Indicators** - Red (Live), Amber (Preview), and other status indications
+- 📶 **WiFi Connectivity** - Connects to your local network for OTA updates
+- 🔄 **Auto-Reconnect** - Automatically reconnects if connection is lost
+- ⚡ **Low Latency** - Near real-time status updates for critical broadcast environments
+
+### Firmware Management
+- 📱 **Web Interface** - Manage and update firmware through the OBS Tally web interface
+- 🔄 **OTA Updates** - Update firmware wirelessly without physical access to devices
+- 🧩 **Multiple Versions** - Support for different firmware versions (v2.0.0, v2.1.0)
+- 🔧 **Command Line Tools** - Advanced firmware management via shell scripts
+
+### ESP32 Management
+- 📋 **Device Inventory** - Track and manage all connected ESP32 devices
+- ✏️ **Device Naming** - Assign custom names to your tally light devices
+- 📊 **Status Monitoring** - Real-time monitoring of device connectivity
+- 🔔 **Status Notifications** - Get notified of device connection/disconnection events
+
+### Using ESP32 Devices
+
+#### Setup Process
+1. Flash your ESP32 device with the OBS Tally firmware
+2. Connect the device to your local network
+3. Configure the device through the web interface
+4. Assign the device to an OBS source
+
+#### Firmware Updates
+1. Navigate to the Firmware Manager page in the OBS Tally web interface
+2. Click the "Upload Firmware" button
+3. Select a device and choose one of the firmware files
+4. Click "Upload Firmware" to start the OTA update process
+
+#### Command Line Usage
+You can also use the included test scripts for advanced operations:
+
+```bash
+# Upload firmware to a specific device
+./test-firmware-upload.sh <device-id> ./firmware/obs_tally_v2.1.0.bin
+
+# Update a device name
+./test-device-name-update.sh <device-id> "Camera 1 Tally"
+
+# Test the firmware API
+./test-firmware-api.sh
+```
+
+### ESP32 Project Structure
+```
+├── ESP32/                  # ESP32 firmware project
+│   ├── platformio.ini      # PlatformIO configuration
+│   └── src/                # Source code
+│       └── obs_tally_ultimate.cpp  # Main firmware implementation
+├── firmware/               # Compiled firmware binaries
+│   ├── bootloader.bin      # ESP32 bootloader
+│   ├── obs_tally_v2.0.0.bin # Firmware version 2.0.0
+│   ├── obs_tally_v2.1.0.bin # Firmware version 2.1.0
+│   ├── partitions.bin      # Partition table
+│   └── README.md           # Firmware documentation
+└── server/                 # Server-side handling
+    └── firmware-handler.js # ESP32 firmware management
+```
+
+For more details, see the [firmware README](firmware/README.md).
+
 ### Version History
-- **v1.2.0** - Background operation mode and remote shutdown
-  - Server runs in background with PID tracking
-  - Remote shutdown via web interface with confirmation
-  - Enhanced settings panel with connection diagnostics
-  - macOS native design improvements
-- **v1.1.0** - Enhanced diagnostics and PWA features
-  - Comprehensive connection troubleshooting tools
-  - Progressive Web App support
-  - Improved error handling and reconnection logic
-- **v1.0.0** - Initial release with core tally functionality
-  - Real-time tally light indicators
-  - WebSocket communication
-  - Responsive web interface
+- **v2.1.0**: Latest firmware with additional features and bug fixes
+- **v2.0.0**: Initial stable ESP32 firmware with all core functionality
+
+## License
