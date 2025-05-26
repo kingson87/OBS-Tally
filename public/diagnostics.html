@@ -130,6 +130,85 @@
       font-size: 14px;
     }
 
+    /* Mobile responsive styles */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+        font-size: 14px;
+      }
+      
+      .container {
+        padding: 20px;
+        margin: 0;
+        border-radius: 6px;
+      }
+      
+      .connection-flow-desktop {
+        display: none !important;
+      }
+      
+      .connection-flow-mobile {
+        display: block !important;
+      }
+      
+      table {
+        font-size: 13px;
+      }
+      
+      th, td {
+        padding: 10px 6px;
+        word-break: break-word;
+      }
+      
+      .btn {
+        display: block;
+        margin: 8px 0;
+        text-align: center;
+        padding: 12px 20px;
+        font-size: 14px;
+      }
+      
+      h1 {
+        font-size: 24px;
+        text-align: center;
+      }
+      
+      h2 {
+        font-size: 18px;
+        margin-top: 25px;
+      }
+      
+      pre {
+        font-size: 12px;
+        padding: 12px;
+        overflow-x: auto;
+      }
+      
+      .status {
+        padding: 12px;
+        font-size: 14px;
+      }
+      
+      .info-box {
+        padding: 12px;
+        margin: 15px 0;
+      }
+      
+      .server-details {
+        overflow-x: auto;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .connection-flow-desktop {
+        display: flex !important;
+      }
+      
+      .connection-flow-mobile {
+        display: none !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -160,7 +239,9 @@
     
     <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 10px; border: 1px solid #dee2e6;">
       <h3 style="margin-top: 0;">Connection Flow</h3>
-      <div style="display: flex; justify-content: space-between; align-items: center; text-align: center; margin: 20px 0;">
+      
+      <!-- Desktop layout -->
+      <div class="connection-flow-desktop" style="display: flex; justify-content: space-between; align-items: center; text-align: center; margin: 20px 0;">
         <div style="flex: 1;">
           <div style="padding: 15px; background: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 0 10px;">
             <strong>Your Browser</strong>
@@ -189,10 +270,42 @@
           </div>
         </div>
       </div>
-      <div>
-        <p><span id="connectionIcon1Desc" style="color: orange;">●</span> Connection 1: Browser to Tally Server</p>
-        <p><span id="connectionIcon2Desc" style="color: orange;">●</span> Connection 2: Tally Server to OBS</p>
-        <p><small>Both connections must be green for the tally system to work properly.</small></p>
+      
+      <!-- Mobile layout -->
+      <div class="connection-flow-mobile" style="display: none;">
+        <div style="text-align: center; margin: 15px 0;">
+          <div style="padding: 12px 15px; background: linear-gradient(145deg, #ffffff, #f8f9fa); border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin: 8px 0; border: 1px solid #e9ecef;">
+            <strong style="color: #333; font-size: 15px;">Your Browser</strong>
+          </div>
+          <div style="margin: 12px 0; display: flex; flex-direction: column; align-items: center;">
+            <span id="connectionIcon1Mobile" style="color: #ff9500; font-size: 20px; font-weight: bold;">↓</span>
+            <p style="margin: 4px 0; font-size: 12px; color: #666; font-weight: 500;">Connection 1</p>
+          </div>
+          <div style="padding: 12px 15px; background: linear-gradient(145deg, #ffffff, #f8f9fa); border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin: 8px 0; border: 1px solid #e9ecef;">
+            <strong style="color: #333; font-size: 15px;">Tally Server</strong>
+          </div>
+          <div style="margin: 12px 0; display: flex; flex-direction: column; align-items: center;">
+            <span id="connectionIcon2Mobile" style="color: #ff9500; font-size: 20px; font-weight: bold;">↓</span>
+            <p style="margin: 4px 0; font-size: 12px; color: #666; font-weight: 500;">Connection 2</p>
+          </div>
+          <div style="padding: 12px 15px; background: linear-gradient(145deg, #ffffff, #f8f9fa); border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin: 8px 0; border: 1px solid #e9ecef;">
+            <strong style="color: #333; font-size: 15px;">OBS Studio</strong>
+          </div>
+        </div>
+      </div>
+      
+      <div style="margin-top: 15px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
+          <div style="display: flex; align-items: center; padding: 6px 12px; background: #f8f9fa; border-radius: 20px; font-size: 13px;">
+            <span id="connectionIcon1Desc" style="color: #ff9500; margin-right: 6px; font-size: 16px;">●</span>
+            <span>Browser ↔ Server</span>
+          </div>
+          <div style="display: flex; align-items: center; padding: 6px 12px; background: #f8f9fa; border-radius: 20px; font-size: 13px;">
+            <span id="connectionIcon2Desc" style="color: #ff9500; margin-right: 6px; font-size: 16px;">●</span>
+            <span>Server ↔ OBS</span>
+          </div>
+        </div>
+        <p style="text-align: center; margin: 10px 0 0 0; font-size: 12px; color: #666; line-height: 1.4;">Both connections must be green for the tally system to work properly.</p>
       </div>
     </div>
     
@@ -315,8 +428,10 @@
         
         // Update connection diagram
         const icon1 = document.getElementById('connectionIcon1');
+        const icon1Mobile = document.getElementById('connectionIcon1Mobile');
         const desc1 = document.getElementById('connectionIcon1Desc');
         if (icon1) icon1.style.color = '#34c759';
+        if (icon1Mobile) icon1Mobile.style.color = '#34c759';
         if (desc1) desc1.style.color = '#34c759';
       };
       
@@ -331,8 +446,10 @@
         
         // Update connection diagram
         const icon1 = document.getElementById('connectionIcon1');
+        const icon1Mobile = document.getElementById('connectionIcon1Mobile');
         const desc1 = document.getElementById('connectionIcon1Desc');
         if (icon1) icon1.style.color = '#ff3b30';
+        if (icon1Mobile) icon1Mobile.style.color = '#ff3b30';
         if (desc1) desc1.style.color = '#ff3b30';
       };
       
@@ -368,8 +485,10 @@
               
               // Update connection diagram
               const icon2 = document.getElementById('connectionIcon2');
+              const icon2Mobile = document.getElementById('connectionIcon2Mobile');
               const desc2 = document.getElementById('connectionIcon2Desc');
               if (icon2) icon2.style.color = '#34c759';
+              if (icon2Mobile) icon2Mobile.style.color = '#34c759';
               if (desc2) desc2.style.color = '#34c759';
             } else if (data.obsConnectionStatus === 'connecting') {
               if (statusDiv) {
@@ -380,8 +499,10 @@
               
               // Update connection diagram
               const icon2 = document.getElementById('connectionIcon2');
+              const icon2Mobile = document.getElementById('connectionIcon2Mobile');
               const desc2 = document.getElementById('connectionIcon2Desc');
               if (icon2) icon2.style.color = '#ff9500';
+              if (icon2Mobile) icon2Mobile.style.color = '#ff9500';
               if (desc2) desc2.style.color = '#ff9500';
             } else {
               if (statusDiv) {

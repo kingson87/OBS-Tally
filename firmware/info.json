@@ -1,0 +1,44 @@
+{
+  "firmwareVersions": [
+    {
+      "version": "2.0.0",
+      "filename": "obs_tally_v2.0.0.bin",
+      "description": "Initial stable release with all core functionality",
+      "date": "2025-05-15",
+      "size": "1048576",
+      "model": "ESP32-1732S019",
+      "minVersion": null,
+      "releaseNotes": [
+        "First stable release",
+        "OTA update support",
+        "Web configuration portal",
+        "Real-time tally light status"
+      ]
+    },
+    {
+      "version": "2.1.0",
+      "filename": "obs_tally_v2.1.0.bin",
+      "description": "Updated firmware with additional features and bug fixes",
+      "date": "2025-05-26",
+      "size": "1048576",
+      "model": "ESP32-1732S019",
+      "minVersion": "1.0.0",
+      "releaseNotes": [
+        "Improved WiFi stability",
+        "Better battery management",
+        "Enhanced error reporting",
+        "Fixed display flickering issue"
+      ]
+    }
+  ],
+  "bootloader": {
+    "filename": "bootloader.bin",
+    "description": "ESP32 bootloader",
+    "offset": "0x1000"
+  },
+  "partitions": {
+    "filename": "partitions.bin",
+    "description": "ESP32 partition table",
+    "offset": "0x8000"
+  }
+}

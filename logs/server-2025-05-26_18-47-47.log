@@ -1,0 +1,399 @@
+System information: {
+  platform: 'darwin',
+  arch: 'arm64',
+  isAppleSilicon: true,
+  nodeVersion: 'v18.20.8'
+}
+Loaded OBS config from file: /Users/prince/Projects/OBS-Tally/obs-config.json
+Loaded ESP32 devices from file: 1
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Idle
+[32m🚀 OBS Tally server running on http://localhost:3005[0m
+[36m🌐 Network access: http://192.168.0.91:3005[0m
+[33m📱 Open the URL above in your browser to control the tally system[0m
+
+🏥 ESP32 health monitoring started
+Attempting to connect to OBS WebSocket at ws://localhost:4455
+📡 UDP discovery server listening on 0.0.0.0:3006
+[32m✓ OBS WebSocket connection successful[0m
+🎬 Initial scenes - Program: iPhone, Preview: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Idle → Live
+⚡ PERFORMANCE: Tally update completed in 2.08ms, 1 changes detected, 1 pending updates
+🚀 ESP32 notification skipped for tally-f09e9e1079e8 (debouncing: 84ms remaining)
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Idle (380.9ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 381.44ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+Client disconnected from tally server. Total clients: 0
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Live
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Idle
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (88.5ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 88.88ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+Client disconnected from tally server. Total clients: 0
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (1414.5ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+Error uploading firmware: ReferenceError: db is not defined
+    at /Users/prince/Projects/OBS-Tally/index.js:1281:20
+    at Layer.handleRequest (/Users/prince/Projects/OBS-Tally/node_modules/router/lib/layer.js:152:17)
+    at next (/Users/prince/Projects/OBS-Tally/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/Users/prince/Projects/OBS-Tally/node_modules/router/lib/route.js:117:3)
+    at handle (/Users/prince/Projects/OBS-Tally/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/Users/prince/Projects/OBS-Tally/node_modules/router/lib/layer.js:152:17)
+    at /Users/prince/Projects/OBS-Tally/node_modules/router/index.js:295:15
+    at param (/Users/prince/Projects/OBS-Tally/node_modules/router/index.js:600:14)
+    at param (/Users/prince/Projects/OBS-Tally/node_modules/router/index.js:610:14)
+    at processParams (/Users/prince/Projects/OBS-Tally/node_modules/router/index.js:664:3)
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (902.6ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (114.9ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (221.1ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (331.7ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (2260.7ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (1338.7ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (227.5ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (140.7ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (505.3ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (820.9ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (561.3ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (710.9ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+Client disconnected from tally server. Total clients: 0
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (172.7ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+Client disconnected from tally server. Total clients: 0
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (440.5ms)
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 3.17ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (878.7ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 879.08ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 2.15ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (306.6ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 306.80ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 2.30ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (187.3ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 187.56ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 1.48ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (480.2ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 480.45ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 1.43ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (577.6ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 577.74ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 1.32ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (336.3ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 336.64ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 1.29ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (178.0ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 178.21ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 1.48ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (216.5ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 216.80ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 1.41ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Preview
+⏰ Timeout sending tally update to ESP32 tally-f09e9e1079e8 (1001.4ms)
+🚫 Socket timeout for ESP32 tally-f09e9e1079e8
+❌ Real-time ESP32 notification failed for tally-f09e9e1079e8: Request timeout
+⚡ PERFORMANCE: ESP32 notifications completed in 1002.18ms
+📊 ESP32 Status: 0 successful, 1 failed, 0 debounced
+❌ Failed to send tally update to ESP32 tally-f09e9e1079e8 (1002.5ms): socket hang up
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 1.53ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (577.4ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 577.57ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 1.40ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (222.1ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 222.32ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 1.08ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (161.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 162.03ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 1.35ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (179.4ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 179.63ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 1.39ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (475.6ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 475.80ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (266.6ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (258.9ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (134.8ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (145.1ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (144.3ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+Client disconnected from tally server. Total clients: 0
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (445.6ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (374.5ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (1080.2ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (161.0ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (482.6ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (166.5ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (55.5ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (669.5ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (77.2ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (175.0ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (79.6ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (179.0ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (83.3ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (184.3ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (192.8ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (189.7ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (1119.7ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (1331.6ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (157.8ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (185.0ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (89.6ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (199.9ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (95.8ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (192.3ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (108.6ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (206.9ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (201.2ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (121.9ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (105.7ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (223.4ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (202.3ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (220.4ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (401.6ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (223.1ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (117.6ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (108.1ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (124.6ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (327.0ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (130.5ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (367.9ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Live
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+Client disconnected from tally server. Total clients: 0
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+Client disconnected from tally server. Total clients: 0
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+Client disconnected from tally server. Total clients: 0
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+Client disconnected from tally server. Total clients: 0
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (132.4ms)
+💓 Heartbeat from unknown device: tally-f09e9e1079e8 (192.168.0.64)
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 1.54ms, 1 changes detected, 1 pending updates
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 1.46ms, 1 changes detected, 1 pending updates
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 2.08ms, 1 changes detected, 1 pending updates
+ESP32 device registered: Tally 1 (tally-f09e9e1079e8)
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (246.7ms)
+🔄 Sending camera reassignment to tally-f09e9e1079e8: None -> Camera 1
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (185.6ms)
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 1.35ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Live
+⏰ Timeout sending tally update to ESP32 tally-f09e9e1079e8 (1001.5ms)
+🚫 Socket timeout for ESP32 tally-f09e9e1079e8
+❌ Real-time ESP32 notification failed for tally-f09e9e1079e8: Request timeout
+⚡ PERFORMANCE: ESP32 notifications completed in 1002.25ms
+📊 ESP32 Status: 0 successful, 1 failed, 0 debounced
+❌ Failed to send tally update to ESP32 tally-f09e9e1079e8 (1002.3ms): socket hang up
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 1.65ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (253.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 254.18ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 1.39ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (184.4ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 184.61ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 1.32ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (226.3ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 226.47ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 1.80ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Live
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 1.59ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Preview
+⏰ Timeout sending tally update to ESP32 tally-f09e9e1079e8 (1125.0ms)
+🚫 Socket timeout for ESP32 tally-f09e9e1079e8
+❌ Real-time ESP32 notification failed for tally-f09e9e1079e8: Request timeout
+⚡ PERFORMANCE: ESP32 notifications completed in 1125.59ms
+📊 ESP32 Status: 0 successful, 1 failed, 0 debounced
+❌ Failed to send tally update to ESP32 tally-f09e9e1079e8 (1125.7ms): socket hang up
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (262.9ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 263.13ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 1.44ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (509.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 510.01ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 1.51ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (331.6ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 331.84ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Preview
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (153.7ms)
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Preview
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (239.9ms)
+Client disconnected from tally server. Total clients: 0
+💓 Heartbeat from Tally 1 (192.168.0.64) - Status: Preview
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (124.1ms)

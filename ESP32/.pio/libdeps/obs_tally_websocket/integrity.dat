@@ -1,0 +1,5 @@
+arduino-libraries/NTPClient@^3.2.1
+gilmaimon/ArduinoWebsockets@^0.5.3
+bblanchon/ArduinoJson@^7.0.3
+amcewen/HTTPClient@^2.2.0
+bodmer/TFT_eSPI@^2.5.34

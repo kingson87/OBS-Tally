@@ -1,0 +1,30 @@
+/* ...existing code... */
+
+/* Style for device status indicators */
+.device-status {
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.device-status.online {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.device-status.offline {
+  background-color: #F44336;
+  color: white;
+}
+
+/* Make sure the device card shows the status appropriately */
+.device-card.online {
+  border-left: 4px solid #4CAF50;
+}
+
+.device-card.offline {
+  border-left: 4px solid #F44336;
+}
+
+/* ...existing code... */

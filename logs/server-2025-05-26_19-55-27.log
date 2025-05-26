@@ -1,0 +1,26 @@
+System information: {
+  platform: 'darwin',
+  arch: 'arm64',
+  isAppleSilicon: true,
+  nodeVersion: 'v18.20.8'
+}
+Loaded OBS config from file: /Users/prince/Projects/OBS-Tally/obs-config.json
+Loaded ESP32 devices from file: 1
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): Camera 1 -> Idle
+[32m🚀 OBS Tally server running on http://localhost:3005[0m
+[36m🌐 Network access: http://192.168.0.91:3005[0m
+[33m📱 Open the URL above in your browser to control the tally system[0m
+
+🏥 ESP32 health monitoring started
+Attempting to connect to OBS WebSocket at ws://localhost:4455
+📡 UDP discovery server listening on 0.0.0.0:3006
+[32m✓ OBS WebSocket connection successful[0m
+🎬 Initial scenes - Program: Sony Camera, Preview: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Idle → Preview
+⚡ PERFORMANCE: Tally update completed in 1.96ms, 1 changes detected, 1 pending updates
+🚀 ESP32 notification skipped for tally-f09e9e1079e8 (debouncing: 87ms remaining)
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Idle (208.5ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 209.27ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS

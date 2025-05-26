@@ -1,0 +1,149 @@
+System information: {
+  platform: 'darwin',
+  arch: 'arm64',
+  isAppleSilicon: true,
+  nodeVersion: 'v18.20.8'
+}
+Loaded OBS config from file: /Users/prince/Projects/OBS-Tally/obs-config.json
+Loaded ESP32 devices from file: 1
+[32m🚀 OBS Tally server running on http://localhost:3005[0m
+[36m🌐 Network access: http://192.168.0.91:3005[0m
+[33m📱 Open the URL above in your browser to control the tally system[0m
+
+🏥 ESP32 health monitoring started
+Attempting to connect to OBS WebSocket at ws://localhost:4455
+📡 UDP discovery server listening on 0.0.0.0:3006
+[32m✓ OBS WebSocket connection successful[0m
+🎬 Initial scenes - Program: Sony Camera, Preview: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Idle → Preview
+⚡ PERFORMANCE: Tally update completed in 1.39ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Test2 (tally-f09e9e1079e8): Camera 1 -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (313.9ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 314.63ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+Client disconnected from tally server. Total clients: 0
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+Client disconnected from tally server. Total clients: 0
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+ESP32 device registered: Test2 (tally-f09e9e1079e8)
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (122.3ms)
+Client connected to tally server WebSocket. Total clients: 2
+OBS connection status: Connected to OBS
+💓 Heartbeat from Test2 (192.168.0.64) - Status: READY
+Client disconnected from tally server. Total clients: 1
+Client connected to tally server WebSocket. Total clients: 2
+OBS connection status: Connected to OBS
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (216.2ms)
+Client disconnected from tally server. Total clients: 1
+Client connected to tally server WebSocket. Total clients: 2
+OBS connection status: Connected to OBS
+💓 Heartbeat from Test2 (192.168.0.64) - Status: Idle
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (810.9ms)
+💓 Heartbeat from Test2 (192.168.0.64) - Status: Idle
+🔄 Sending camera reassignment to tally-f09e9e1079e8: None -> Camera 1
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (159.5ms)
+🔄 Sending name update to tally-f09e9e1079e8: "Test2" -> "Camera Tally"
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (194.1ms)
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (160.2ms)
+Client disconnected from tally server. Total clients: 1
+Client connected to tally server WebSocket. Total clients: 2
+OBS connection status: Connected to OBS
+💓 Heartbeat from Camera Tally (192.168.0.64) - Status: Preview
+Client disconnected from tally server. Total clients: 1
+Client connected to tally server WebSocket. Total clients: 2
+OBS connection status: Connected to OBS
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (115.9ms)
+💓 Heartbeat from Camera Tally (192.168.0.64) - Status: Preview
+Client disconnected from tally server. Total clients: 1
+Client connected to tally server WebSocket. Total clients: 2
+OBS connection status: Connected to OBS
+ESP32 device registered: Camera Tally (tally-f09e9e1079e8)
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (320.3ms)
+🔄 Sending camera reassignment to tally-f09e9e1079e8: None -> Camera 1
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (223.4ms)
+Client disconnected from tally server. Total clients: 1
+Client connected to tally server WebSocket. Total clients: 2
+OBS connection status: Connected to OBS
+💓 Heartbeat from Camera Tally (192.168.0.64) - Status: Preview
+Client disconnected from tally server. Total clients: 1
+Client connected to tally server WebSocket. Total clients: 2
+OBS connection status: Connected to OBS
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (126.8ms)
+Client connected to tally server WebSocket. Total clients: 3
+OBS connection status: Connected to OBS
+Client disconnected from tally server. Total clients: 2
+💓 Heartbeat from Camera Tally (192.168.0.64) - Status: Preview
+🔄 Sending name update to tally-f09e9e1079e8: "Camera Tally" -> "Came"
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (682.6ms)
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (229.3ms)
+💓 Heartbeat from Came (192.168.0.64) - Status: Preview
+Client disconnected from tally server. Total clients: 1
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (128.1ms)
+💓 Heartbeat from Came (192.168.0.64) - Status: Preview
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (152.8ms)
+Client connected to tally server WebSocket. Total clients: 2
+OBS connection status: Connected to OBS
+Client disconnected from tally server. Total clients: 1
+💓 Heartbeat from Came (192.168.0.64) - Status: Preview
+Client connected to tally server WebSocket. Total clients: 2
+OBS connection status: Connected to OBS
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (234.2ms)
+Client connected to tally server WebSocket. Total clients: 3
+OBS connection status: Connected to OBS
+Client disconnected from tally server. Total clients: 2
+💓 Heartbeat from Came (192.168.0.64) - Status: Preview
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (138.7ms)
+💓 Heartbeat from Came (192.168.0.64) - Status: Preview
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 4.70ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Came (tally-f09e9e1079e8): Camera 1 -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (95.6ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 96.16ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 3.46ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Came (tally-f09e9e1079e8): Camera 1 -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (336.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 337.25ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 3.22ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Came (tally-f09e9e1079e8): Camera 1 -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (538.1ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 538.69ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 2.55ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Came (tally-f09e9e1079e8): Camera 1 -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (312.2ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 312.68ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Sony Camera
+🎬 Program scene changed to: iPhone
+⚡ REAL-TIME Status Change: Camera 1 Preview → Live
+⚡ PERFORMANCE: Tally update completed in 1.99ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Came (tally-f09e9e1079e8): Camera 1 -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (136.0ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 136.38ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: iPhone
+🎬 Program scene changed to: Sony Camera
+⚡ REAL-TIME Status Change: Camera 1 Live → Preview
+⚡ PERFORMANCE: Tally update completed in 2.51ms, 1 changes detected, 1 pending updates
+⚡ ESP32 Real-time Update: Came (tally-f09e9e1079e8): Camera 1 -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (242.4ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 242.92ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🏥 HEALTH CHECK: 1 healthy, 0 unhealthy ESP32 devices (166.4ms)

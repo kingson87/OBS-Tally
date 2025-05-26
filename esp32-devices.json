@@ -1,0 +1,20 @@
+{
+  "tally-f09e9e1079e8": {
+    "deviceId": "tally-f09e9e1079e8",
+    "deviceName": "Tally2",
+    "macAddress": "F0:9E:9E:10:79:E8",
+    "ipAddress": "192.168.0.64",
+    "firmware": "2.0.0",
+    "assignedSource": "Sony",
+    "lastSeen": "2025-05-26T19:50:18.829Z",
+    "status": "online",
+    "createdAt": "2025-05-26T19:45:07.971Z",
+    "consecutiveFailures": 0,
+    "lastError": "socket hang up",
+    "uptime": 208784,
+    "lastNotifiedStatus": "Idle",
+    "lastSuccessfulNotification": "2025-05-26T19:48:51.379Z",
+    "lastHealthCheck": "2025-05-26T19:49:52.888Z",
+    "responseTime": 847.9207080006599
+  }
+}
