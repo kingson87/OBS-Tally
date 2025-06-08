@@ -1050,9 +1050,10 @@
       </svg>
     </button>
     
-    <button class="config-button" id="firmwareButton" title="Firmware Manager" onclick="window.location.href='/firmware-manager.html'" style="right: 80px;">
+    <button class="config-button" id="deviceManagerButton" title="Device Manager" onclick="window.location.href='/device-manager.html'" style="right: 80px;">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+        <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
+        <polyline points="17 2 12 7 7 2"></polyline>
       </svg>
     </button>
     
@@ -1332,12 +1333,11 @@
     const STORAGE_KEY_ADDRESS = 'obs-tally-address';
     const STORAGE_KEY_SOURCES = 'obs-tally-sources';
 
-    // WebSocket connection for tally
-    const wsProtocol = location.protocol === 'https:' ? 'wss' : 'ws';
-    const ws = new WebSocket(`${wsProtocol}://${location.host}`);
+    // Socket.IO will be initialized after the script loads
+    let socket = null;
     
     // Connection status indicators and elements
-    const connectionIndicator = document.getElementById('connectionIndicator');
+    let connectionIndicator = null;
     let obsAddress = '';
     
     // Status area reconnection button
@@ -1401,132 +1401,6 @@
         document.getElementById('statusTitleTop').textContent = 'Connecting to OBS';
       }
     }
-    
-    ws.onopen = () => {
-      updateConnectionStatus('connecting', 'Connected to server, waiting for OBS...');
-      // Only show notification on reconnection, not on initial page load
-      if (!isInitialConnection) {
-        showNotification('Reconnected to tally server - waiting for OBS connection', 'info');
-      }
-      isInitialConnection = false;
-      serverConnected = true;
-      console.log('%c[SUCCESS] Connected to server WebSocket (still waiting for OBS connection)', 'color: orange; font-weight: bold');
-    };
-    
-    ws.onclose = () => {
-      updateConnectionStatus('disconnected', 'Server disconnected');
-      showNotification('Server connection lost. Reconnecting...', 'warning');
-      
-      // Attempt automatic reconnection after a delay
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
-    };
-    
-    ws.onerror = () => {
-      updateConnectionStatus('disconnected', 'Server error');
-      showNotification('Server connection error. Check network status.', 'error');
-    };
-
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      
-      // Check if we received OBS connection status
-      if (data.obsConnectionStatus) {
-        const now = Date.now();
-        const isNewStatus = data.obsConnectionStatus !== lastObsConnectionStatus;
-        const isNewError = data.obsConnectionError !== lastObsConnectionError;
-        const passedCooldown = (now - lastNotificationTime) > NOTIFICATION_COOLDOWN;
-        
-        // Update tracking variables
-        lastObsConnectionStatus = data.obsConnectionStatus;
-        lastObsConnectionError = data.obsConnectionError;
-        
-        // Always update the visual status indicator
-        if (data.obsConnectionStatus === 'connected') {
-          obsConnected = true;
-          updateConnectionStatus('connected', 'Connected to OBS');
-          
-          // Only show notification if this is a state change or cooldown passed
-          if ((isNewStatus || passedCooldown) && !obsConnected) {
-            showNotification('Connected to OBS Studio', 'success');
-            lastNotificationTime = now;
-            console.log('%c[SUCCESS] OBS WebSocket connection established', 'color: green; font-weight: bold');
-          }
-        } else if (data.obsConnectionStatus === 'connecting') {
-          obsConnected = false;
-          updateConnectionStatus('connecting', 'Connected to server, connecting to OBS...');
-        } else {
-          // Disconnected state
-          obsConnected = false;
-          updateConnectionStatus('disconnected', 'Connected to server, OBS disconnected');
-          
-          // If we have an error message and either it's new or past cooldown, show it
-          if (data.obsConnectionError && (isNewError || passedCooldown)) {
-            const errorMsg = data.obsConnectionError;
-            showNotification(`Unable to connect to OBS: ${errorMsg}`, 'error');
-            lastNotificationTime = now;
-            
-            // Update status details with more specific error information
-            if (errorMsg.includes('ECONNREFUSED')) {
-              statusDetails.textContent = `Connected to server, but connection to OBS was refused. Make sure OBS is running and WebSockets are enabled in Tools > WebSocket Server Settings.`;
-            } else if (errorMsg.includes('Authentication')) {
-              statusDetails.textContent = `Connected to server, but authentication with OBS failed. Please check the WebSocket password in your settings.`;
-            } else if (errorMsg.includes('timeout')) {
-              statusDetails.textContent = `Connected to server, but connection to OBS timed out. Check if OBS is running and network connectivity is stable.`;
-            } else {
-              statusDetails.textContent = `Connected to server, but error connecting to OBS: ${errorMsg}. Verify OBS is running and WebSockets are enabled in Tools > WebSocket Server Settings.`;
-            }
-          } else {
-            showNotification('Connected to server, but unable to connect to OBS Studio', 'warning');
-          }
-        }
-      }
-      
-      if (!data.sources || !data.status) return;
-      
-      currentSources = data.sources;
-      const status = data.status;
-      const tallyList = document.getElementById('tallyList');
-      tallyList.innerHTML = '';
-
-      currentSources.forEach((source) => {
-        const s = status[source] || { status: 'Idle' };
-        
-        // Container for each tally item
-        const item = document.createElement('div');
-        item.className = 'tally-item';
-
-        // Source label above the circle
-        const label = document.createElement('div');
-        label.className = 'source-label';
-        label.textContent = source;
-
-        // Tally light circle
-        const div = document.createElement('div');
-        div.className = 'tally';
-        if (s.status === 'Live') div.classList.add('active');
-        else if (s.status === 'Preview') div.classList.add('preview');
-        else div.classList.add('inactive');
-
-        // Status label below the circle
-        const sub = document.createElement('div');
-        sub.className = 'tally-label';
-        if (s.status === 'Live') sub.textContent = 'LIVE';
-        else if (s.status === 'Preview') sub.textContent = 'PREVIEW';
-        else sub.textContent = 'IDLE';
-
-        item.appendChild(label);
-        item.appendChild(div);
-        item.appendChild(sub);
-
-        // Add double-tap/click event listeners for fullscreen mode
-        item.addEventListener('click', (event) => handleTallyItemInteraction(event, source));
-        item.addEventListener('touchend', (event) => handleTallyItemInteraction(event, source));
-
-        tallyList.appendChild(item);
-      });
-    };
 
     // Mobile connection functionality
     function isMobileDevice() {
@@ -1658,21 +1532,6 @@
         `;
       });
     }
-    
-    // Initialize mobile connection after WebSocket connects
-    ws.onopen = () => {
-      updateConnectionStatus('connecting', 'Connected to server, waiting for OBS...');
-      // Only show notification on reconnection, not on initial page load
-      if (!isInitialConnection) {
-        showNotification('Reconnected to tally server - waiting for OBS connection', 'info');
-      }
-      isInitialConnection = false;
-      serverConnected = true;
-      console.log('%c[SUCCESS] Connected to server WebSocket (still waiting for OBS connection)', 'color: orange; font-weight: bold');
-      
-      // Initialize mobile connection
-      initMobileConnection();
-    };
   </script>
 
 <!-- PWA Installation -->
@@ -1711,6 +1570,148 @@ function showInstallPrompt() {
 <button id="install-btn" style="display:none;position:fixed;bottom:24px;right:24px;z-index:1000;padding:12px 20px;font-size:1rem;background:#007aff;color:#fff;border:none;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.15);cursor:pointer;" onclick="showInstallPrompt()">Install OBS Tally</button>
 
 <!-- System information and diagnostics link -->
+<script src="/socket.io/socket.io.js"></script>
+<script>
+// Initialize Socket.IO connection after the script loads
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Socket.IO connection for tally
+  socket = io();
+  
+  // Initialize connection status indicators and elements
+  connectionIndicator = document.getElementById('connectionIndicator');
+  
+  socket.on('connect', () => {
+    updateConnectionStatus('connecting', 'Connected to server, waiting for OBS...');
+    // Only show notification on reconnection, not on initial page load
+    if (!isInitialConnection) {
+      showNotification('Reconnected to tally server - waiting for OBS connection', 'info');
+    }
+    isInitialConnection = false;
+    serverConnected = true;
+    console.log('%c[SUCCESS] Connected to server Socket.IO (still waiting for OBS connection)', 'color: orange; font-weight: bold');
+    
+    // Initialize mobile connection
+    initMobileConnection();
+  });
+  
+  socket.on('disconnect', () => {
+    updateConnectionStatus('disconnected', 'Server disconnected');
+    showNotification('Server connection lost. Reconnecting...', 'warning');
+    
+    // Socket.IO will automatically attempt reconnection
+  });
+  
+  socket.on('connect_error', () => {
+    updateConnectionStatus('disconnected', 'Server error');
+    showNotification('Server connection error. Check network status.', 'error');
+  });
+
+  // Function to handle tally updates (shared between tally-status and initial-state)
+  function handleTallyUpdate(data) {
+    // Check if we received OBS connection status
+    if (data.obsConnectionStatus) {
+      const now = Date.now();
+      const isNewStatus = data.obsConnectionStatus !== lastObsConnectionStatus;
+      const isNewError = data.obsConnectionError !== lastObsConnectionError;
+      const passedCooldown = (now - lastNotificationTime) > NOTIFICATION_COOLDOWN;
+      
+      // Update tracking variables
+      lastObsConnectionStatus = data.obsConnectionStatus;
+      lastObsConnectionError = data.obsConnectionError;
+      
+      // Always update the visual status indicator
+      if (data.obsConnectionStatus === 'connected') {
+        obsConnected = true;
+        updateConnectionStatus('connected', 'Connected to OBS');
+        
+        // Only show notification if this is a state change or cooldown passed
+        if ((isNewStatus || passedCooldown) && !obsConnected) {
+          showNotification('Connected to OBS Studio', 'success');
+          lastNotificationTime = now;
+          console.log('%c[SUCCESS] OBS WebSocket connection established', 'color: green; font-weight: bold');
+        }
+      } else if (data.obsConnectionStatus === 'connecting') {
+        obsConnected = false;
+        updateConnectionStatus('connecting', 'Connected to server, connecting to OBS...');
+      } else {
+        // Disconnected state
+        obsConnected = false;
+        updateConnectionStatus('disconnected', 'Connected to server, OBS disconnected');
+        
+        // If we have an error message and either it's new or past cooldown, show it
+        if (data.obsConnectionError && (isNewError || passedCooldown)) {
+          const errorMsg = data.obsConnectionError;
+          showNotification(`Unable to connect to OBS: ${errorMsg}`, 'error');
+          lastNotificationTime = now;
+          
+          // Update status details with more specific error information
+          if (errorMsg.includes('ECONNREFUSED')) {
+            statusDetails.textContent = `Connected to server, but connection to OBS was refused. Make sure OBS is running and WebSockets are enabled in Tools > WebSocket Server Settings.`;
+          } else if (errorMsg.includes('Authentication')) {
+            statusDetails.textContent = `Connected to server, but authentication with OBS failed. Please check the WebSocket password in your settings.`;
+          } else if (errorMsg.includes('timeout')) {
+            statusDetails.textContent = `Connected to server, but connection to OBS timed out. Check if OBS is running and network connectivity is stable.`;
+          } else {
+            statusDetails.textContent = `Connected to server, but error connecting to OBS: ${errorMsg}. Verify OBS is running and WebSockets are enabled in Tools > WebSocket Server Settings.`;
+          }
+        } else {
+          showNotification('Connected to server, but unable to connect to OBS Studio', 'warning');
+        }
+      }
+    }
+    
+    if (!data.sources || !data.status) return;
+    
+    currentSources = data.sources;
+    const status = data.status;
+    const tallyList = document.getElementById('tallyList');
+    tallyList.innerHTML = '';
+
+    currentSources.forEach((source) => {
+      const s = status[source] || { status: 'Idle' };
+      
+      // Container for each tally item
+      const item = document.createElement('div');
+      item.className = 'tally-item';
+
+      // Source label above the circle
+      const label = document.createElement('div');
+      label.className = 'source-label';
+      label.textContent = source;
+
+      // Tally light circle
+      const div = document.createElement('div');
+      div.className = 'tally';
+      if (s.status === 'Live') div.classList.add('active');
+      else if (s.status === 'Preview') div.classList.add('preview');
+      else div.classList.add('inactive');
+
+      // Status label below the circle
+      const sub = document.createElement('div');
+      sub.className = 'tally-label';
+      if (s.status === 'Live') sub.textContent = 'LIVE';
+      else if (s.status === 'Preview') sub.textContent = 'PREVIEW';
+      else sub.textContent = 'IDLE';
+
+      item.appendChild(label);
+      item.appendChild(div);
+      item.appendChild(sub);
+
+      // Add double-tap/click event listeners for fullscreen mode
+      item.addEventListener('click', (event) => handleTallyItemInteraction(event, source));
+      item.addEventListener('touchend', (event) => handleTallyItemInteraction(event, source));
+
+      tallyList.appendChild(item);
+    });
+  }
+
+  // Handle tally status updates
+  socket.on('tally-status', handleTallyUpdate);
+
+  // Handle initial state when connecting
+  socket.on('initial-state', handleTallyUpdate);
+});
+</script>
 <script src="platform-probe.js"></script>
 <a href="diagnostics.html" id="diagnostics-link" style="display:none;position:fixed;bottom:24px;left:24px;z-index:1000;padding:6px 12px;font-size:0.8rem;background:rgba(0,122,255,0.1);color:#007aff;text-decoration:none;border:1px solid rgba(0,122,255,0.3);border-radius:8px;cursor:pointer;">System Info</a>
 <script>

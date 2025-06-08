@@ -304,12 +304,6 @@ OBS Tally includes comprehensive support for ESP32-based tally light devices, al
 - 🔄 **Auto-Reconnect** - Automatically reconnects if connection is lost
 - ⚡ **Low Latency** - Near real-time status updates for critical broadcast environments
 
-### Firmware Management
-- 📱 **Web Interface** - Manage and update firmware through the OBS Tally web interface
-- 🔄 **OTA Updates** - Update firmware wirelessly without physical access to devices
-- 🧩 **Multiple Versions** - Support for different firmware versions (v2.0.0, v2.1.0)
-- 🔧 **Command Line Tools** - Advanced firmware management via shell scripts
-
 ### ESP32 Management
 - 📋 **Device Inventory** - Track and manage all connected ESP32 devices
 - ✏️ **Device Naming** - Assign custom names to your tally light devices
@@ -324,24 +318,12 @@ OBS Tally includes comprehensive support for ESP32-based tally light devices, al
 3. Configure the device through the web interface
 4. Assign the device to an OBS source
 
-#### Firmware Updates
-1. Navigate to the Firmware Manager page in the OBS Tally web interface
-2. Click the "Upload Firmware" button
-3. Select a device and choose one of the firmware files
-4. Click "Upload Firmware" to start the OTA update process
-
 #### Command Line Usage
 You can also use the included test scripts for advanced operations:
 
 ```bash
-# Upload firmware to a specific device
-./test-firmware-upload.sh <device-id> ./firmware/obs_tally_v2.1.0.bin
-
 # Update a device name
 ./test-device-name-update.sh <device-id> "Camera 1 Tally"
-
-# Test the firmware API
-./test-firmware-api.sh
 ```
 
 ### ESP32 Project Structure
@@ -350,20 +332,8 @@ You can also use the included test scripts for advanced operations:
 │   ├── platformio.ini      # PlatformIO configuration
 │   └── src/                # Source code
 │       └── obs_tally_ultimate.cpp  # Main firmware implementation
-├── firmware/               # Compiled firmware binaries
-│   ├── bootloader.bin      # ESP32 bootloader
-│   ├── obs_tally_v2.0.0.bin # Firmware version 2.0.0
-│   ├── obs_tally_v2.1.0.bin # Firmware version 2.1.0
-│   ├── partitions.bin      # Partition table
-│   └── README.md           # Firmware documentation
 └── server/                 # Server-side handling
-    └── firmware-handler.js # ESP32 firmware management
+    └── websocket-handler.js # WebSocket communication
 ```
-
-For more details, see the [firmware README](firmware/README.md).
-
-### Version History
-- **v2.1.0**: Latest firmware with additional features and bug fixes
-- **v2.0.0**: Initial stable ESP32 firmware with all core functionality
 
 ## License

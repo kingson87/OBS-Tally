@@ -7,7 +7,7 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
     :root {
-      --bg-color: #fafafa;
+      --bg-color: #f5f5f7;
       --card-bg: #ffffff;
       --text-primary: #1d1d1f;
       --text-secondary: #86868b;
@@ -17,28 +17,34 @@
       --button-text: #ffffff;
       --input-bg: #ffffff;
       --input-border: #d1d1d6;
-      --shadow-color: rgba(0, 0, 0, 0.1);
+      --shadow-color: rgba(0, 0, 0, 0.08);
       --success-color: #34c759;
       --warning-color: #ff9500;
       --error-color: #ff3b30;
+      --tab-inactive: #f2f2f7;
+      --tab-active-bg: #ffffff;
+      --tab-active-border: #007aff;
     }
 
     /* Dark mode variables */
     .dark-mode {
-      --bg-color: #1c1c1e;
-      --card-bg: #2c2c2e;
+      --bg-color: #0d0d0d;
+      --card-bg: #1c1c1e;
       --text-primary: #ffffff;
       --text-secondary: #98989d;
       --header-color: #ffffff;
       --border-color: #38383a;
       --button-bg: #0a84ff;
       --button-text: #ffffff;
-      --input-bg: #1c1c1e;
-      --input-border: #38383a;
+      --input-bg: #2c2c2e;
+      --input-border: #48484a;
       --shadow-color: rgba(0, 0, 0, 0.3);
       --success-color: #30d158;
       --warning-color: #ff9f0a;
       --error-color: #ff453a;
+      --tab-inactive: #2c2c2e;
+      --tab-active-bg: #3a3a3c;
+      --tab-active-border: #0a84ff;
     }
 
     * {
@@ -51,25 +57,31 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: var(--bg-color);
       color: var(--text-primary);
-      font-size: 17px;
-      line-height: 1.47;
+      font-size: 16px;
+      line-height: 1.5;
       transition: background 0.3s ease, color 0.3s ease;
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     .container {
-      max-width: 600px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 0;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
     .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
       display: flex;
       align-items: center;
-      margin-bottom: 40px;
-      padding: 20px 0;
+      padding: 20px;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 2px 8px var(--shadow-color);
     }
 
     .back-button {
@@ -92,10 +104,9 @@
     }
 
     h1 {
-      font-size: 2.1em;
-      font-weight: 700;
+      font-size: 1.8em;
+      font-weight: 600;
       color: var(--header-color);
-      letter-spacing: -1px;
       flex: 1;
       text-align: center;
     }
@@ -114,19 +125,74 @@
       background: var(--border-color);
     }
 
+    .main-content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    /* Tab navigation */
+    .tabs {
+      display: flex;
+      overflow-x: auto;
+      background: var(--card-bg);
+      margin-bottom: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px var(--shadow-color);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .tab-button {
+      padding: 16px 24px;
+      white-space: nowrap;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text-secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s ease;
+      flex: 1;
+    }
+
+    .tab-button:hover {
+      color: var(--text-primary);
+    }
+
+    .tab-button.active {
+      color: var(--button-bg);
+      border-bottom: 3px solid var(--button-bg);
+      background: var(--tab-active-bg);
+    }
+
+    /* Tab content */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .settings-card {
       background: var(--card-bg);
       border-radius: 16px;
-      box-shadow: 0 8px 32px var(--shadow-color);
-      padding: 32px;
+      box-shadow: 0 4px 16px var(--shadow-color);
+      padding: 24px;
       margin-bottom: 24px;
       transition: background 0.3s ease, box-shadow 0.3s ease;
     }
 
     .connection-status-panel {
-      margin-bottom: 28px;
-      padding: 18px;
-      border-radius: 16px;
+      margin-bottom: 24px;
+      padding: 16px;
+      border-radius: 12px;
       background: var(--bg-color);
       border: 1px solid var(--border-color);
       box-shadow: 0 2px 8px var(--shadow-color);
@@ -140,7 +206,8 @@
 
     .panel-header h3 {
       margin: 0;
-      font-size: 1.2em;
+      font-size: 1.1em;
+      font-weight: 600;
     }
 
     .status-indicator {
@@ -163,7 +230,7 @@
     
     .status-text {
       margin-left: 5px;
-      font-size: 0.95em;
+      font-size: 0.9em;
     }
 
     .status-indicator.status-connected {
@@ -189,12 +256,12 @@
 
     .connections-counter {
       margin-left: auto;
-      padding: 6px 12px;
+      padding: 4px 10px;
       border-radius: 12px;
       font-size: 0.9em;
-      font-weight: bold;
+      font-weight: 500;
       background-color: rgba(52, 199, 89, 0.15);
-      color: #34c759;
+      color: var(--success-color);
     }
 
     .status-actions {
@@ -221,7 +288,7 @@
     }
 
     .input-group {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .input-group:last-child {
@@ -230,72 +297,160 @@
 
     label {
       display: block;
-      margin-bottom: 10px;
-      font-size: 1.05em;
+      margin-bottom: 8px;
+      font-size: 0.95em;
       font-weight: 600;
       color: var(--text-primary);
     }
 
     input[type="text"],
-    input[type="password"] {
+    input[type="password"],
+    select {
       width: 100%;
-      padding: 16px;
+      padding: 14px;
       font-size: 1em;
       border: 1px solid var(--input-border);
-      border-radius: 12px;
+      border-radius: 10px;
       background: var(--input-bg);
       color: var(--text-primary);
-      transition: border-color 0.2s ease, background 0.2s ease;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05) inset;
     }
 
     input[type="text"]:focus,
-    input[type="password"]:focus {
+    input[type="password"]:focus,
+    select:focus {
       outline: none;
       border-color: var(--button-bg);
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
     }
 
-    button[type="submit"] {
+    button[type="submit"],
+    .primary-button {
       width: 100%;
-      padding: 18px;
-      font-size: 1.1em;
+      padding: 14px;
+      font-size: 1em;
+      font-weight: 600;
       border: none;
-      border-radius: 14px;
+      border-radius: 10px;
       background: var(--button-bg);
       color: var(--button-text);
       cursor: pointer;
       margin-top: 8px;
-      transition: background 0.2s ease;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
     }
 
-    button[type="submit"]:hover {
-      opacity: 0.9;
+    button[type="submit"]:hover,
+    .primary-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    button[type="submit"]:active,
+    .primary-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 3px rgba(0,0,0,0.1);
     }
 
     .section-title {
-      font-size: 1.5em;
-      margin: 0 0 24px 0;
+      font-size: 1.3em;
+      margin: 0 0 20px 0;
       color: var(--header-color);
-      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .section-title svg {
+      color: var(--button-bg);
+    }
+
+    /* Progress indicator */
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background-color: var(--bg-color);
+      border-radius: 4px;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background-color: var(--button-bg);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Card grid for better organization */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
     }
 
     /* Responsive design */
     @media (max-width: 768px) {
       .container {
+        padding: 0;
+      }
+      
+      .header {
         padding: 16px;
       }
       
+      .main-content {
+        padding: 16px;
+      }
+      
+      .tabs {
+        border-radius: 0;
+        margin: 0 -16px 20px;
+        padding: 0 16px;
+        box-shadow: none;
+        border-bottom: 1px solid var(--border-color);
+      }
+      
+      .tab-button {
+        padding: 14px 16px;
+        font-size: 0.9em;
+      }
+      
       .settings-card {
-        padding: 24px;
+        padding: 20px;
         border-radius: 12px;
-        margin: 0 -4px 24px -4px;
       }
       
       h1 {
-        font-size: 1.8em;
+        font-size: 1.4em;
       }
       
       .section-title {
-        font-size: 1.3em;
+        font-size: 1.2em;
+      }
+      
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      /* Improve touch targets for mobile */
+      .btn {
+        padding: 12px 20px;
+        min-height: 44px;
+      }
+      
+      .tab-button {
+        min-height: 44px;
+      }
+      
+      .btn-icon {
+        width: 44px;
+        height: 44px;
       }
     }
 
@@ -446,114 +601,7 @@
       margin-bottom: 0;
     }
 
-    /* ESP32 Device Management Styles */
-    .device-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-      margin: 20px 0;
-    }
-    
-    .device-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 20px;
-      transition: all 0.3s ease;
-      box-shadow: 0 1px 4px var(--shadow-color);
-    }
-    
-    .device-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px var(--shadow-color);
-    }
-    
-    .device-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    
-    .device-name {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-    
-    .device-status-badge {
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      display: inline-flex;
-      align-items: center;
-    }
-    
-    .device-status-badge::before {
-      content: "";
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      margin-right: 6px;
-    }
-    
-    .device-status-badge.status-online {
-      background: rgba(52, 199, 89, 0.15);
-      color: var(--success-color);
-    }
-    
-    .device-status-badge.status-online::before {
-      background-color: var(--success-color);
-    }
-    
-    .device-status-badge.status-offline {
-      background: rgba(255, 59, 48, 0.15);
-      color: var(--error-color);
-    }
-    
-    .device-status-badge.status-offline::before {
-      background-color: var(--error-color);
-    }
-    
-    .device-info {
-      margin: 12px 0;
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-    
-    .device-info strong {
-      color: var(--text-primary);
-    }
-    
-    .device-tally {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      border-radius: 10px;
-      margin: 16px 0;
-      font-weight: 600;
-      font-size: 16px;
-      box-shadow: 0 1px 3px var(--shadow-color) inset;
-    }
-    
-    .tally-idle {
-      background: rgba(142, 142, 147, 0.15);
-      color: var(--tally-idle, #8e8e93);
-    }
-    
-    .tally-preview {
-      background: rgba(255, 149, 0, 0.15);
-      color: var(--warning-color);
-    }
-    
-    .tally-live {
-      background: rgba(255, 59, 48, 0.15);
-      color: var(--error-color);
-    }
+
     
     .form-group {
       margin: 16px 0;
@@ -561,7 +609,7 @@
     
     .form-group label {
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       font-weight: 500;
       color: var(--text-primary);
       font-size: 14px;
@@ -569,46 +617,53 @@
     
     .form-control {
       width: 100%;
-      padding: 10px 12px;
+      padding: 12px 14px;
       border: 1px solid var(--input-border);
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 14px;
       box-sizing: border-box;
       background: var(--input-bg);
       color: var(--text-primary);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05) inset;
     }
     
     .form-control:focus {
       outline: none;
       border-color: var(--button-bg);
-      box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.25);
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
     }
     
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 8px 20px;
+      padding: 10px 18px;
       background: var(--button-bg);
       color: var(--button-text);
       text-decoration: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-weight: 500;
       font-size: 14px;
-      margin: 8px 8px 8px 0;
+      margin: 4px 8px 4px 0;
       border: none;
       cursor: pointer;
       transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     
     .btn:hover {
-      opacity: 0.9;
       transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 3px rgba(0,0,0,0.1);
     }
     
     .btn svg {
-      margin-right: 6px;
+      margin-right: 8px;
       width: 16px;
       height: 16px;
     }
@@ -621,25 +676,47 @@
       background: var(--error-color);
     }
     
-    .device-actions {
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+    
+    .btn-icon {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .btn-icon svg {
+      margin: 0;
+    }
+    
+    /* Button groups for related actions */
+    .button-group {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
     
-    .manual-registration {
-      background: var(--bg-color);
-      border-radius: 12px;
-      padding: 20px;
-      border: 1px solid var(--border-color);
+    @media (max-width: 768px) {
+      .button-group {
+        flex-direction: column;
+      }
+      
+      .button-group .btn {
+        margin: 4px 0;
+        justify-content: center;
+      }
     }
     
-    .firmware-downloads {
-      background: var(--bg-color);
-      border-radius: 12px;
-      padding: 20px;
-      border: 1px solid var(--border-color);
-    }
+
+    
+
     
     .network-info {
       background: var(--bg-color);
@@ -658,15 +735,18 @@
       position: fixed;
       top: 20px;
       right: 20px;
-      padding: 12px 18px;
-      border-radius: 10px;
+      padding: 16px;
+      border-radius: 12px;
       color: white;
       font-weight: 500;
       z-index: 1000;
-      box-shadow: 0 5px 20px var(--shadow-color);
+      box-shadow: 0 8px 25px var(--shadow-color);
       transform: translateX(400px);
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      max-width: 300px;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      max-width: 350px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
     }
     
     .notification.show {
@@ -689,6 +769,32 @@
       background: var(--warning-color);
     }
     
+    .notification-icon {
+      flex-shrink: 0;
+    }
+    
+    .notification-content {
+      flex: 1;
+    }
+    
+    .notification-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .notification-close {
+      background: none;
+      border: none;
+      color: white;
+      opacity: 0.7;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 50%;
+      line-height: 1;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+    
     @media (max-width: 767px) {
       .device-grid {
         grid-template-columns: 1fr;
@@ -698,6 +804,39 @@
         width: 100%;
       }
     }
+    
+    /* Very small device optimizations */
+    @media (max-width: 360px) {
+      .header {
+        padding: 12px;
+      }
+      
+      .main-content {
+        padding: 12px;
+      }
+      
+      .settings-card {
+        padding: 16px;
+      }
+      
+      .device-card {
+        padding: 0;
+      }
+      
+      .device-info {
+        gap: 4px 8px;
+      }
+      
+      .tab-button {
+        padding: 12px 10px;
+        font-size: 0.85em;
+      }
+      
+      .connections-counter {
+        font-size: 0.75em;
+        padding: 2px 6px;
+      }
+    }
 
     /* Device management styles */
     .settings-section {
@@ -705,99 +844,148 @@
     }
     
     .settings-section h2 {
-      font-size: 1.5em;
+      font-size: 1.3em;
       margin-bottom: 16px;
       color: var(--header-color);
       position: relative;
-      display: inline-block;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
     
-    .settings-section h2:after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 2px;
-      bottom: -4px;
-      left: 0;
-      background: linear-gradient(to right, transparent, var(--button-bg), transparent);
+    .settings-section h2 svg {
+      color: var(--button-bg);
     }
     
     .info-box {
       background: rgba(52, 199, 89, 0.1);
       border-left: 4px solid var(--success-color);
       padding: 16px;
-      border-radius: 8px;
-      margin-bottom: 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .info-box svg {
+      color: var(--success-color);
+      flex-shrink: 0;
+      margin-top: 2px;
     }
     
     .device-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
     }
     
     .device-item {
       background: var(--card-bg);
-      border: 1px solid var(--border-color);
       border-radius: 12px;
-      padding: 16px;
+      padding: 0;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      position: relative;
+      flex-direction: column;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px var(--shadow-color);
+      overflow: hidden;
     }
     
     .device-item:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 15px var(--shadow-color);
+      box-shadow: 0 8px 20px var(--shadow-color);
     }
     
-    /* Renamed to prevent conflict with device-header status */
-    .device-item-status-indicator {
-      width: 10px;
-      height: 10px;
+    .device-item-header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid var(--border-color);
+      background-color: rgba(0,0,0,0.02);
+    }
+    
+    .dark-mode .device-item-header {
+      background-color: rgba(255,255,255,0.05);
+    }
+    
+    .device-status {
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
-      position: absolute;
-      left: 16px;
-      top: 16px;
       transition: background-color 0.3s ease;
+      flex-shrink: 0;
     }
     
-    .device-item.connected .device-item-status-indicator {
+    .device-status.online {
       background-color: var(--success-color);
+      box-shadow: 0 0 5px var(--success-color);
     }
     
-    .device-item.disconnected .device-item-status-indicator {
+    .device-status.offline {
       background-color: var(--error-color);
+      box-shadow: 0 0 5px var(--error-color);
+    }
+    
+    .device-item-body {
+      padding: 16px;
     }
     
     .device-info {
-      flex: 1;
-      margin-left: 60px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px 16px;
+      margin-bottom: 16px;
     }
     
     .device-name-input {
-      font-size: 1.1em;
+      font-size: 1em;
       font-weight: 500;
       color: var(--text-primary);
-      border: none;
-      background: none;
+      border: 1px solid transparent;
+      background: var(--input-bg);
       outline: none;
       width: 100%;
-      margin-bottom: 4px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
     }
     
-    .device-id {
+    .device-name-input:hover {
+      border-color: var(--input-border);
+    }
+    
+    .device-name-input:focus {
+      border-color: var(--button-bg);
+      box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+    }
+    
+    .device-details {
       font-size: 0.9em;
       color: var(--text-secondary);
-      margin-bottom: 4px;
+      line-height: 1.6;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 4px 12px;
+      align-items: center;
     }
     
-    .connection-status {
-      font-size: 0.9em;
-      font-weight: 600;
-      text-transform: uppercase;
+    .detail-label {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    
+    .device-item-footer {
+      display: flex;
+      justify-content: flex-end;
+      padding: 12px;
+      border-top: 1px solid var(--border-color);
+      gap: 8px;
+      background-color: rgba(0,0,0,0.02);
+    }
+    
+    .dark-mode .device-item-footer {
+      background-color: rgba(255,255,255,0.05);
     }
     
     .device-actions {
@@ -899,16 +1087,227 @@
       background-color: var(--border-color);
       color: var(--text-primary);
     }
+
+    /* Sources Management Interface */
+    .sources-management-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 16px;
+    }
+
+    .available-sources-section,
+    .selected-sources-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px var(--shadow-color);
+    }
+
+    .available-sources-section h4,
+    .selected-sources-section h4 {
+      margin: 0 0 16px 0;
+      font-size: 1.1em;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .source-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .source-header h4 {
+      margin: 0;
+    }
+
+    .fetch-sources-btn {
+      background: linear-gradient(135deg, var(--button-bg) 0%, #0066cc 100%);
+      color: var(--button-text);
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9em;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fetch-sources-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .fetch-sources-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+    }
+
+    .fetch-sources-btn:hover::before {
+      left: 100%;
+    }
+
+    .fetch-sources-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
+    }
+
+    .fetch-sources-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .available-sources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .source-item {
+      background: var(--input-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      font-weight: 500;
+      position: relative;
+    }
+
+    .source-item:hover {
+      background: var(--button-bg);
+      color: var(--button-text);
+      border-color: var(--button-bg);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.2);
+    }
+
+    .source-item.selected {
+      background: var(--success-color);
+      color: white;
+      border-color: var(--success-color);
+    }
+
+    .source-item .source-type {
+      font-size: 0.8em;
+      opacity: 0.7;
+      margin-top: 4px;
+    }
+
+    .selected-sources-list {
+      min-height: 120px;
+      background: var(--input-bg);
+      border: 2px dashed var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: flex-start;
+      align-content: flex-start;
+    }
+
+    .selected-source-chip {
+      background: var(--button-bg);
+      color: var(--button-text);
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .selected-source-chip:hover {
+      background: var(--error-color);
+      transform: scale(1.05);
+    }
+
+    .selected-source-chip .remove-btn {
+      background: none;
+      border: none;
+      color: currentColor;
+      cursor: pointer;
+      padding: 2px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      transition: background 0.2s ease;
+    }
+
+    .selected-source-chip .remove-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .no-sources-message,
+    .loading-sources {
+      color: var(--text-secondary);
+      text-align: center;
+      font-style: italic;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60px;
+    }
+
+    @media (max-width: 768px) {
+      .sources-management-container {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .available-sources-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .source-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      
+      .fetch-sources-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <button class="back-button" onclick="window.history.back()">
+      <button class="back-button" onclick="window.location.href='/'">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
-        Back
+        Home
       </button>
       <h1>Settings</h1>
       <button id="themeToggle" class="theme-toggle" title="Toggle theme">
@@ -926,232 +1325,227 @@
       </button>
     </div>
 
-    <div class="settings-card">
-      <h2 class="section-title">Connection Settings</h2>
-      
-      <div class="connection-status-panel">
-        <div class="panel-header">
-          <div id="settingsConnectionIndicator" class="status-indicator status-connecting"></div>
-          <h3>Connection Status</h3>
-          <div class="connections-counter" id="connectionsCounter">2/2 Connections</div>
-        </div>
-        
-        <div style="display: flex; align-items: center; margin-bottom: 16px;">
-          <div style="flex: 1;">
-            <div id="settingsStatusTitle" style="font-weight: 600; font-size: 1.1em; margin-bottom: 8px;">Successfully connected to server and OBS</div>
-            <div id="settingsStatusDetails" style="font-size: 0.95em; color: var(--text-secondary);">All connections established at ws://127.0.0.1:4455</div>
-          </div>
-        </div>
-        
-        <!-- ESP status container with improved positioning -->
-        <div class="status-container esp-status-container" style="padding: 12px; background: var(--bg-color); border-radius: 8px; border: 1px solid var(--border-color); display: flex; align-items: center;">
-          <div id="espStatus" class="status-indicator status-disconnected"></div>
-          <div style="display: flex; align-items: center;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
-              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-            </svg>
-            <span style="font-weight: 500;">ESP Device Status: <span id="espStatusText" style="font-weight: 600;">Offline</span></span>
-          </div>
-        </div>
-      </div>
-      
-      <form id="obsConfigForm">
-        <div class="input-group">
-          <label for="obsAddress">WebSocket Address:</label>
-          <input type="text" id="obsAddress" name="address" placeholder="ws://127.0.0.1:4455">
-        </div>
-        <div class="input-group">
-          <label for="obsPassword">Password (optional):</label>
-          <input type="password" id="obsPassword" name="password" placeholder="Leave empty if no password">
-        </div>
-        <div class="input-group">
-          <label for="sources">Monitor sources (comma separated):</label>
-          <input type="text" id="sources" name="sources" placeholder="Phone, NDI Main Camera">
-        </div>
-        <button type="submit">Save Settings</button>
-      </form>
-    </div>
-
-    <div class="settings-card">
-      <h2 class="section-title">Server Control</h2>
-      <div style="color: var(--text-secondary); line-height: 1.6;">
-        <p style="margin-bottom: 16px;">Control the OBS Tally server instance.</p>
-        
-        <div class="server-control-actions">
-          <button id="shutdownBtn" class="shutdown-button" title="Shutdown Server">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-              <line x1="12" y1="2" x2="12" y2="12"></line>
-            </svg>
-            Shutdown Server
-          </button>
-          <span class="server-control-description">This will stop the tally server completely</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="settings-card">
-      <h2 class="section-title">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -4px; margin-right: 8px;">
-          <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
-          <polyline points="17 2 12 7 7 2"></polyline>
-        </svg>
-        Tally Device Management
-      </h2>
-
-      <div class="settings-section" id="esp32-management">
-        <div class="info-box">
-            <p>Connected ESP32 tally light devices appear here. You can rename devices and configure their settings.</p>
-        </div>
-        
-        <div class="device-list" id="esp32-devices">
-          <!-- Devices will be populated dynamically -->
-          <div class="loading">Loading connected devices...</div>
-        </div>
-        
-        <div class="help-text">
-            <p>Changes to device names are saved automatically and sent to the devices immediately.</p>
-        </div>
-      </div>
-
-      <div class="network-info">
-        <h3 style="margin-bottom: 12px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -3px; margin-right: 6px;">
-            <path d="M12 5v14M5 12h14M4.22 19.78l15.56-15.56M19.78 19.78L4.22 4.22"></path>
+    <div class="main-content">
+      <!-- Tab Navigation -->
+      <div class="tabs">
+        <button class="tab-button active" data-tab="connection">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
           </svg>
-          Network Information
-        </h3>
-        <p><strong>Server URL:</strong> <span id="serverUrl">Loading...</span></p>
-        <p><strong>Local IP:</strong> <span id="localIp">Loading...</span></p>
-        <p><strong>Port:</strong> <span id="serverPort">Loading...</span></p>
-      </div>
-
-      <div style="margin: 25px 0 20px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-        <button id="discoverBtn" class="btn btn-success">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-          Auto-Discover Devices
+          Connection
         </button>
-        <button id="refreshDevicesBtn" class="btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
-          </svg>
-          Refresh Devices
-        </button>
-        <button id="firmwareManagerBtn" class="btn" onclick="window.location.href='/firmware-manager.html'">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-          </svg>
-          Firmware Manager
-        </button>
-        <span id="discoveryStatus" style="margin-left: 10px; color: var(--text-secondary); font-size: 14px;"></span>
-      </div>
 
-      <div id="deviceGrid" class="device-grid">
-        <div style="text-align: center; color: var(--text-secondary); padding: 40px 0;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5; margin-bottom: 10px;">
+        <button class="tab-button" data-tab="server">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+            <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+            <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+            <line x1="6" y1="6" x2="6.01" y2="6"></line>
+            <line x1="6" y1="18" x2="6.01" y2="18"></line>
+          </svg>
+          Server
+        </button>
+        <button class="tab-button" data-tab="help">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
             <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
           </svg>
-          <p>Loading devices...</p>
-        </div>
-      </div>
-
-      <h3 style="margin: 30px 0 15px;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -4px; margin-right: 8px;">
-          <circle cx="12" cy="12" r="3"></circle>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-        </svg>
-        Manual Device Registration
-      </h3>
-
-      <div class="manual-registration">
-        <div class="form-group">
-          <label for="deviceId">Device ID</label>
-          <input type="text" id="deviceId" class="form-control" placeholder="esp32-001" required>
-        </div>
-        <div class="form-group">
-          <label for="deviceName">Device Name</label>
-          <input type="text" id="deviceName" class="form-control" placeholder="Camera 1 Tally" required>
-        </div>
-        <div class="form-group">
-          <label for="macAddress">MAC Address (Optional)</label>
-          <input type="text" id="macAddress" class="form-control" placeholder="AA:BB:CC:DD:EE:FF">
-        </div>
-        <button id="registerBtn" class="btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 5v14M5 12h14"></path>
-          </svg>
-          Register Device
+          Help
         </button>
       </div>
+      
+      <!-- Connection Tab -->
+      <div id="connection" class="tab-content active">
+        <div class="settings-card">
+          <h2 class="section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+            Connection Status
+          </h2>
+          
+          <div class="connection-status-panel">
+            <div class="panel-header">
+              <div id="settingsConnectionIndicator" class="status-indicator status-connecting"></div>
+              <h3>Status</h3>
+              <div class="connections-counter" id="connectionsCounter">2/2 Connections</div>
+            </div>
+            
+            <div style="display: flex; align-items: center; margin-bottom: 16px;">
+              <div style="flex: 1;">
+                <div id="settingsStatusTitle" style="font-weight: 600; font-size: 1.1em; margin-bottom: 8px;">Successfully connected to server and OBS</div>
+                <div id="settingsStatusDetails" style="font-size: 0.95em; color: var(--text-secondary);">All connections established at ws://127.0.0.1:4455</div>
+              </div>
+            </div>
+            
 
-      <div style="margin-top: 30px;">
-        <h3 style="margin-bottom: 12px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -4px; margin-right: 8px;">
-            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-            <polyline points="17 21 17 13 7 13 7 21"></polyline>
-            <polyline points="7 3 7 8 15 8"></polyline>
-          </svg>
-          Firmware Download
-        </h3>
-        <div class="firmware-downloads">
-          <p style="margin-bottom: 16px;">Download the latest ESP32 firmware for your tally device:</p>
-          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-            <a href="/ESP32/src/main.cpp" class="btn" download>
+          </div>
+          
+          <h2 class="section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            OBS Connection Settings
+          </h2>
+          
+          <form id="obsConfigForm">
+            <div class="input-group">
+              <label for="obsAddress">WebSocket Address:</label>
+              <input type="text" id="obsAddress" name="address" placeholder="ws://127.0.0.1:4455">
+            </div>
+            <div class="input-group">
+              <label for="obsPassword">Password (optional):</label>
+              <input type="password" id="obsPassword" name="password" placeholder="Leave empty if no password">
+            </div>
+            <div class="input-group">
+              <label for="sources">Monitor sources:</label>
+              <div class="sources-management-container">
+                <!-- Available Sources Selection -->
+                <div class="available-sources-section">
+                  <div class="source-header">
+                    <h4>Available Sources from OBS</h4>
+                    <button type="button" id="fetchSourcesBtn" class="fetch-sources-btn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m3 16 4 4 4-4"></path>
+                        <path d="M7 20V4"></path>
+                        <path d="m21 8-4-4-4 4"></path>
+                        <path d="M17 4v16"></path>
+                      </svg>
+                      Refresh Sources
+                    </button>
+                  </div>
+                  <div id="availableSourcesList" class="available-sources-grid">
+                    <div class="loading-sources">Click "Refresh Sources" to load available sources from OBS</div>
+                  </div>
+                </div>
+                
+                <!-- Selected Sources -->
+                <div class="selected-sources-section">
+                  <h4>Currently Monitored Sources</h4>
+                  <p style="font-size: 0.9em; color: var(--text-secondary); margin: 0 0 16px 0;">
+                    Shows both general monitored sources and device-specific source assignments
+                  </p>
+                  <div id="selectedSourcesList" class="selected-sources-list">
+                    <div class="no-sources-message">No sources selected for monitoring</div>
+                  </div>
+                  <!-- Hidden input to maintain existing form functionality -->
+                  <input type="hidden" id="sources" name="sources">
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="primary-button">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="16" y1="13" x2="8" y2="13"></line>
-                <line x1="16" y1="17" x2="8" y2="17"></line>
-                <polyline points="10 9 9 9 8 9"></polyline>
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
               </svg>
-              Download Firmware Source
-            </a>
-            <a href="/ESP32/platformio_obs.ini" class="btn" download>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-              </svg>
-              Download PlatformIO Config
-            </a>
+              Save Settings
+            </button>
+          </form>
+        </div>
+        
+        <!-- Network Information Card -->
+        <div class="settings-card">
+          <h2 class="section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+              <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+              <line x1="6" y1="6" x2="6.01" y2="6"></line>
+              <line x1="6" y1="18" x2="6.01" y2="18"></line>
+            </svg>
+            Network Information
+          </h2>
+          
+          <div class="network-info">
+            <div class="device-info" style="margin: 0">
+              <div class="device-info-label">Server URL:</div>
+              <div class="device-info-value" id="serverUrl">Loading...</div>
+              
+              <div class="device-info-label">Local IP:</div>
+              <div class="device-info-value" id="localIp">Loading...</div>
+              
+              <div class="device-info-label">Port:</div>
+              <div class="device-info-value" id="serverPort">Loading...</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      
 
-    <div class="settings-card">
-      <h2 class="section-title">Help &amp; Support</h2>
-      <div class="help-content">
-        <div class="help-section">
-          <h3>Configuration Reference</h3>
-          <div class="help-item">
-            <strong>WebSocket Address:</strong> The URL where OBS WebSocket server is running. Default is <span class="console-style">ws://127.0.0.1:4455</span>
+      <!-- Server Tab -->
+      <div id="server" class="tab-content">
+        <div class="settings-card">
+          <h2 class="section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+              <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+              <line x1="6" y1="6" x2="6.01" y2="6"></line>
+              <line x1="6" y1="18" x2="6.01" y2="18"></line>
+            </svg>
+            Server Control
+          </h2>
+          
+          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px;">
+            <p>Control the OBS Tally server instance. Use these options with caution.</p>
           </div>
-          <div class="help-item">
-            <strong>Password:</strong> Optional password if you've secured your OBS WebSocket server in Tools → WebSocket Server Settings
-          </div>
-          <div class="help-item">
-            <strong>Monitor Sources:</strong> Comma-separated list of OBS source names exactly as they appear in OBS
-          </div>
-          <div class="help-item">
-            <strong>Troubleshooting:</strong> Use the diagnostic tools above or visit the <a href="/diagnostics.html" class="help-link">diagnostics page</a> for detailed connection information.
+          
+          <div class="server-control-actions">
+            <button id="shutdownBtn" class="shutdown-button" title="Shutdown Server">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                <line x1="12" y1="2" x2="12" y2="12"></line>
+              </svg>
+              Shutdown Server
+            </button>
+            <span class="server-control-description">This will stop the tally server completely</span>
           </div>
         </div>
-        
-        <div class="quick-setup-card">
-          <h4>Quick Setup</h4>
-          <ol class="setup-steps">
-            <li>Make sure OBS Studio is running</li>
-            <li>In OBS, go to Tools → WebSocket Server Settings</li>
-            <li>Enable the WebSocket server</li>
-            <li>Note the Server Port (usually 4455)</li>
-            <li>Set a password if desired</li>
-            <li>Enter your source names above and save</li>
-          </ol>
+      </div>
+      
+      <!-- Help Tab -->
+      <div id="help" class="tab-content">
+        <div class="settings-card">
+          <h2 class="section-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Help & Support
+          </h2>
+          
+          <div class="help-content">
+            <div class="help-section">
+              <h3>Configuration Reference</h3>
+              <div class="help-item">
+                <strong>WebSocket Address:</strong> The URL where OBS WebSocket server is running. Default is <span class="console-style">ws://127.0.0.1:4455</span>
+              </div>
+              <div class="help-item">
+                <strong>Password:</strong> Optional password if you've secured your OBS WebSocket server in Tools → WebSocket Server Settings
+              </div>
+              <div class="help-item">
+                <strong>Monitor Sources:</strong> Comma-separated list of OBS source names exactly as they appear in OBS
+              </div>
+              <div class="help-item">
+                <strong>Troubleshooting:</strong> Use the diagnostic tools above or visit the <a href="/diagnostics.html" class="help-link">diagnostics page</a> for detailed connection information.
+              </div>
+            </div>
+            
+            <div class="quick-setup-card">
+              <h4>Quick Setup</h4>
+              <ol class="setup-steps">
+                <li>Make sure OBS Studio is running</li>
+                <li>In OBS, go to Tools → WebSocket Server Settings</li>
+                <li>Enable the WebSocket server</li>
+                <li>Note the Server Port (usually 4455)</li>
+                <li>Set a password if desired</li>
+                <li>Enter your source names above and save</li>
+              </ol>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1234,23 +1628,35 @@
     // WebSocket connection for real-time status updates
     const wsProtocol = location.protocol === 'https:' ? 'wss' : 'ws';
     const ws = new WebSocket(`${wsProtocol}://${location.host}`);
+    let wsConnected = false;
 
     ws.onopen = () => {
+      wsConnected = true;
       updateConnectionStatus('connecting', 'Connected to server, waiting for OBS...');
-      showNotification('Connected to tally server - checking OBS connection', 'info');
+      // Don't show a notification here, as it will overlap with OBS connection notifications
+      console.log('Connected to tally server - checking OBS connection');
     };
 
     ws.onclose = () => {
+      wsConnected = false;
       updateConnectionStatus('disconnected', 'Server disconnected');
       showNotification('Server connection lost', 'warning');
     };
 
     ws.onerror = () => {
+      wsConnected = false;
       updateConnectionStatus('disconnected', 'Server error');
       showNotification('Server connection error', 'error');
     };
 
-    // WebSocket message handler for both OBS status and ESP32 device updates
+    // Helper function to check WebSocket state
+    function isWebSocketConnected(websocket) {
+      return websocket && websocket.readyState === WebSocket.OPEN;
+    }
+    
+
+
+    // WebSocket message handler for OBS status updates
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
@@ -1259,56 +1665,25 @@
         if (data.obsConnectionStatus) {
           if (data.obsConnectionStatus === 'connected') {
             obsConnected = true;
+            // Update the connection status UI without showing a notification
             updateConnectionStatus('connected', 'Connected to OBS');
+            
+            // Automatically fetch sources when OBS connects
+            console.log('OBS connected, automatically fetching sources...');
+            fetchSourcesFromOBSQuietly();
           } else if (data.obsConnectionStatus === 'connecting') {
             obsConnected = false;
             updateConnectionStatus('connecting', 'Connected to server, connecting to OBS...');
+            // Don't show a notification for the connecting state
           } else {
             obsConnected = false;
             updateConnectionStatus('disconnected', 'Connected to server, OBS disconnected');
+            // Only show disconnection notification if previously connected
             if (data.obsConnectionError) {
               console.error('OBS Connection error:', data.obsConnectionError);
+              showNotification('OBS disconnected: ' + data.obsConnectionError, 'error');
             }
           }
-        }
-
-        // Handle device updates for ESP32 devices
-        if (data.type && data.device) {
-          // Handle device updates
-          switch (data.type) {
-            case 'device-update':
-            case 'device-register':
-            case 'device-auto-register':
-            case 'device-discovery-update':
-            case 'device-heartbeat':
-              // Update the device in our local devices object
-              if (data.device.deviceId) {
-                devices[data.device.deviceId] = {
-                  ...devices[data.device.deviceId],
-                  name: data.device.deviceName || data.device.name,
-                  ip: data.device.ipAddress || data.device.ip,
-                  mac: data.device.macAddress || data.device.mac,
-                  lastSeen: data.device.lastSeen,
-                  online: data.device.status === 'online',
-                  source: data.device.assignedSource || data.device.source
-                };
-                // Re-render devices to show updated info
-                renderDevices();
-              }
-              break;
-          }
-        }
-
-        // Handle tally status updates
-        if (data.status) {
-          tallyStatus = data.status;
-          // Update device tally status indicators in the UI
-          renderDevices();
-        }
-
-        // Handle sources updates
-        if (data.sources) {
-          sources = data.sources;
         }
       } catch (error) {
         console.error('Error parsing WebSocket message:', error, event.data);
@@ -1368,18 +1743,260 @@
       });
     }
 
-    // Load saved sources from local storage
-    const savedSources = localStorage.getItem(STORAGE_KEY_SOURCES);
-    if (savedSources) {
+    // Function to load current monitored sources from server
+    async function loadCurrentMonitoredSources() {
       try {
-        const sources = JSON.parse(savedSources);
-        if (Array.isArray(sources)) {
-          document.getElementById('sources').value = sources.join(', ');
+        console.log('Loading current monitored sources from server...');
+        
+        // Get general monitored sources
+        const sourcesResponse = await fetch('/api/sources');
+        const sourcesData = await sourcesResponse.json();
+        
+        // Get device-specific sources
+        const devicesResponse = await fetch('/api/esp32/devices');
+        const devicesData = await devicesResponse.json();
+        
+        let allSources = [];
+        
+        // Add general monitored sources
+        if (sourcesData.sources && Array.isArray(sourcesData.sources)) {
+          allSources = [...sourcesData.sources];
         }
-      } catch (e) {
-        console.error('Error parsing saved sources:', e);
+        
+        // Add device-specific sources
+        if (devicesData.success && devicesData.devices) {
+          Object.values(devicesData.devices).forEach(device => {
+            if (device.assignedSource && !allSources.includes(device.assignedSource)) {
+              allSources.push(device.assignedSource);
+            }
+          });
+        }
+        
+        console.log('General sources:', sourcesData.sources || []);
+        console.log('Device-specific sources:', Object.values(devicesData.devices || {}).map(d => d.assignedSource).filter(Boolean));
+        console.log('Combined sources:', allSources);
+        
+        if (allSources.length > 0) {
+          // Update the hidden input field with general sources only (for form submission)
+          document.getElementById('sources').value = (sourcesData.sources || []).join(', ');
+          
+          // Save general sources to localStorage for consistency
+          localStorage.setItem(STORAGE_KEY_SOURCES, JSON.stringify(sourcesData.sources || []));
+          
+          // Update the display to show all sources (general + device-specific)
+          updateSelectedSourcesDisplay(allSources);
+          
+          showNotification(`Loaded ${allSources.length} monitored sources (${sourcesData.sources?.length || 0} general + ${allSources.length - (sourcesData.sources?.length || 0)} device-specific)`, 'success');
+        } else {
+          console.log('No sources found on server');
+          // Initialize empty display
+          updateSelectedSourcesDisplay([]);
+        }
+      } catch (error) {
+        console.error('Error loading current monitored sources:', error);
+        // Fallback to localStorage or empty display
+        updateSelectedSourcesDisplay();
       }
     }
+
+    // Initialize sources display
+    function initializeSources() {
+      // First try localStorage for immediate display
+      const savedSources = localStorage.getItem(STORAGE_KEY_SOURCES);
+      if (savedSources) {
+        try {
+          const sources = JSON.parse(savedSources);
+          if (Array.isArray(sources)) {
+            document.getElementById('sources').value = sources.join(', ');
+            updateSelectedSourcesDisplay();
+          }
+        } catch (e) {
+          console.error('Error parsing saved sources:', e);
+        }
+      }
+      
+      // Then load current sources from server (this will override localStorage if different)
+      loadCurrentMonitoredSources();
+    }
+
+    // Initialize sources when page loads
+    // This will be called from DOMContentLoaded event
+
+    // Auto-fetch sources when OBS is already connected
+    if (obsConnected) {
+      fetchSourcesFromOBSQuietly();
+    }
+    
+    // Function to fetch sources from OBS
+    async function fetchSourcesFromOBS() {
+      const availableSourcesList = document.getElementById('availableSourcesList');
+      const fetchBtn = document.getElementById('fetchSourcesBtn');
+      
+      try {
+        // Show loading state
+        availableSourcesList.innerHTML = '<div class="loading-sources">Loading sources from OBS...</div>';
+        fetchBtn.disabled = true;
+        fetchBtn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+          </svg>
+          Loading...
+        `;
+        
+        showNotification('Fetching sources from OBS...', 'info');
+        const response = await fetch('/api/obs/all-sources');
+        const data = await response.json();
+        
+        if (data.success && data.sources && data.sources.length > 0) {
+          showNotification(`Found ${data.sources.length} sources in OBS`, 'success');
+          displaySourceChips(data.sources);
+        } else {
+          if (data.error && data.error.includes('not connected')) {
+            showNotification('OBS not connected. Please check your connection settings.', 'error');
+            availableSourcesList.innerHTML = '<div class="loading-sources">OBS not connected. Please check your connection settings.</div>';
+          } else {
+            showNotification('No sources found in OBS or unable to fetch sources', 'warning');
+            availableSourcesList.innerHTML = '<div class="loading-sources">No sources found in OBS</div>';
+          }
+          
+          // Try to use the fallback API
+          try {
+            const fallbackResponse = await fetch('/api/sources');
+            const fallbackData = await fallbackResponse.json();
+            
+            if (fallbackData.sources && fallbackData.sources.length > 0) {
+              displaySourceChips(fallbackData.sources.map(name => ({ name })));
+            }
+          } catch (fallbackErr) {
+            console.error('Error fetching fallback sources:', fallbackErr);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching OBS sources:', error);
+        showNotification('Failed to fetch sources from OBS', 'error');
+        availableSourcesList.innerHTML = '<div class="loading-sources">Failed to fetch sources from OBS</div>';
+      } finally {
+        // Restore button state
+        fetchBtn.disabled = false;
+        fetchBtn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 16 4 4 4-4"></path>
+            <path d="M7 20V4"></path>
+            <path d="m21 8-4-4-4 4"></path>
+            <path d="M17 4v16"></path>
+          </svg>
+          Refresh Sources
+        `;
+      }
+    }
+    
+    // Fetch sources from OBS quietly (without showing the initial notification)
+    async function fetchSourcesFromOBSQuietly() {
+      try {
+        const response = await fetch('/api/obs/all-sources');
+        const data = await response.json();
+        
+        if (data.success && data.sources && data.sources.length > 0) {
+          // Show a combined connection and sources notification
+          showNotification(`Connected to OBS - found ${data.sources.length} sources`, 'success');
+          displaySourceChips(data.sources);
+        } else {
+          if (data.error && data.error.includes('not connected')) {
+            showNotification('OBS not connected. Please check your connection settings.', 'error');
+            const availableSourcesList = document.getElementById('availableSourcesList');
+            if (availableSourcesList) {
+              availableSourcesList.innerHTML = '<div class="loading-sources">OBS not connected. Click "Refresh Sources" to try again.</div>';
+            }
+          } else {
+            showNotification('No sources found in OBS or unable to fetch sources', 'warning');
+            const availableSourcesList = document.getElementById('availableSourcesList');
+            if (availableSourcesList) {
+              availableSourcesList.innerHTML = '<div class="loading-sources">No sources found in OBS</div>';
+            }
+          }
+          
+          // Try to use the fallback API
+          try {
+            const fallbackResponse = await fetch('/api/sources');
+            const fallbackData = await fallbackResponse.json();
+            
+            if (fallbackData.sources && fallbackData.sources.length > 0) {
+              displaySourceChips(fallbackData.sources.map(name => ({ name })));
+            }
+          } catch (fallbackErr) {
+            console.error('Error fetching fallback sources:', fallbackErr);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching OBS sources:', error);
+        showNotification('Failed to fetch sources from OBS', 'error');
+        const availableSourcesList = document.getElementById('availableSourcesList');
+        if (availableSourcesList) {
+          availableSourcesList.innerHTML = '<div class="loading-sources">Failed to fetch sources from OBS</div>';
+        }
+      }
+    }
+    
+    // Function to display source chips that can be clicked to add to the selection
+    function displaySourceChips(sources) {
+      const availableSourcesList = document.getElementById('availableSourcesList');
+      availableSourcesList.innerHTML = '';
+      
+      if (!sources || sources.length === 0) {
+        availableSourcesList.innerHTML = '<div class="loading-sources">No sources found in OBS</div>';
+        return;
+      }
+      
+      // Create a chip for each source
+      sources.forEach(source => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'available-source-item';
+        chip.innerHTML = `
+          <div class="source-type-indicator camera"></div>
+          <span class="source-name">${source.name}</span>
+        `;
+        
+        // When clicked, add to selected sources
+        chip.addEventListener('click', () => {
+          addSourceToSelected(source.name);
+        });
+        
+        availableSourcesList.appendChild(chip);
+      });
+    }
+
+    // Function to add a source to the selected list
+    function addSourceToSelected(sourceName) {
+      const sourcesInput = document.getElementById('sources');
+      
+      // Get current sources from hidden input
+      const currentSources = sourcesInput.value
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+      
+      // Check if already added
+      if (currentSources.includes(sourceName)) {
+        showNotification(`Source "${sourceName}" is already being monitored`, 'warning');
+        return;
+      }
+      
+      // Add to the list
+      currentSources.push(sourceName);
+      sourcesInput.value = currentSources.join(', ');
+      
+      // Update the UI using global function
+      updateSelectedSourcesDisplay();
+      showNotification(`Added "${sourceName}" to monitored sources`, 'success');
+    }
+    
+    // Add event listener to fetch sources button
+    document.getElementById('fetchSourcesBtn').addEventListener('click', () => {
+      fetchSourcesFromOBS();
+    });
 
     // Load OBS config - first from local storage, then from server
     const savedAddress = localStorage.getItem(STORAGE_KEY_ADDRESS);
@@ -1457,12 +2074,7 @@
       }
     };
     
-    // ESP32 Management functionality
-    let devices = {};
-    let sources = [];
-    let tallyStatus = {}; // Store real-time tally status
-
-    // Load ESP32 devices and network information
+    // Network information loading
     function loadNetworkInfo() {
       try {
         // First check if server is running
@@ -1507,546 +2119,7 @@
       }
     }
 
-    // Load devices and sources
-    function loadDevices() {
-      // Show loading state
-      const grid = document.getElementById('deviceGrid');
-      if (!grid) return;
-      
-      grid.innerHTML = `
-        <div style="text-align: center; color: var(--text-secondary); grid-column: 1 / -1; padding: 40px 0;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5; margin-bottom: 10px;">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
-          <p>Loading devices...</p>
-        </div>`;
-      
-      // Load devices with timeout
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-      
-      fetch('/api/esp32/devices', {
-        signal: controller.signal
-      })
-        .then(response => {
-          clearTimeout(timeoutId);
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-          }
-          return response.json();
-        })
-        .then(devicesData => {
-          devices = devicesData.devices || {};
-          console.log('Loaded devices:', Object.keys(devices).length);
 
-          // Load sources
-          return fetch('/api/sources')
-            .then(sourcesResponse => {
-              if (sourcesResponse.ok) {
-                return sourcesResponse.json();
-              } else {
-                console.warn('Failed to load sources, using empty array');
-                return { sources: [] };
-              }
-            })
-            .catch(sourceError => {
-              console.warn('Error loading sources:', sourceError);
-              return { sources: [] };
-            });
-        })
-        .then(sourcesData => {
-          sources = sourcesData.sources || [];
-          renderDevices();
-        })
-        .catch(error => {
-          console.error('Error loading devices:', error);
-          
-          let errorMessage = 'Error loading devices';
-          if (error.name === 'AbortError') {
-            errorMessage = 'Request timeout - server may be slow or offline';
-          } else if (error.message.includes('Failed to fetch')) {
-            errorMessage = 'Cannot connect to server - check if OBS-Tally server is running';
-          } else {
-            errorMessage = `Error: ${error.message}`;
-          }
-          
-          if (grid) {
-            grid.innerHTML = `
-              <div style="color: var(--error-color); grid-column: 1 / -1; text-align: center; padding: 40px 20px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.6; margin-bottom: 15px;">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="8" x2="12" y2="12"></line>
-                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
-                <h3 style="font-weight: 500; margin-top: 0;">${errorMessage}</h3>
-                <div style="background: rgba(255,59,48,0.1); border-radius: 10px; padding: 16px; max-width: 400px; margin: 0 auto;">
-                  <p style="font-weight: 500; margin-top: 0;">Troubleshooting steps:</p>
-                  <ul style="text-align: left; padding-left: 20px;">
-                    <li>Check if OBS-Tally server is running</li>
-                    <li>Verify server is accessible at: <strong>${window.location.origin}</strong></li>
-                    <li>Check browser console for detailed errors</li>
-                    <li>Try refreshing the page</li>
-                  </ul>
-                </div>
-                <button class="btn" onclick="loadDevices()" style="margin-top: 20px;">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
-                  </svg>
-                  Retry Connection
-                </button>
-              </div>`;
-          }
-        });
-    }
-
-    // Render devices in the grid
-    function renderDevices() {
-      const deviceGrid = document.getElementById('deviceGrid');
-      if (!deviceGrid) return;
-      
-      if (Object.keys(devices).length === 0) {
-        deviceGrid.innerHTML = `
-          <div style="text-align: center; color: var(--text-secondary); grid-column: 1 / -1; padding: 40px 0;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5; margin-bottom: 10px;">
-              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-            </svg>
-            <p>No devices registered</p>
-            <p style="font-size: 0.9em; opacity: 0.7; margin-top: 10px;">Use auto-discover button or register a device manually</p>
-          </div>`;
-        return;
-      }
-      
-      let html = '';
-      
-      for (const deviceId in devices) {
-        const device = devices[deviceId];
-        const isOnline = device.online;
-        const lastSeen = device.lastSeen ? new Date(device.lastSeen) : null;
-        const timeSinceLastSeen = lastSeen ? getTimeSinceLastSeen(lastSeen) : 'Never';
-        
-        // Get current tally status for this device
-        const tallyState = tallyStatus[deviceId] || { state: 'idle' };
-        
-        html += `
-          <div class="device-card" data-device-id="${deviceId}">
-            <div class="device-header">
-              <div class="device-name">${device.name || deviceId}</div>
-              <div class="device-status-badge ${isOnline ? 'status-online' : 'status-offline'}">
-                ${isOnline ? 'Online' : 'Offline'}
-              </div>
-            </div>
-            
-            <div class="device-tally ${tallyState.state ? 'tally-' + tallyState.state : 'tally-idle'}">
-              ${formatTallyState(tallyState.state || 'idle')} ${tallyState.sourceName ? '- ' + tallyState.sourceName : ''}
-            </div>
-            
-            <div class="device-info">
-              <p><strong>Device ID:</strong> ${deviceId}</p>
-              <p><strong>IP Address:</strong> ${device.ip || 'Unknown'}</p>
-              <p><strong>MAC Address:</strong> ${device.mac || 'Unknown'}</p>
-              <p><strong>Last Seen:</strong> ${timeSinceLastSeen}</p>
-              <p><strong>Source:</strong> ${device.source || 'None assigned'}</p>
-            </div>
-            
-            <div class="device-actions">
-              <button class="btn configure-device-btn" data-device-id="${deviceId}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="3"></circle>
-                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                </svg>
-                Configure
-              </button>
-              <button class="btn btn-danger delete-device-btn" data-device-id="${deviceId}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
-                Delete
-              </button>
-            </div>
-          </div>`;
-      }
-      
-      deviceGrid.innerHTML = html;
-      
-      // Add event listeners for device configuration and deletion
-      document.querySelectorAll('.configure-device-btn').forEach(btn => {
-        btn.addEventListener('click', configureDevice);
-      });
-      
-      document.querySelectorAll('.delete-device-btn').forEach(btn => {
-        btn.addEventListener('click', deleteDevice);
-      });
-    }
-
-    // Format tally state for display
-    function formatTallyState(state) {
-      const stateMap = {
-        'idle': 'Idle',
-        'preview': 'Preview',
-        'live': 'Live',
-        'unknown': 'Unknown'
-      };
-      return stateMap[state] || 'Idle';
-    }
-
-    // Get human-friendly time since last seen
-    function getTimeSinceLastSeen(lastSeen) {
-      if (!lastSeen) return 'Never';
-      
-      const now = new Date();
-      const diff = now - lastSeen;
-      
-      // Less than a minute
-      if (diff < 60000) {
-        return 'Just now';
-      }
-      
-      // Less than an hour
-      if (diff < 3600000) {
-        const minutes = Math.floor(diff / 60000);
-        return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
-      }
-      
-      // Less than a day
-      if (diff < 86400000) {
-        const hours = Math.floor(diff / 3600000);
-        return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
-      }
-      
-      // More than a day
-      const days = Math.floor(diff / 86400000);
-      return `${days} day${days !== 1 ? 's' : ''} ago`;
-    }
-
-    // Configure device
-    function configureDevice() {
-      const deviceId = this.getAttribute('data-device-id');
-      const device = devices[deviceId];
-      
-      if (!device) {
-        showNotification('Device not found', 'error');
-        return;
-      }
-      
-      // Create source options HTML
-      let sourceOptions = '<option value="">No source (Idle)</option>';
-      sources.forEach(source => {
-        sourceOptions += `<option value="${source}" ${device.source === source ? 'selected' : ''}>${source}</option>`;
-      });
-      
-      // Create modal for configuration
-      const modal = document.createElement('div');
-      modal.className = 'modal';
-      modal.innerHTML = `
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>Configure Device: ${device.name || deviceId}</h3>
-            <button class="close-modal">&times;</button>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="deviceNameEdit">Device Name</label>
-              <input type="text" id="deviceNameEdit" class="form-control" value="${device.name || ''}">
-            </div>
-            <div class="form-group">
-              <label for="deviceSourceEdit">Monitor Source</label>
-              <select id="deviceSourceEdit" class="form-control">
-                ${sourceOptions}
-              </select>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn" id="saveDeviceBtn">Save Changes</button>
-            <button class="btn btn-secondary" id="cancelDeviceBtn">Cancel</button>
-          </div>
-        </div>
-      `;
-      
-      document.body.appendChild(modal);
-      
-      // Style the modal
-      const modalStyle = document.createElement('style');
-      modalStyle.textContent = `
-        .modal {
-          display: block;
-          position: fixed;
-          z-index: 1000;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          background-color: rgba(0,0,0,0.4);
-          animation: fadeIn 0.2s;
-        }
-        
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        
-        .modal-content {
-          background-color: var(--card-bg);
-          margin: 10% auto;
-          padding: 0;
-          border-radius: 16px;
-          box-shadow: 0 4px 30px var(--shadow-color);
-          width: 90%;
-          max-width: 500px;
-          animation: slideDown 0.3s;
-        }
-        
-        @keyframes slideDown {
-          from { transform: translateY(-50px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .modal-header {
-          padding: 20px;
-          border-bottom: 1px solid var(--border-color);
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-        
-        .modal-header h3 {
-          margin: 0;
-          font-weight: 600;
-        }
-        
-        .modal-body {
-          padding: 20px;
-        }
-        
-        .modal-footer {
-          padding: 15px  20px;
-          border-top: 1px solid var(--border-color);
-          display: flex;
-          justify-content: flex-end;
-          gap: 10px;
-        }
-        
-        .close-modal {
-          background: none;
-          border: none;
-          font-size: 24px;
-          cursor: pointer;
-          color: var(--text-secondary);
-          padding: 0 8px;
-          border-radius: 50%;
-          line-height: 1;
-        }
-        
-        .close-modal:hover {
-          color: var(--text-primary);
-          background-color: var(--border-color);
-        }
-        
-        .btn-secondary {
-          background-color: var(--border-color);
-          color: var(--text-primary);
-        }
-      `;
-      
-      document.head.appendChild(modalStyle);
-      
-      // Close modal on click/escape
-      const closeModal = () => {
-        document.body.removeChild(modal);
-        document.head.removeChild(modalStyle);
-      };
-      
-      modal.querySelector('.close-modal').addEventListener('click', closeModal);
-      modal.querySelector('#cancelDeviceBtn').addEventListener('click', closeModal);
-      
-      document.addEventListener('keydown', function escapeHandler(e) {
-        if (e.key === 'Escape') {
-          closeModal();
-          document.removeEventListener('keydown', escapeHandler);
-        }
-      });
-      
-      // Handle save changes
-      modal.querySelector('#saveDeviceBtn').addEventListener('click', async () => {
-        const newName = document.getElementById('deviceNameEdit').value.trim();
-        const newSource = document.getElementById('deviceSourceEdit').value;
-        
-        try {
-          const response = await fetch(`/api/esp32/devices/${deviceId}/config`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              deviceName: newName,
-              assignedSource: newSource
-            }),
-          });
-          
-          if (response.ok) {
-            // Update local data
-            devices[deviceId].name = newName;
-            devices[deviceId].source = newSource;
-            
-            // Re-render devices
-            renderDevices();
-            
-            showNotification('Device updated successfully', 'success');
-            closeModal();
-          } else {
-            throw new Error('Failed to update device');
-          }
-        } catch (error) {
-          console.error('Error updating device:', error);
-          showNotification('Error updating device: ' + error.message, 'error');
-        }
-      });
-    }
-
-    // Delete device
-    function deleteDevice() {
-      const deviceId = this.getAttribute('data-device-id');
-      const device = devices[deviceId];
-      
-      if (!device) {
-        showNotification('Device not found', 'error');
-        return;
-      }
-      
-      if (confirm(`Are you sure you want to delete the device "${device.name || deviceId}"?`)) {
-        fetch(`/api/esp32/devices/${deviceId}`, {
-          method: 'DELETE'
-        })
-          .then(response => {
-            if (response.ok) {
-              delete devices[deviceId];
-              renderDevices();
-              showNotification('Device deleted successfully', 'success');
-            } else {
-              throw new Error('Failed to delete device');
-            }
-          })
-          .catch(error => {
-            console.error('Error deleting device:', error);
-            showNotification('Error deleting device: ' + error.message, 'error');
-          });
-      }
-    }
-
-    // Register a new device
-    function registerDevice() {
-      const deviceId = document.getElementById('deviceId').value.trim();
-      const deviceName = document.getElementById('deviceName').value.trim();
-      const macAddress = document.getElementById('macAddress').value.trim();
-      
-      if (!deviceId) {
-        showNotification('Device ID is required', 'error');
-        return;
-      }
-      
-      // Store device ID in localStorage for persistence
-      localStorage.setItem('deviceId', deviceId);
-      
-      fetch('/api/esp32/devices', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          deviceId: deviceId,
-          name: deviceName,
-          mac: macAddress
-        }),
-      })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to register device');
-          }
-        })
-        .then(data => {
-          // Add the new device and render
-          devices[deviceId] = {
-            deviceId: deviceId,
-            name: deviceName,
-            mac: macAddress,
-            online: false
-          };
-          
-          renderDevices();
-          
-          // Clear the form
-          document.getElementById('deviceId').value = '';
-          document.getElementById('deviceName').value = '';
-          document.getElementById('macAddress').value = '';
-          
-          showNotification('Device registered successfully', 'success');
-        })
-        .catch(error => {
-          console.error('Error registering device:', error);
-          showNotification('Error registering device: ' + error.message, 'error');
-        });
-    }
-
-    // Auto-discover devices
-    function discoverDevices() {
-      const button = document.getElementById('discoverBtn');
-      const originalText = button.innerHTML;
-      const statusSpan = document.getElementById('discoveryStatus');
-      
-      button.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        Discovering...`;
-      button.disabled = true;
-      statusSpan.textContent = 'Scanning network for ESP32 devices...';
-      
-      fetch('/api/esp32/discover', {
-        method: 'POST'
-      })
-        .then(response => response.json())
-        .then(result => {
-          if (result.success) {
-            statusSpan.textContent = `${result.found || 0} device(s) found`;
-            statusSpan.style.color = 'var(--success-color)';
-            
-            if (result.found > 0) {
-              showNotification(`${result.found} new device(s) discovered!`, 'success');
-              
-              // Refresh the device list
-              loadDevices();
-            } else {
-              showNotification('No new devices found on the network', 'info');
-            }
-          } else {
-            throw new Error(result.error || 'Discovery failed');
-          }
-        })
-        .catch(error => {
-          console.error('Error discovering devices:', error);
-          statusSpan.textContent = `Error: ${error.message}`;
-          statusSpan.style.color = 'var(--error-color)';
-          showNotification('Error discovering devices: ' + error.message, 'error');
-        })
-        .finally(() => {
-          button.innerHTML = originalText;
-          button.disabled = false;
-          
-          // Clear the status message after 5 seconds
-          setTimeout(() => {
-            if (statusSpan.textContent.includes('Scanning') || 
-                statusSpan.textContent.includes('Error:') ||
-                statusSpan.textContent.includes('device(s) found')) {
-              statusSpan.textContent = '';
-            }
-          }, 5000);
-        });
-    }
 
     // Enhanced notification function that creates UI notifications
     function showNotification(message, type = 'info') {
@@ -2076,61 +2149,330 @@
 
     // Add code to persist device ID across page refreshes
     document.addEventListener('DOMContentLoaded', function() {
-        // Load saved device ID from localStorage if it exists
-        const savedDeviceId = localStorage.getItem('deviceId');
-        if (savedDeviceId) {
-            document.getElementById('deviceId').value = savedDeviceId;
-        }
+        console.log('DOM Content Loaded - initializing settings page...');
         
-        // Initialize ESP status display
-        updateESPStatus();
+        // Load network information
+        loadNetworkInfo();
         
-        // Only initialize ESP32 functionality if the elements exist
-        if (document.getElementById('deviceGrid')) {
-          loadNetworkInfo();
-          loadDevices();
-          
-          // Add event listeners for ESP32 functionality
-          const refreshDevicesBtn = document.getElementById('refreshDevicesBtn');
-          if (refreshDevicesBtn) {
-            refreshDevicesBtn.addEventListener('click', loadDevices);
-          }
-          
-          const discoverBtn = document.getElementById('discoverBtn');
-          if (discoverBtn) {
-            discoverBtn.addEventListener('click', discoverDevices);
-          }
-          
-          const registerBtn = document.getElementById('registerBtn');
-          if (registerBtn) {
-            registerBtn.addEventListener('click', registerDevice);
-          }
-        }
+        // Initialize sources display (load from server)
+        console.log('Calling initializeSources...');
+        initializeSources();
     });
     
-    // Add a function to update the ESP status display
-    function updateESPStatus() {
-        // Update ESP status based on WebSocket events
-        ws.addEventListener('message', function(event) {
-            try {
-                const data = JSON.parse(event.data);
-                if (data.espStatus) {
-                    const espStatusIndicator = document.getElementById('espStatus');
-                    const espStatusText = document.getElementById('espStatusText');
-                    
-                    if (data.espStatus === 'online') {
-                        espStatusIndicator.style.backgroundColor = 'var(--success-color)';
-                        espStatusText.textContent = 'Online';
-                      } else {
-                        espStatusIndicator.style.backgroundColor = 'var(--error-color)';
-                        espStatusText.textContent = 'Offline';
-                      }
-                }
-            } catch (error) {
-                console.error('Error parsing ESP status:', error);
-            }
-        });
+    // Global function to remove source from selected list (needed for onclick handlers)
+    function removeSourceFromSelected(sourceName) {
+      const sourcesInput = document.getElementById('sources');
+      
+      // Get current sources and filter out the one to remove
+      const currentSources = sourcesInput.value
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean)
+        .filter(source => source !== sourceName);
+      
+      sourcesInput.value = currentSources.join(', ');
+      
+      // Update the UI
+      updateSelectedSourcesDisplay();
+      showNotification(`Removed "${sourceName}" from monitored sources`, 'info');
     }
+
+    // Global function to update selected sources display (needed by removeSourceFromSelected)
+    function updateSelectedSourcesDisplay(sourcesToDisplay = null) {
+      const sourcesInput = document.getElementById('sources');
+      const selectedSourcesList = document.getElementById('selectedSourcesList');
+      
+      if (!sourcesInput || !selectedSourcesList) {
+        console.log('Sources display elements not ready yet, retrying...');
+        // Retry after a short delay if elements aren't ready
+        setTimeout(() => updateSelectedSourcesDisplay(sourcesToDisplay), 100);
+        return;
+      }
+      
+      // Use provided sources or get from input field
+      let currentSources;
+      if (sourcesToDisplay) {
+        currentSources = sourcesToDisplay;
+      } else {
+        currentSources = sourcesInput.value
+          .split(',')
+          .map(s => s.trim())
+          .filter(Boolean);
+      }
+      
+      console.log('Updating selected sources display with:', currentSources);
+      
+      if (currentSources.length === 0) {
+        selectedSourcesList.innerHTML = '<div class="no-sources-message">No sources selected for monitoring</div>';
+        return;
+      }
+      
+      selectedSourcesList.innerHTML = '';
+      
+      currentSources.forEach(sourceName => {
+        const sourceChip = document.createElement('div');
+        sourceChip.className = 'selected-source-chip';
+        
+        // Check if this is a device-specific source (not in the form input)
+        const isDeviceSpecific = !sourcesInput.value.split(',').map(s => s.trim()).includes(sourceName);
+        
+        sourceChip.innerHTML = `
+          <span class="source-name">${sourceName}${isDeviceSpecific ? ' (device-specific)' : ''}</span>
+          ${!isDeviceSpecific ? `
+            <button type="button" class="remove-source-btn" onclick="removeSourceFromSelected('${sourceName}')" title="Remove source">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          ` : ''}
+        `;
+        
+        // Add different styling for device-specific sources
+        if (isDeviceSpecific) {
+          sourceChip.style.backgroundColor = 'rgba(0, 122, 255, 0.1)';
+          sourceChip.style.borderColor = 'rgba(0, 122, 255, 0.3)';
+        }
+        
+        selectedSourcesList.appendChild(sourceChip);
+      });
+    }
+    
+
+
+    // Tab Navigation Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        function showTab(tabId) {
+            // Hide all tab contents
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Deactivate all tab buttons
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Activate the selected tab button
+            document.querySelector(`.tab-button[data-tab="${tabId}"]`).classList.add('active');
+            
+            // Save the active tab to localStorage
+            localStorage.setItem('obs-tally-active-tab', tabId);
+        }
+        
+        // Add click event to tab buttons
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+                showTab(tabId);
+            });
+        });
+        
+        // Check if there's a saved tab preference
+        const savedTab = localStorage.getItem('obs-tally-active-tab');
+        if (savedTab && document.getElementById(savedTab)) {
+            showTab(savedTab);
+        } else {
+            // Default to the first tab
+            const firstTabId = tabButtons[0].getAttribute('data-tab');
+            showTab(firstTabId);
+        }
+    });
   </script>
+
+  <!-- Device Configuration Modal -->
+  <div id="deviceConfigModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Configure Device</h3>
+        <button class="modal-close" onclick="closeDeviceConfigModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="configDeviceName">Device Name:</label>
+          <input type="text" id="configDeviceName" class="form-input" placeholder="Enter device name">
+        </div>
+        <div class="form-group">
+          <label for="configAssignedSource">Assigned Source:</label>
+          <select id="configAssignedSource" class="form-select">
+            <option value="None">None</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Current Status:</label>
+          <div id="configDeviceStatus" class="device-status-info">
+            <span class="status-indicator" id="configStatusIndicator"></span>
+            <span id="configStatusText">Loading...</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeDeviceConfigModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveDeviceConfiguration()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Device Configuration Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 0;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      color: var(--header-color);
+      font-size: 1.2em;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      background: var(--error-color);
+      color: white;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-footer {
+      padding: 20px 24px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--input-border);
+      border-radius: 8px;
+      background: var(--input-bg);
+      color: var(--text-primary);
+      font-size: 14px;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--button-bg);
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+    }
+
+    .device-status-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 8px;
+    }
+
+    .dark-mode .device-status-info {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-checkbox {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      cursor: pointer;
+      accent-color: var(--button-bg);
+    }
+
+    .checkbox-item label {
+      margin: 0;
+      cursor: pointer;
+      font-weight: normal;
+      color: var(--text-primary);
+    }
+
+    .btn-secondary {
+      background: var(--text-secondary);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: var(--text-primary);
+    }
+
+    .btn-primary {
+      background: var(--button-bg);
+      color: var(--button-text);
+    }
+
+    .btn-primary:hover {
+      background: #0051d5;
+    }
+  </style>
 </body>
 </html>

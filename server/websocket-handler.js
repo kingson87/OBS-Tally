@@ -1,131 +1,98 @@
-const WebSocket = require('ws');
+const { Server } = require('socket.io');
 
-let wss = null;
+let io = null;
 
-// Initialize WebSocket server
-function initializeWebSocketServer(server) {
-  wss = new WebSocket.Server({ server });
+// Initialize Socket.IO server
+function initializeSocketIOServer(server) {
+  io = new Server(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"]
+    }
+  });
   
-  wss.on('connection', (ws) => {
-    console.log('New WebSocket client connected');
+  io.on('connection', (socket) => {
+    console.log('New Socket.IO client connected:', socket.id);
     
-    ws.on('message', (message) => {
+    socket.on('message', (data) => {
       try {
-        const data = JSON.parse(message);
-        console.log('Received WebSocket message:', data);
+        console.log('Received Socket.IO message:', data);
         
         // Handle client messages if needed
         if (data.type === 'ping') {
-          ws.send(JSON.stringify({ type: 'pong', timestamp: new Date().toISOString() }));
+          socket.emit('message', { type: 'pong', timestamp: new Date().toISOString() });
         }
       } catch (error) {
-        console.error('Error parsing WebSocket message:', error);
+        console.error('Error handling Socket.IO message:', error);
       }
     });
     
-    ws.on('close', () => {
-      console.log('WebSocket client disconnected');
+    socket.on('disconnect', () => {
+      console.log('Socket.IO client disconnected:', socket.id);
     });
     
-    ws.on('error', (error) => {
-      console.error('WebSocket error:', error);
+    socket.on('error', (error) => {
+      console.error('Socket.IO error:', error);
     });
   });
   
-  return wss;
+  return io;
 }
 
 // Enhanced function to broadcast device status to all clients
 function broadcastDeviceStatus(deviceId, status, additionalData = {}) {
-  const statusUpdate = JSON.stringify({
+  const statusUpdate = {
     type: 'device-status-update',
     deviceId: deviceId,
     status: status,
     timestamp: new Date().toISOString(),
     ...additionalData
-  });
+  };
   
   console.log('Broadcasting device status:', deviceId, '->', status);
   
-  if (wss) {
-    wss.clients.forEach(client => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(statusUpdate);
-      }
-    });
-  }
-}
-
-// Enhanced function to broadcast firmware update progress
-function broadcastFirmwareProgress(deviceId, stage, progress = null, message = null, error = null) {
-  const progressUpdate = JSON.stringify({
-    type: 'firmware-progress',
-    deviceId: deviceId,
-    stage: stage,
-    progress: progress,
-    message: message,
-    error: error,
-    timestamp: new Date().toISOString(),
-    retry: stage === 'retrying'
-  });
-  
-  console.log('Broadcasting firmware progress:', deviceId, '->', stage, progress ? `(${progress}%)` : '', message || '');
-  
-  if (wss) {
-    wss.clients.forEach(client => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(progressUpdate);
-      }
-    });
+  if (io) {
+    io.emit('device-status-update', statusUpdate);
   }
 }
 
 // Function to broadcast ESP32-specific connection status
 function broadcastESP32Status(deviceId, status, details = {}) {
-  const statusUpdate = JSON.stringify({
+  const statusUpdate = {
     type: 'esp32-status',
     deviceId: deviceId,
     status: status,
     details: details,
     timestamp: new Date().toISOString()
-  });
+  };
   
   console.log('Broadcasting ESP32 status:', deviceId, '->', status);
   
-  if (wss) {
-    wss.clients.forEach(client => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(statusUpdate);
-      }
-    });
+  if (io) {
+    io.emit('esp32-status', statusUpdate);
   }
 }
 
 // Function to broadcast OBS-specific status updates
 function broadcastOBSStatus(status, details = {}) {
-  const statusUpdate = JSON.stringify({
+  const statusUpdate = {
     type: 'obs-status',
     status: status,
     details: details,
     timestamp: new Date().toISOString()
-  });
+  };
   
   console.log('Broadcasting OBS status:', status);
   
-  if (wss) {
-    wss.clients.forEach(client => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(statusUpdate);
-      }
-    });
+  if (io) {
+    io.emit('obs-status', statusUpdate);
   }
 }
 
 // Export functions for use in main application
 module.exports = {
-  initializeWebSocketServer,
+  initializeSocketIOServer,
   broadcastDeviceStatus,
-  broadcastFirmwareProgress,
   broadcastESP32Status,
   broadcastOBSStatus
 };

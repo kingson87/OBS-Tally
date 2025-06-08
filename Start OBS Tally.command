@@ -29,6 +29,14 @@ fi
 NODE_VERSION=$(node -v | cut -d 'v' -f 2)
 NODE_MAJOR=$(echo $NODE_VERSION | cut -d '.' -f 1)
 
+# Check if server-start.js exists
+if [ ! -f "server-start.js" ]; then
+    echo "${YELLOW}⚠️ Using direct start method - no error handler available${NC}"
+else
+    echo "${GREEN}✅ Using enhanced error handling and logging${NC}"
+    USE_WRAPPER=true
+fi
+
 if [ $NODE_MAJOR -lt 16 ]; then
     echo "${YELLOW}⚠️  Warning: Node.js version $NODE_VERSION detected.${NC}"
     echo "${YELLOW}   Recommended version is 16.x or newer.${NC}"
@@ -78,9 +86,17 @@ echo "${BLUE}🌐 Starting server on http://localhost:3005${NC}"
 # Create logs directory if it doesn't exist
 mkdir -p logs
 
-# Start with logging to file
-LOG_FILE="logs/server-$(date +%Y-%m-%d_%H-%M-%S).log"
-nohup node index.js > "$LOG_FILE" 2>&1 &
+# Start server with either the wrapper script or directly
+if [ "$USE_WRAPPER" = true ]; then
+    echo "${BOLD}🚀 Starting server with enhanced error handling...${NC}"
+    nohup node server-start.js &
+else
+    # Start with traditional logging to file
+    LOG_FILE="logs/server-$(date +%Y-%m-%d_%H-%M-%S).log"
+    echo "${BOLD}🚀 Starting server with direct logging to ${LOG_FILE}...${NC}"
+    nohup node index.js > "$LOG_FILE" 2>&1 &
+fi
+
 SERVER_PID=$!
 
 # Store PID for later reference

@@ -1,0 +1,3474 @@
+Starting OBS Tally server. Logs will be written to: /Users/prince/Projects/OBS-Tally/logs/server-2025-06-07T22-55-17.log
+OBS Tally server process started with PID: 11732
+Using built-in fetch for HTTP requests
+System information: {
+  platform: 'darwin',
+  arch: 'arm64',
+  isAppleSilicon: true,
+  nodeVersion: 'v18.20.8'
+}
+Loaded OBS config from file: /Users/prince/Projects/OBS-Tally/obs-config.json
+Loaded 2 sources from file: /Users/prince/Projects/OBS-Tally/sources.json
+Loaded ESP32 devices from file: 2
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Idle, assignedSource=NDI Audience Camera, sourceStatus=Idle, lastNotified=Idle, final=Idle
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Idle
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Idle, assignedSource=NDI Main Camera, sourceStatus=Idle, lastNotified=Idle, final=Idle
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Idle
+[32m🚀 OBS Tally server running on http://localhost:3005[0m
+[36m🌐 Network access: http://192.168.0.91:3005[0m
+[33m📱 Open the URL above in your browser to control the tally system[0m
+
+🏥 ESP32 health monitoring started
+Attempting to connect to OBS WebSocket at ws://localhost:4455
+📡 UDP discovery server listening on 0.0.0.0:3006
+[32m✓ OBS WebSocket connection successful[0m
+🎬 Initial scenes - Program: 2nd Screen Capture, Preview: Dual Screen - Audience
+🔴 Initial recording status: INACTIVE
+🟡 Initial streaming status: INACTIVE
+⚡ Status Change: NDI Audience Camera Idle → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Idle → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🚀 ESP32 notification skipped for m5stick-fa061590 (debouncing: 88ms remaining)
+🚀 ESP32 notification skipped for tally-f09e9e1079e8 (debouncing: 89ms remaining)
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Idle (161.3ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Idle (330.1ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 330.54ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+New WebSocket client connected
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Idle, Uptime: 4829768s
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Preview, assignedSource=NDI Main Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (244.5ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (481.3ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 481.73ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Live, assignedSource=NDI Main Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (91.8ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (303.0ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 303.31ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Preview, assignedSource=NDI Main Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (283.2ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (460.4ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 460.70ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Live, assignedSource=NDI Main Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (104.0ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (328.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 329.05ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2001.6ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2007.0ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+WebSocket client disconnected
+Client disconnected from tally server. Total clients: 0
+Retrieved 22 sources from OBS
+Retrieved 22 sources from OBS
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.8ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.1ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.3ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (321.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 322.16ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (472.3ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 472.64ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (307.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 308.15ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (504.2ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 504.64ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (251.7ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 251.98ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (638.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 639.09ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (288.4ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 288.75ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (433.3ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 433.51ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.5ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.7ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.0ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.8ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.3ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.8ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.5ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2002.8ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.5ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.5ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2005.5ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.6ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.8ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.2ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (309.9ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 310.19ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (395.6ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 395.97ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (425.5ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 425.78ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.0ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.8ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.8ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2002.5ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.0ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.2ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.5ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.4ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.3ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.0ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2002.8ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.2ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+OBS Tally server exited with code null and signal SIGKILL
+Starting OBS Tally server. Logs will be written to: /Users/prince/Projects/OBS-Tally/logs/server-2025-06-07T23-16-41.log
+OBS Tally server process started with PID: 12844
+Using built-in fetch for HTTP requests
+System information: {
+  platform: 'darwin',
+  arch: 'arm64',
+  isAppleSilicon: true,
+  nodeVersion: 'v18.20.8'
+}
+Loaded OBS config from file: /Users/prince/Projects/OBS-Tally/obs-config.json
+Loaded 2 sources from file: /Users/prince/Projects/OBS-Tally/sources.json
+Loaded ESP32 devices from file: 2
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Idle, assignedSource=NDI Audience Camera, sourceStatus=Idle, lastNotified=Idle, final=Idle
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Idle
+[32m🚀 OBS Tally server running on http://localhost:3005[0m
+[36m🌐 Network access: http://192.168.0.91:3005[0m
+[33m📱 Open the URL above in your browser to control the tally system[0m
+
+🏥 ESP32 health monitoring started
+Attempting to connect to OBS WebSocket at ws://localhost:4455
+📡 UDP discovery server listening on 0.0.0.0:3006
+[32m✓ OBS WebSocket connection successful[0m
+🎬 Initial scenes - Program: 2nd Screen Capture, Preview: Dual Screen - Audience
+🔴 Initial recording status: INACTIVE
+🟡 Initial streaming status: INACTIVE
+⚡ Status Change: NDI Audience Camera Idle → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Idle → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🚀 ESP32 notification skipped for m5stick-fa061590 (debouncing: 87ms remaining)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Idle (456.2ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 456.70ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+New WebSocket client connected
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (440.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 441.16ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (491.7ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 492.07ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (499.0ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 499.26ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (406.1ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 406.55ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (333.2ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 333.61ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+WebSocket client disconnected
+Client disconnected from tally server. Total clients: 0
+New WebSocket client connected
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (445.9ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 446.33ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (329.2ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 329.52ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (376.6ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 377.03ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (338.2ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 338.62ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (482.0ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 482.47ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (293.2ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 293.51ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (721.7ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 722.10ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+WebSocket client disconnected
+Client disconnected from tally server. Total clients: 0
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (432.1ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 432.35ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (369.7ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 370.06ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (254.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 255.12ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+🎬 Preview scene changed to: 2nd Screen Capture
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (479.4ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 479.68ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (314.5ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 314.81ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (423.2ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 423.54ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (326.5ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 326.90ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2005.6ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+New WebSocket client connected
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+WebSocket client disconnected
+Client disconnected from tally server. Total clients: 0
+New WebSocket client connected
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (259.1ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 259.52ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (279.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 280.08ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.6ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (449.7ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 450.07ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (664.4ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 664.69ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (510.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 511.08ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2005.9ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2007.5ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2005.6ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.5ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.9ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.7ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+WebSocket client disconnected
+Client disconnected from tally server. Total clients: 0
+New WebSocket client connected
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+WebSocket client disconnected
+Client disconnected from tally server. Total clients: 0
+New WebSocket client connected
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (397.6ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 397.95ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (449.6ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 449.95ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (229.2ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 229.53ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (648.2ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 648.43ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (458.0ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 458.93ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.5ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2005.6ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+OBS Tally server exited with code null and signal SIGKILL
+Starting OBS Tally server. Logs will be written to: /Users/prince/Projects/OBS-Tally/logs/server-2025-06-07T23-21-50.log
+OBS Tally server process started with PID: 13285
+Using built-in fetch for HTTP requests
+System information: {
+  platform: 'darwin',
+  arch: 'arm64',
+  isAppleSilicon: true,
+  nodeVersion: 'v18.20.8'
+}
+Loaded OBS config from file: /Users/prince/Projects/OBS-Tally/obs-config.json
+Loaded 2 sources from file: /Users/prince/Projects/OBS-Tally/sources.json
+Loaded ESP32 devices from file: 2
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Idle, assignedSource=NDI Audience Camera, sourceStatus=Idle, lastNotified=Idle, final=Idle
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Idle
+[32m🚀 OBS Tally server running on http://localhost:3005[0m
+[36m🌐 Network access: http://192.168.0.91:3005[0m
+[33m📱 Open the URL above in your browser to control the tally system[0m
+
+🏥 ESP32 health monitoring started
+Attempting to connect to OBS WebSocket at ws://localhost:4455
+📡 UDP discovery server listening on 0.0.0.0:3006
+[32m✓ OBS WebSocket connection successful[0m
+🎬 Initial scenes - Program: Dual Screen - Audience, Preview: 2nd Screen Capture
+🔴 Initial recording status: INACTIVE
+🟡 Initial streaming status: INACTIVE
+⚡ Status Change: NDI Audience Camera Idle → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Idle → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🚀 ESP32 notification skipped for m5stick-fa061590 (debouncing: 88ms remaining)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Idle (371.5ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 371.81ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+New WebSocket client connected
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (424.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 425.03ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (406.1ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 406.63ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (362.9ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 363.18ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2007.3ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+OBS Tally server exited with code null and signal SIGKILL
+Starting OBS Tally server. Logs will be written to: /Users/prince/Projects/OBS-Tally/logs/server-2025-06-07T23-22-40.log
+OBS Tally server process started with PID: 13714
+Using built-in fetch for HTTP requests
+System information: {
+  platform: 'darwin',
+  arch: 'arm64',
+  isAppleSilicon: true,
+  nodeVersion: 'v18.20.8'
+}
+Loaded OBS config from file: /Users/prince/Projects/OBS-Tally/obs-config.json
+Loaded 2 sources from file: /Users/prince/Projects/OBS-Tally/sources.json
+Loaded ESP32 devices from file: 2
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Idle, assignedSource=NDI Audience Camera, sourceStatus=Idle, lastNotified=Idle, final=Idle
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Idle
+[32m🚀 OBS Tally server running on http://localhost:3005[0m
+[36m🌐 Network access: http://192.168.0.91:3005[0m
+[33m📱 Open the URL above in your browser to control the tally system[0m
+
+🏥 ESP32 health monitoring started
+Attempting to connect to OBS WebSocket at ws://localhost:4455
+📡 UDP discovery server listening on 0.0.0.0:3006
+[32m✓ OBS WebSocket connection successful[0m
+🎬 Initial scenes - Program: 2nd Screen Capture, Preview: Dual Screen - Audience
+🔴 Initial recording status: INACTIVE
+🟡 Initial streaming status: INACTIVE
+⚡ Status Change: NDI Audience Camera Idle → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Idle → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🚀 ESP32 notification skipped for m5stick-fa061590 (debouncing: 88ms remaining)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Idle (362.0ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 362.35ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+New WebSocket client connected
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (375.4ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 375.84ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (446.9ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 447.22ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+OBS Tally server exited with code null and signal SIGKILL
+Starting OBS Tally server. Logs will be written to: /Users/prince/Projects/OBS-Tally/logs/server-2025-06-07T23-23-11.log
+OBS Tally server process started with PID: 14134
+Using built-in fetch for HTTP requests
+System information: {
+  platform: 'darwin',
+  arch: 'arm64',
+  isAppleSilicon: true,
+  nodeVersion: 'v18.20.8'
+}
+Loaded OBS config from file: /Users/prince/Projects/OBS-Tally/obs-config.json
+Loaded 2 sources from file: /Users/prince/Projects/OBS-Tally/sources.json
+Loaded ESP32 devices from file: 2
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Idle, assignedSource=NDI Audience Camera, sourceStatus=Idle, lastNotified=Idle, final=Idle
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Idle
+[32m🚀 OBS Tally server running on http://localhost:3005[0m
+[36m🌐 Network access: http://192.168.0.91:3005[0m
+[33m📱 Open the URL above in your browser to control the tally system[0m
+
+🏥 ESP32 health monitoring started
+Attempting to connect to OBS WebSocket at ws://localhost:4455
+📡 UDP discovery server listening on 0.0.0.0:3006
+[32m✓ OBS WebSocket connection successful[0m
+🎬 Initial scenes - Program: 2nd Screen Capture, Preview: Dual Screen - Audience
+🔴 Initial recording status: INACTIVE
+🟡 Initial streaming status: INACTIVE
+⚡ Status Change: NDI Audience Camera Idle → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Idle → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🚀 ESP32 notification skipped for m5stick-fa061590 (debouncing: 88ms remaining)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Idle (369.3ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 369.61ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+New WebSocket client connected
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (381.4ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 381.75ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (422.1ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 422.50ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (327.7ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 328.11ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+OBS Tally server exited with code null and signal SIGKILL
+Starting OBS Tally server. Logs will be written to: /Users/prince/Projects/OBS-Tally/logs/server-2025-06-07T23-23-36.log
+OBS Tally server process started with PID: 14570
+Using built-in fetch for HTTP requests
+System information: {
+  platform: 'darwin',
+  arch: 'arm64',
+  isAppleSilicon: true,
+  nodeVersion: 'v18.20.8'
+}
+Loaded OBS config from file: /Users/prince/Projects/OBS-Tally/obs-config.json
+Loaded 2 sources from file: /Users/prince/Projects/OBS-Tally/sources.json
+Loaded ESP32 devices from file: 2
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Idle, assignedSource=NDI Audience Camera, sourceStatus=Idle, lastNotified=Idle, final=Idle
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Idle
+[32m🚀 OBS Tally server running on http://localhost:3005[0m
+[36m🌐 Network access: http://192.168.0.91:3005[0m
+[33m📱 Open the URL above in your browser to control the tally system[0m
+
+🏥 ESP32 health monitoring started
+Attempting to connect to OBS WebSocket at ws://localhost:4455
+📡 UDP discovery server listening on 0.0.0.0:3006
+[32m✓ OBS WebSocket connection successful[0m
+🎬 Initial scenes - Program: Dual Screen - Audience, Preview: 2nd Screen Capture
+🔴 Initial recording status: INACTIVE
+🟡 Initial streaming status: INACTIVE
+⚡ Status Change: NDI Audience Camera Idle → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Idle → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🚀 ESP32 notification skipped for m5stick-fa061590 (debouncing: 88ms remaining)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Idle (395.5ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 396.70ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+New WebSocket client connected
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (645.3ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 645.73ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (267.6ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 268.04ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (389.9ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 390.24ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (310.5ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 311.02ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (374.0ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 374.34ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (425.0ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 425.33ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2007.8ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.6ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2004.8ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2005.0ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 1 clients, 0 errors
+OBS Tally server exited with code null and signal SIGKILL
+Starting OBS Tally server. Logs will be written to: /Users/prince/Projects/OBS-Tally/logs/server-2025-06-07T23-27-55.log
+OBS Tally server process started with PID: 16449
+Using built-in fetch for HTTP requests
+System information: {
+  platform: 'darwin',
+  arch: 'arm64',
+  isAppleSilicon: true,
+  nodeVersion: 'v18.20.8'
+}
+Loaded OBS config from file: /Users/prince/Projects/OBS-Tally/obs-config.json
+Loaded 2 sources from file: /Users/prince/Projects/OBS-Tally/sources.json
+Loaded ESP32 devices from file: 2
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Idle, assignedSource=NDI Audience Camera, sourceStatus=Idle, lastNotified=Idle, final=Idle
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Idle
+[32m🚀 OBS Tally server running on http://localhost:3005[0m
+[36m🌐 Network access: http://192.168.0.91:3005[0m
+[33m📱 Open the URL above in your browser to control the tally system[0m
+
+🏥 ESP32 health monitoring started
+Attempting to connect to OBS WebSocket at ws://localhost:4455
+📡 UDP discovery server listening on 0.0.0.0:3006
+[32m✓ OBS WebSocket connection successful[0m
+🎬 Initial scenes - Program: Dual Screen - Audience, Preview: 2nd Screen Capture
+🔴 Initial recording status: INACTIVE
+🟡 Initial streaming status: INACTIVE
+⚡ Status Change: NDI Audience Camera Idle → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Idle → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🚀 ESP32 notification skipped for m5stick-fa061590 (debouncing: 87ms remaining)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Idle (323.7ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 324.95ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+New WebSocket client connected
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+OBS Tally server exited with code null and signal SIGTERM
+Starting OBS Tally server. Logs will be written to: /Users/prince/Projects/OBS-Tally/logs/server-2025-06-07T23-30-43.log
+OBS Tally server process started with PID: 18207
+Using built-in fetch for HTTP requests
+System information: {
+  platform: 'darwin',
+  arch: 'arm64',
+  isAppleSilicon: true,
+  nodeVersion: 'v18.20.8'
+}
+Loaded OBS config from file: /Users/prince/Projects/OBS-Tally/obs-config.json
+Loaded 2 sources from file: /Users/prince/Projects/OBS-Tally/sources.json
+Loaded ESP32 devices from file: 2
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Idle, assignedSource=NDI Audience Camera, sourceStatus=Idle, lastNotified=Idle, final=Idle
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Idle
+[32m🚀 OBS Tally server running on http://localhost:3005[0m
+[36m🌐 Network access: http://192.168.0.91:3005[0m
+[33m📱 Open the URL above in your browser to control the tally system[0m
+
+🏥 ESP32 health monitoring started
+Attempting to connect to OBS WebSocket at ws://localhost:4455
+📡 UDP discovery server listening on 0.0.0.0:3006
+[32m✓ OBS WebSocket connection successful[0m
+🎬 Initial scenes - Program: Dual Screen - Audience, Preview: 2nd Screen Capture
+🔴 Initial recording status: INACTIVE
+🟡 Initial streaming status: INACTIVE
+⚡ Status Change: NDI Audience Camera Idle → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Idle → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🚀 ESP32 notification skipped for m5stick-fa061590 (debouncing: 88ms remaining)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Idle (325.1ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 325.62ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+New WebSocket client connected
+Client connected to tally server WebSocket. Total clients: 1
+OBS connection status: Connected to OBS
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (278.0ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 278.36ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (288.3ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 288.72ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+WebSocket client disconnected
+Client disconnected from tally server. Total clients: 0
+Retrieved 22 sources from OBS
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (530.1ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 530.60ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (303.9ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 304.33ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (373.3ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 374.04ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+Retrieved 22 sources from OBS
+Retrieved 22 sources from OBS
+Retrieved 22 sources from OBS
+Retrieved 22 sources from OBS
+Retrieved 22 sources from OBS
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (457.3ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 457.65ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+Retrieved 22 sources from OBS
+Retrieved 22 sources from OBS
+Retrieved 22 sources from OBS
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (259.0ms)
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+Retrieved 22 sources from OBS
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (253.2ms)
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2005.0ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2002.9ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for tally-f09e9e1079e8
+[BROADCAST] Message sent to 0 clients, 0 errors
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (692.1ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 692.52ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (325.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 326.72ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+Retrieved 22 sources from OBS
+Starting device discovery scan...
+Scanning network: 192.168.0.0/24
+Device discovery completed. Found 0 new devices.
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (239.6ms)
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+OBS WebSocket connection closed
+Attempting to connect to OBS WebSocket at ws://localhost:4455
+OBS WebSocket connection error: connect ECONNREFUSED ::1:4455
+OBS WebSocket connection closed
+[31m✗ Failed to connect to OBS:[0m connect ECONNREFUSED ::1:4455
+Reconnect attempt 1/3 in 10 seconds
+Stopping OBS Tally server...
+OBS Tally server exited with code null and signal SIGTERM
+Starting OBS Tally server. Logs will be written to: /Users/prince/Projects/OBS-Tally/logs/server-2025-06-08T17-42-53.log
+OBS Tally server process started with PID: 23898
+Using built-in fetch for HTTP requests
+System information: {
+  platform: 'darwin',
+  arch: 'arm64',
+  isAppleSilicon: true,
+  nodeVersion: 'v18.20.8'
+}
+Loaded OBS config from file: /Users/prince/Projects/OBS-Tally/obs-config.json
+Loaded 3 sources from file: /Users/prince/Projects/OBS-Tally/sources.json
+Loaded ESP32 devices from file: 2
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Idle"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Idle"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'idle', sourceName: 'NDI Audience Camera', online: true }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'idle', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "idle",
+    "sourceName": "NDI Audience Camera",
+    "online": true
+  },
+  "tally-f09e9e1079e8": {
+    "state": "idle",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 0
+🔍 [DEBUG] Broadcasted to 0 Socket.IO clients
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Idle, assignedSource=NDI Audience Camera, sourceStatus=Idle, lastNotified=Idle, final=Idle
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Idle
+[32m🚀 OBS Tally server running on http://localhost:3005[0m
+[36m🌐 Network access: http://192.168.0.91:3005[0m
+[33m📱 Open the URL above in your browser to control the tally system[0m
+
+🏥 ESP32 health monitoring started
+Attempting to connect to OBS WebSocket at ws://localhost:4455
+📡 UDP discovery server listening on 0.0.0.0:3006
+[32m✓ OBS WebSocket connection successful[0m
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Idle"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Idle"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'idle', sourceName: 'NDI Audience Camera', online: true }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'idle', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "idle",
+    "sourceName": "NDI Audience Camera",
+    "online": true
+  },
+  "tally-f09e9e1079e8": {
+    "state": "idle",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 0
+🔍 [DEBUG] Broadcasted to 0 Socket.IO clients
+🎬 Initial scenes - Program: 2nd Screen Capture, Preview: Dual Screen - Main
+🔴 Initial recording status: INACTIVE
+🟡 Initial streaming status: INACTIVE
+⚡ Status Change: NDI Audience Camera Idle → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Idle → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Preview"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'preview', sourceName: 'NDI Audience Camera', online: true }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "preview",
+    "sourceName": "NDI Audience Camera",
+    "online": true
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 0
+🔍 [DEBUG] Broadcasted to 0 Socket.IO clients
+🚀 ESP32 notification skipped for m5stick-fa061590 (debouncing: 84ms remaining)
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Live, assignedSource=NDI Main Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (202.7ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 203.02ms
+📊 ESP32 Status: 1 successful, 0 failed, 1 debounced
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Idle (401.5ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 402.05ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🔍 [DEBUG] New Socket.IO client connected: zf5suMiv5DnvrT6SAAAB
+Client connected to tally server Socket.IO. Total clients: 1
+OBS connection status: Connected to OBS
+🔍 [DEBUG] Socket.IO client disconnected: zf5suMiv5DnvrT6SAAAB
+Client disconnected from tally server. Total clients: 0
+Retrieved 22 sources from OBS
+🔍 [DEBUG] New Socket.IO client connected: LmkPqzB65ad43QadAAAD
+Client connected to tally server Socket.IO. Total clients: 1
+OBS connection status: Connected to OBS
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 868906s
+🏥 HEALTH CHECK: 1 healthy, 1 unhealthy ESP32 devices (2003.4ms)
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for m5stick-fa061590
+[BROADCAST] Message sent to 1 clients, 0 errors
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Preview"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'offline'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'preview', sourceName: 'NDI Audience Camera', online: false }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "preview",
+    "sourceName": "NDI Audience Camera",
+    "online": false
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Main
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Live"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'offline'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'program', sourceName: 'NDI Audience Camera', online: false }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "program",
+    "sourceName": "NDI Audience Camera",
+    "online": false
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+🎬 Preview scene changed to: Dual Screen - Main
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Preview"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'offline'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'preview', sourceName: 'NDI Audience Camera', online: false }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "preview",
+    "sourceName": "NDI Audience Camera",
+    "online": false
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Main
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Live"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'offline'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'program', sourceName: 'NDI Audience Camera', online: false }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "program",
+    "sourceName": "NDI Audience Camera",
+    "online": false
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+🎬 Preview scene changed to: Dual Screen - Main
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Preview"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'offline'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'preview', sourceName: 'NDI Audience Camera', online: false }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "preview",
+    "sourceName": "NDI Audience Camera",
+    "online": false
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Main
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Live"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'offline'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'program', sourceName: 'NDI Audience Camera', online: false }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "program",
+    "sourceName": "NDI Audience Camera",
+    "online": false
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+🎬 Preview scene changed to: Stage Projector
+🎬 Preview scene changed to: Dual Screen - Main
+🎬 Program scene changed to: Stage Projector
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Preview"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Preview"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'offline'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'preview', sourceName: 'NDI Audience Camera', online: false }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'preview', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "preview",
+    "sourceName": "NDI Audience Camera",
+    "online": false
+  },
+  "tally-f09e9e1079e8": {
+    "state": "preview",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Preview, assignedSource=NDI Main Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (483.4ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 483.88ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Preview → Idle
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Idle"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Preview"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'offline'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'idle', sourceName: 'NDI Audience Camera', online: false }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'preview', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "idle",
+    "sourceName": "NDI Audience Camera",
+    "online": false
+  },
+  "tally-f09e9e1079e8": {
+    "state": "preview",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+🎬 Preview scene changed to: Stage Projector
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Idle"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'offline'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'idle', sourceName: 'NDI Audience Camera', online: false }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "idle",
+    "sourceName": "NDI Audience Camera",
+    "online": false
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Live, assignedSource=NDI Main Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (102.2ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 102.58ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Stage Projector
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Idle"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Preview"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'offline'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'idle', sourceName: 'NDI Audience Camera', online: false }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'preview', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "idle",
+    "sourceName": "NDI Audience Camera",
+    "online": false
+  },
+  "tally-f09e9e1079e8": {
+    "state": "preview",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Preview, assignedSource=NDI Main Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (230.9ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 231.32ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Stage Projector
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Idle"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'offline'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'idle', sourceName: 'NDI Audience Camera', online: false }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "idle",
+    "sourceName": "NDI Audience Camera",
+    "online": false
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Live, assignedSource=NDI Main Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (177.5ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 177.83ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 898909s
+🎬 Preview scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Idle → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Preview"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'offline'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'preview', sourceName: 'NDI Audience Camera', online: false }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "preview",
+    "sourceName": "NDI Audience Camera",
+    "online": false
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Live"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Preview"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'offline'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'program', sourceName: 'NDI Audience Camera', online: false }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'preview', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "program",
+    "sourceName": "NDI Audience Camera",
+    "online": false
+  },
+  "tally-f09e9e1079e8": {
+    "state": "preview",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Preview, assignedSource=NDI Main Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (177.8ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 178.19ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Preview"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'offline'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'preview', sourceName: 'NDI Audience Camera', online: false }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "preview",
+    "sourceName": "NDI Audience Camera",
+    "online": false
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Live, assignedSource=NDI Main Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (153.0ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 153.42ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+📢 ESP32 device discovered: Tally 1 (tally-f09e9e1079e8) at 192.168.0.64
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+[BROADCAST] Broadcasting device update: device-status-update for m5stick-fa061590
+[BROADCAST] Message sent to 1 clients, 0 errors
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Preview"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'preview', sourceName: 'NDI Audience Camera', online: true }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "preview",
+    "sourceName": "NDI Audience Camera",
+    "online": true
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (387.5ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (295.4ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 295.57ms
+📊 ESP32 Status: 1 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Live"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Preview"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'program', sourceName: 'NDI Audience Camera', online: true }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'preview', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "program",
+    "sourceName": "NDI Audience Camera",
+    "online": true
+  },
+  "tally-f09e9e1079e8": {
+    "state": "preview",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Preview, assignedSource=NDI Main Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (109.7ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (284.9ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 285.20ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Preview"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'preview', sourceName: 'NDI Audience Camera', online: true }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "preview",
+    "sourceName": "NDI Audience Camera",
+    "online": true
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Live, assignedSource=NDI Main Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (256.7ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (462.5ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 462.77ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Live"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Preview"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'program', sourceName: 'NDI Audience Camera', online: true }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'preview', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "program",
+    "sourceName": "NDI Audience Camera",
+    "online": true
+  },
+  "tally-f09e9e1079e8": {
+    "state": "preview",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Preview, assignedSource=NDI Main Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (152.4ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (325.4ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 325.76ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Preview"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'preview', sourceName: 'NDI Audience Camera', online: true }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "preview",
+    "sourceName": "NDI Audience Camera",
+    "online": true
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Live, assignedSource=NDI Main Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (217.8ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (426.3ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 426.63ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Live"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Preview"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'program', sourceName: 'NDI Audience Camera', online: true }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'preview', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "program",
+    "sourceName": "NDI Audience Camera",
+    "online": true
+  },
+  "tally-f09e9e1079e8": {
+    "state": "preview",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Preview, assignedSource=NDI Main Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (133.6ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (448.2ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 448.64ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Preview"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'preview', sourceName: 'NDI Audience Camera', online: true }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "preview",
+    "sourceName": "NDI Audience Camera",
+    "online": true
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Live, assignedSource=NDI Main Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (103.7ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (279.0ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 279.35ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Live"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Preview"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'program', sourceName: 'NDI Audience Camera', online: true }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'preview', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "program",
+    "sourceName": "NDI Audience Camera",
+    "online": true
+  },
+  "tally-f09e9e1079e8": {
+    "state": "preview",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Preview, assignedSource=NDI Main Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (105.2ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (329.3ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 329.60ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Preview"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'preview', sourceName: 'NDI Audience Camera', online: true }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "preview",
+    "sourceName": "NDI Audience Camera",
+    "online": true
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Live, assignedSource=NDI Main Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (129.1ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (329.6ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 329.93ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: 2nd Screen Capture
+🎬 Program scene changed to: Dual Screen - Audience
+⚡ Status Change: NDI Audience Camera Preview → Live
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Live → Preview
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Live"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Preview"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'program', sourceName: 'NDI Audience Camera', online: true }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'preview', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "program",
+    "sourceName": "NDI Audience Camera",
+    "online": true
+  },
+  "tally-f09e9e1079e8": {
+    "state": "preview",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Live, assignedSource=NDI Audience Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Live
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Preview, assignedSource=NDI Main Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Preview
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Preview (188.6ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Live (770.0ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 770.37ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+🎬 Preview scene changed to: Dual Screen - Audience
+🎬 Program scene changed to: 2nd Screen Capture
+⚡ Status Change: NDI Audience Camera Live → Preview
+📱 Source "NDI Audience Camera" used by 1 device(s): M5StickC-Tally
+⚡ Status Change: NDI Main Camera Preview → Live
+📱 Source "NDI Main Camera" used by 1 device(s): Tally 1
+📡 Broadcasting tally status updates...
+🔍 [DEBUG] Current tallyStatus object: {
+  "Camera 1": {
+    "source": "Camera 1",
+    "status": "Idle"
+  },
+  "NDI Audience Camera": {
+    "source": "NDI Audience Camera",
+    "status": "Preview"
+  },
+  "NDI Main Camera": {
+    "source": "NDI Main Camera",
+    "status": "Live"
+  },
+  "iPhone Camo": {
+    "source": "iPhone Camo",
+    "status": "Idle"
+  }
+}
+🔍 [DEBUG] Processing 2 ESP32 devices
+🔍 [DEBUG] Processing device m5stick-fa061590: {
+  assignedSource: 'NDI Audience Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device m5stick-fa061590 set to: { state: 'preview', sourceName: 'NDI Audience Camera', online: true }
+🔍 [DEBUG] Processing device tally-f09e9e1079e8: {
+  assignedSource: 'NDI Main Camera',
+  hasSourceInTallyStatus: true,
+  deviceStatus: 'online'
+}
+🔍 [DEBUG] Device tally-f09e9e1079e8 set to: { state: 'program', sourceName: 'NDI Main Camera', online: true }
+🔍 [DEBUG] Broadcasting tally status update:
+🔍 [DEBUG] deviceStatus: {
+  "m5stick-fa061590": {
+    "state": "preview",
+    "sourceName": "NDI Audience Camera",
+    "online": true
+  },
+  "tally-f09e9e1079e8": {
+    "state": "program",
+    "sourceName": "NDI Main Camera",
+    "online": true
+  }
+}
+🔍 [DEBUG] ESP32 devices: [ 'm5stick-fa061590', 'tally-f09e9e1079e8' ]
+🔍 [DEBUG] Socket.IO clients: 1
+🔍 [DEBUG] Broadcasted to 1 Socket.IO clients
+📊 Status decision for M5StickC-Tally (m5stick-fa061590): newStatus=Preview, assignedSource=NDI Audience Camera, sourceStatus=Preview, lastNotified=Preview, final=Preview
+⚡ ESP32 Real-time Update: M5StickC-Tally (m5stick-fa061590): source status change -> Preview
+📊 Status decision for Tally 1 (tally-f09e9e1079e8): newStatus=Live, assignedSource=NDI Main Camera, sourceStatus=Live, lastNotified=Live, final=Live
+⚡ ESP32 Real-time Update: Tally 1 (tally-f09e9e1079e8): source status change -> Live
+⚡ ULTRA-FAST tally update sent to ESP32 tally-f09e9e1079e8: Live (190.2ms)
+⚡ ULTRA-FAST tally update sent to ESP32 m5stick-fa061590: Preview (390.6ms)
+⚡ PERFORMANCE: ESP32 notifications completed in 390.87ms
+📊 ESP32 Status: 2 successful, 0 failed, 0 debounced
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 928916s
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (289.2ms)
+🔍 [DEBUG] Socket.IO client disconnected: LmkPqzB65ad43QadAAAD
+Client disconnected from tally server. Total clients: 0
+🔍 [DEBUG] New Socket.IO client connected: KQIfrPnP3G-fWKDyAAAF
+Client connected to tally server Socket.IO. Total clients: 1
+OBS connection status: Connected to OBS
+🔍 [DEBUG] Socket.IO client disconnected: KQIfrPnP3G-fWKDyAAAF
+Client disconnected from tally server. Total clients: 0
+🔍 [DEBUG] New Socket.IO client connected: l-U7WzaZv0cNm8yrAAAH
+Client connected to tally server Socket.IO. Total clients: 1
+OBS connection status: Connected to OBS
+🔍 [DEBUG] Socket.IO client disconnected: l-U7WzaZv0cNm8yrAAAH
+Client disconnected from tally server. Total clients: 0
+🔍 [DEBUG] New Socket.IO client connected: SAHFMPEtTQBtPUwRAAAJ
+Client connected to tally server Socket.IO. Total clients: 1
+OBS connection status: Connected to OBS
+Retrieved 22 sources from OBS
+Starting device discovery scan...
+Scanning network: 192.168.0.0/24
+Device discovery completed. Found 0 new devices.
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 958921s
+📢 ESP32 device discovered: Tally 1 (tally-f09e9e1079e8) at 192.168.0.64
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (205.2ms)
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 988931s
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (377.6ms)
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 1018936s
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+📢 ESP32 device discovered: Tally 1 (tally-f09e9e1079e8) at 192.168.0.64
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (196.7ms)
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 1048939s
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (423.0ms)
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 1078944s
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+📢 ESP32 device discovered: Tally 1 (tally-f09e9e1079e8) at 192.168.0.64
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (184.3ms)
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 1108954s
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (307.7ms)
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 1138959s
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+📢 ESP32 device discovered: Tally 1 (tally-f09e9e1079e8) at 192.168.0.64
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (278.0ms)
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 1168965s
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (345.3ms)
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 1198967s
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+📢 ESP32 device discovered: Tally 1 (tally-f09e9e1079e8) at 192.168.0.64
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (219.8ms)
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 1228970s
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (285.4ms)
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 1258972s
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+📢 ESP32 device discovered: Tally 1 (tally-f09e9e1079e8) at 192.168.0.64
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (208.6ms)
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 1288978s
+[SAVE] Saving 2 devices to /Users/prince/Projects/OBS-Tally/esp32-devices.json
+[SAVE] Backup created at /Users/prince/Projects/OBS-Tally/esp32-devices.json.backup
+[SAVE] Successfully saved devices to file
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (233.3ms)
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 1318984s
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+📢 ESP32 device discovered: Tally 1 (tally-f09e9e1079e8) at 192.168.0.64
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (317.3ms)
+💓 ESP32 heartbeat: tally-f09e9e1079e8 - Status: Live, Uptime: 1348989s
+📢 ESP32 device discovered: M5StickC-Tally (m5stick-fa061590) at 192.168.0.196
+🏥 HEALTH CHECK: 2 healthy, 0 unhealthy ESP32 devices (223.0ms)
+OBS Tally server exited with code null and signal SIGKILL

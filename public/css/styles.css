@@ -27,4 +27,18 @@
   border-left: 4px solid #F44336;
 }
 
+/* Status text styling */
+.status-text {
+  /* Common styles for status text if any */
+  font-weight: 500;
+}
+
+.status-text-online {
+  color: var(--success-color, #4CAF50); /* Use CSS variable or fallback */
+}
+
+.status-text-offline {
+  color: var(--error-color, #F44336); /* Use CSS variable or fallback */
+}
+
 /* ...existing code... */

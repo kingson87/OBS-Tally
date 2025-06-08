@@ -65,7 +65,6 @@
         transform: scale(1);
       }
     }
-    }
     .connecting-message {
       font-size: 5vw;
       color: #ccc;
@@ -79,6 +78,8 @@
     <div id="connecting-message" class="connecting-message">Waiting for server connection...</div>
   </div>
 
+  <!-- Include Socket.IO client library -->
+  <script src="/socket.io/socket.io.js"></script>
   <script>
     // Double-click or double-tap anywhere to return to home
     let lastTapTime = 0;
@@ -157,22 +158,16 @@
       }
     }
 
-    function connectWebSocket() {
+    function connectSocketIO() {
       if (!targetSourceName) return;
 
-      const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-      const wsURL = `${wsProtocol}//${location.host}`;
-      const ws = new WebSocket(wsURL);
+      const socket = io();
 
-      ws.onopen = () => {
-        console.log('Connected to WebSocket server.');
-        connectingMessageElement.style.display = 'none';
-        // Initial request or message if needed, though server pushes updates
-      };
-
-      ws.onmessage = (event) => {
+      // Function to handle both tally status and initial state events
+      function handleTallyUpdate(data) {
         try {
-          const data = JSON.parse(event.data);
+          console.log('Received tally update:', data);
+          // Update OBS connection status
           obsConnectionStatus = data.obsConnectionStatus || obsConnectionStatus;
 
           if (data.sources && data.status) {
@@ -206,38 +201,48 @@
             }
           }
         } catch (error) {
-          console.error('Error processing message or parsing JSON:', error);
+          console.error('Error processing Socket.IO message:', error);
           sourceNameElement.textContent = targetSourceName;
           sourceStatusElement.textContent = 'Error';
           tallyDisplay.className = 'status-unknown';
           connectingMessageElement.textContent = 'Error processing data.';
           connectingMessageElement.style.display = 'block';
         }
-      };
+      }
 
-      ws.onclose = () => {
-        console.log('WebSocket connection closed. Attempting to reconnect...');
+      socket.on('connect', () => {
+        console.log('Connected to Socket.IO server.');
+        connectingMessageElement.style.display = 'none';
+      });
+
+      // Handle tally-status updates (regular updates)
+      socket.on('tally-status', handleTallyUpdate);
+      
+      // Handle initial-state events (when first connecting)
+      socket.on('initial-state', handleTallyUpdate);
+
+      socket.on('disconnect', () => {
+        console.log('Socket.IO connection closed. Attempting to reconnect...');
         sourceNameElement.textContent = targetSourceName;
         sourceStatusElement.textContent = 'Disconnected';
         tallyDisplay.className = 'status-unknown';
         connectingMessageElement.textContent = 'Connection lost. Reconnecting...';
         connectingMessageElement.style.display = 'block';
-        setTimeout(connectWebSocket, 3000); // Attempt to reconnect after 3 seconds
-      };
+        // Socket.IO handles reconnection automatically
+      });
 
-      ws.onerror = (error) => {
-        console.error('WebSocket error:', error);
+      socket.on('connect_error', (error) => {
+        console.error('Socket.IO connection error:', error);
         sourceNameElement.textContent = targetSourceName;
         sourceStatusElement.textContent = 'Connection Error';
         tallyDisplay.className = 'status-unknown';
         connectingMessageElement.textContent = 'Could not connect to server.';
         connectingMessageElement.style.display = 'block';
-        // Reconnect attempt will be handled by onclose
-      };
+      });
     }
 
     if (getSourceNameFromURL()) {
-      connectWebSocket();
+      connectSocketIO();
     }
   </script>
 </body>

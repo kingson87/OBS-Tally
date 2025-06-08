@@ -1,14 +1,13 @@
 // (moved below app initialization)
 const express = require('express');
 const http = require('http');
-const WebSocket = require('ws');
-const OBSWebSocket = require('obs-websocket-js').default;
+const { Server } = require('socket.io');
 const fs = require('fs');
 const path = require('path');
+const OBSWebSocket = require('obs-websocket-js').default;
 const net = require('net');
 const os = require('os');
 const QRCode = require('qrcode');
-const multer = require('multer');
 const dgram = require('dgram');
 const FormData = require('form-data');
 
@@ -169,9 +168,104 @@ function getLocalNetworkIP() {
 const app = express();
 const server = http.createServer(app);
 
-// Import and initialize enhanced WebSocket handler
-const { initializeWebSocketServer, broadcastDeviceStatus, broadcastFirmwareProgress, broadcastESP32Status } = require('./server/websocket-handler');
-const wss = initializeWebSocketServer(server);
+// Initialize Socket.IO server
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
+
+// Socket.IO connection handling
+io.on('connection', (socket) => {
+    console.log('🔍 [DEBUG] New Socket.IO client connected:', socket.id);
+    
+    // Send comprehensive initial state including devices and all data
+    const initialState = {
+      type: 'initial-state',
+      sources: tallySources, 
+      status: tallyStatus,
+      obsConnectionStatus,
+      obsConnectionError,
+      devices: esp32Devices, // Include ESP32 devices in initial state
+      espStatus: Object.values(esp32Devices).some(device => device.status === 'online') ? 'online' : 'offline',
+      serverConnected: true,
+      timestamp: new Date().toISOString()
+    };
+    
+    socket.emit('initial-state', initialState);
+    
+    // Also send tally status update for consistency
+    setTimeout(() => {
+      const tallyUpdate = {
+        type: 'tally-status',
+        sources: tallySources,
+        status: tallyStatus,
+        obsConnectionStatus,
+        obsConnectionError: obsConnectionStatus === 'disconnected' ? obsConnectionError : null,
+        espStatus: Object.values(esp32Devices).some(device => device.status === 'online') ? 'online' : 'offline',
+        timestamp: new Date().toISOString()
+      };
+      socket.emit('tally-status', tallyUpdate);
+    }, 100);
+    
+    // Send device list separately for clarity
+    setTimeout(() => {
+      socket.emit('devices-update', {
+        type: 'devices-update',
+        devices: esp32Devices,
+        timestamp: new Date().toISOString()
+      });
+    }, 200);
+    
+    // Track client connections
+    console.log('Client connected to tally server Socket.IO. Total clients:', io.engine.clientsCount);
+    console.log('OBS connection status:', obsConnectionStatus === 'connected' ? 'Connected to OBS' : 'Not connected to OBS');
+    
+    // Handle ESP32 device registration
+    socket.on('register', (data) => {
+      try {
+        if (data.type === 'register' && data.deviceId) {
+          console.log(`ESP32 device registered via Socket.IO: ${data.deviceId}`);
+          socket.deviceId = data.deviceId; // Store deviceId on the socket
+          
+          // Send current configuration to the device if it exists
+          if (esp32Devices[data.deviceId]) {
+            socket.emit('config', {
+              type: 'config',
+              deviceId: data.deviceId,
+              config: {
+                name: esp32Devices[data.deviceId].deviceName,
+                assignedSource: esp32Devices[data.deviceId].assignedSource,
+                updateInterval: 2000,
+                heartbeatInterval: 30000
+              }
+            });
+          }
+        }
+      } catch (error) {
+        console.warn('Error parsing Socket.IO message:', error.message);
+      }
+    });
+    
+    socket.on('disconnect', () => {
+        console.log('🔍 [DEBUG] Socket.IO client disconnected:', socket.id);
+        console.log('Client disconnected from tally server. Total clients:', io.engine.clientsCount);
+    });
+    
+    socket.on('error', (error) => {
+        console.error('Socket.IO error:', error);
+    });
+});
+
+// Create a compatibility object for code that still references wss
+const wss = {
+    clients: {
+        get size() {
+            return io.engine.clientsCount;
+        }
+    }
+};
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -242,6 +336,40 @@ let tallySources = ['Camera 1']; // Default source list
 let tallyStatus = {};
 let currentScene = null;
 let currentPreviewScene = null;
+const sourcesConfigPath = path.join(__dirname, 'sources.json');
+
+// Load tally sources from file
+function loadTallySources() {
+  try {
+    if (fs.existsSync(sourcesConfigPath)) {
+      const raw = fs.readFileSync(sourcesConfigPath, 'utf8');
+      const data = JSON.parse(raw);
+      if (Array.isArray(data.sources) && data.sources.length > 0) {
+        tallySources = data.sources;
+        console.log(`Loaded ${tallySources.length} sources from file:`, sourcesConfigPath);
+      }
+    } else {
+      // Create default sources file if it doesn't exist
+      saveTallySources();
+      console.log('Created default sources file:', sourcesConfigPath);
+    }
+  } catch (e) {
+    console.error('Error loading tally sources:', e.message);
+    // Keep the default source if file is missing or invalid
+  }
+}
+
+// Save tally sources to file
+function saveTallySources() {
+  try {
+    fs.writeFileSync(sourcesConfigPath, JSON.stringify({ sources: tallySources }, null, 2), 'utf8');
+    console.log(`Saved ${tallySources.length} sources to file:`, sourcesConfigPath);
+    return true;
+  } catch (e) {
+    console.error('Error saving tally sources:', e.message);
+    return false;
+  }
+}
 
 // Initialize tallyStatus for each source
 function initTallyStatus() {
@@ -250,6 +378,10 @@ function initTallyStatus() {
   });
 }
 initTallyStatus();
+
+// Load sources from file at startup
+loadTallySources();
+initTallyStatus(); // Re-initialize with loaded sources
 
 async function connectOBS() {
   try {
@@ -319,15 +451,11 @@ function updateObsConnectionStatus(status) {
 }
 
 function broadcastObsStatus() {
-  const msg = JSON.stringify({ 
+  const msg = { 
     obsConnectionStatus,
     obsConnectionError
-  });
-  wss.clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(msg);
-    }
-  });
+  };
+  io.emit('obs-status', msg);
 }
 
 function setupOBSHandlers() {
@@ -361,7 +489,7 @@ function setupOBSHandlers() {
     console.log(`🎬 Preview scene changed to: ${data.sceneName}`);
     updateTallyForSourcesThrottled(); // Use throttled version
   });
-
+  
   // Listen for scene item visibility changes - crucial for real-time tally updates
   obs.on('SceneItemEnableStateChanged', data => {
     console.log(`🎬 Scene item visibility changed: ${data.sourceName} -> ${data.sceneItemEnabled ? 'visible' : 'hidden'}`);
@@ -392,9 +520,95 @@ function setupOBSHandlers() {
       currentScene = currentProgramSceneName;
       currentPreviewScene = currentPreviewSceneName;
       console.log(`🎬 Initial scenes - Program: ${currentScene}, Preview: ${currentPreviewScene}`);
+      
       updateTallyForSources(); // Use direct version for initial load
+      
+      // Get initial recording and streaming status
+      try {
+        const recordStatusResponse = await obs.call('GetRecordStatus');
+        recordingStatus.active = recordStatusResponse.outputActive;
+        if (recordingStatus.active) {
+          recordingStatus.startTime = new Date(Date.now() - (recordStatusResponse.outputDuration || 0));
+          recordingStatus.duration = Math.floor((recordStatusResponse.outputDuration || 0) / 1000);
+        }
+        console.log(`🔴 Initial recording status: ${recordingStatus.active ? 'ACTIVE' : 'INACTIVE'}`);
+      } catch (err) {
+        console.log('Could not get initial recording status:', err.message);
+      }
+      
+      try {
+        const streamStatusResponse = await obs.call('GetStreamStatus');
+        streamingStatus.active = streamStatusResponse.outputActive;
+        if (streamingStatus.active) {
+          streamingStatus.startTime = new Date(Date.now() - (streamStatusResponse.outputDuration || 0));
+          streamingStatus.duration = Math.floor((streamStatusResponse.outputDuration || 0) / 1000);
+        }
+        console.log(`🟡 Initial streaming status: ${streamingStatus.active ? 'ACTIVE' : 'INACTIVE'}`);
+      } catch (err) {
+        console.log('Could not get initial streaming status:', err.message);
+      }
     } catch (err) {
       console.error('Error getting current scene:', err.message);
+    }
+  });
+
+  // Listen for recording state changes
+  obs.on('RecordStateChanged', (data) => {
+    const wasRecording = recordingStatus.active;
+    recordingStatus.active = data.outputActive;
+    
+    if (recordingStatus.active) {
+      recordingStatus.startTime = new Date();
+      recordingStatus.duration = 0;
+      console.log('🔴 Recording started via OBS event');
+    } else {
+      recordingStatus.startTime = null;
+      recordingStatus.duration = 0;
+      console.log('🔴 Recording stopped via OBS event');
+    }
+    
+    // Only broadcast if status actually changed
+    if (wasRecording !== recordingStatus.active) {
+      console.log(`🔴 Recording status changed: ${wasRecording} → ${recordingStatus.active}`);
+      
+      // Force notification to all ESP32 devices
+      const forceNotify = {
+        type: 'recording',
+        active: recordingStatus.active
+      };
+      
+      // Broadcast to all clients and ESP32 devices
+      broadcastTally(forceNotify);
+    }
+  });
+
+  // Listen for streaming state changes
+  obs.on('StreamStateChanged', (data) => {
+    const wasStreaming = streamingStatus.active;
+    streamingStatus.active = data.outputActive;
+    
+    if (streamingStatus.active) {
+      streamingStatus.startTime = new Date();
+      streamingStatus.duration = 0;
+      console.log('🟡 Streaming started via OBS event');
+    } else {
+      streamingStatus.startTime = null;
+      streamingStatus.duration = 0;
+      console.log('🟡 Streaming stopped via OBS event');
+    }
+    
+    // Only broadcast if status actually changed
+    if (wasStreaming !== streamingStatus.active) {
+      console.log(`🟡 Streaming status changed: ${wasStreaming} → ${streamingStatus.active}`);
+      
+      // Force notification to all ESP32 devices
+      const forceNotify = {
+        type: 'streaming',
+        active: streamingStatus.active
+      };
+      
+      // Broadcast to all clients and ESP32 devices
+      broadcastTally(forceNotify);
     }
   });
 }
@@ -448,6 +662,15 @@ async function updateTallyForSources() {
         changesDetected++;
         console.log(`⚡ Status Change: ${source} ${tallyStatus[source].status} → ${newStatus}`);
         tallyStatus[source].status = newStatus;
+        
+        // Log which ESP32 devices are using this source
+        const devicesUsingSource = Object.values(esp32Devices)
+          .filter(device => device.assignedSource === source)
+          .map(device => device.deviceName || device.deviceId);
+        
+        if (devicesUsingSource.length > 0) {
+          console.log(`📱 Source "${source}" used by ${devicesUsingSource.length} device(s): ${devicesUsingSource.join(', ')}`);
+        }
       }
     }
     
@@ -474,28 +697,77 @@ function updateTallyForSourcesThrottled() {
   }, UPDATE_THROTTLE_MS);
 }
 
-function broadcastTally() {
+async function broadcastTally(forceNotify = null) {
   const anyEspDeviceOnline = Object.values(esp32Devices).some(device => device.status === 'online');
   
-  const statusUpdate = {
+  // Format device status updates in the format expected by the device manager
+  const deviceStatus = {};
+  
+  // Debug logging for tally status mapping
+  console.log('🔍 [DEBUG] Current tallyStatus object:', JSON.stringify(tallyStatus, null, 2));
+  console.log('🔍 [DEBUG] Processing', Object.keys(esp32Devices).length, 'ESP32 devices');
+  
+  // Map tally status to devices
+  Object.keys(esp32Devices).forEach(deviceId => {
+    const device = esp32Devices[deviceId];
+    console.log(`🔍 [DEBUG] Processing device ${deviceId}:`, {
+      assignedSource: device.assignedSource,
+      hasSourceInTallyStatus: !!(device.assignedSource && tallyStatus[device.assignedSource]),
+      deviceStatus: device.status
+    });
+    
+    if (device.assignedSource && tallyStatus[device.assignedSource]) {
+      // Convert from OBS state name to tally state name
+      let tallyState = 'idle';
+      if (tallyStatus[device.assignedSource].status === 'Live') {
+        tallyState = 'program';
+      } else if (tallyStatus[device.assignedSource].status === 'Preview') {
+        tallyState = 'preview';
+      }
+      
+      deviceStatus[deviceId] = {
+        state: tallyState,
+        sourceName: device.assignedSource,
+        online: device.status === 'online'
+      };
+      console.log(`🔍 [DEBUG] Device ${deviceId} set to:`, deviceStatus[deviceId]);
+    } else {
+      // Default state if no source assigned or source not found
+      deviceStatus[deviceId] = { 
+        state: 'idle',
+        sourceName: device.assignedSource || 'None',
+        online: device.status === 'online'
+      };
+      console.log(`🔍 [DEBUG] Device ${deviceId} set to default:`, deviceStatus[deviceId]);
+    }
+  });
+   const statusUpdate = {
     type: 'tally-status',
     sources: tallySources,
-    status: tallyStatus,
+    status: tallyStatus, // Send source status directly for web client
+    deviceStatus: deviceStatus, // Separate field for device status
     obsConnectionStatus,
     obsConnectionError: obsConnectionStatus === 'disconnected' ? obsConnectionError : null,
     espStatus: anyEspDeviceOnline ? 'online' : 'offline',
     timestamp: new Date().toISOString()
   };
+
+  // Debug logging for Device Manager issue
+  console.log('🔍 [DEBUG] Broadcasting tally status update:');
+  console.log('🔍 [DEBUG] deviceStatus:', JSON.stringify(deviceStatus, null, 2));
+  console.log('🔍 [DEBUG] ESP32 devices:', Object.keys(esp32Devices));
+  console.log('🔍 [DEBUG] Socket.IO clients:', io.engine.clientsCount);
+
+  // Broadcast to all Socket.IO clients
+  io.emit('tally-status', statusUpdate);
+  console.log('🔍 [DEBUG] Broadcasted to', io.engine.clientsCount, 'Socket.IO clients');
   
-  // Broadcast to all WebSocket clients
-  wss.clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(statusUpdate));
-    }
-  });
-  
-  // Update ESP32 devices
-  notifyESP32Devices();
+  // Update ESP32 devices - call async function
+  try {
+    await notifyESP32Devices(forceNotify);
+  } catch (error) {
+    console.error("Error in notifyESP32Devices:", error);
+  }
 }
 
 // ESP32 notification debouncing to prevent rapid duplicate updates
@@ -503,7 +775,7 @@ const esp32NotificationDebounce = new Map();
 const ESP32_DEBOUNCE_MS = 100; // Minimum 100ms between notifications to the same device
 
 // Notify ESP32 devices of tally status changes
-async function notifyESP32Devices() {
+async function notifyESP32Devices(forceNotify = null) {
   if (Object.keys(esp32Devices).length === 0) return;
   
   // Performance tracking for ESP32 notifications
@@ -514,51 +786,96 @@ async function notifyESP32Devices() {
   
   for (const deviceId of Object.keys(esp32Devices)) {
     const device = esp32Devices[deviceId];
-    if (device.assignedSource && device.status === 'online' && device.ipAddress) {
-      const sourceStatus = tallyStatus[device.assignedSource];
-      if (sourceStatus) {
-        const newStatus = sourceStatus.status;
-        
-        // Check if status actually changed
+    if (device.status === 'online' && device.ipAddress) {
+      // Determine if we should notify this device
+      let shouldNotify = false;
+      let newStatus = null;
+      let notifyReason = '';
+      
+      // Check if there's a source status change
+      if (device.assignedSource && tallyStatus[device.assignedSource]) {
+        newStatus = tallyStatus[device.assignedSource].status;
         if (device.lastNotifiedStatus !== newStatus) {
-          // Check debounce timing
-          const now = Date.now();
-          const lastNotification = esp32NotificationDebounce.get(deviceId) || 0;
-          
-          if (now - lastNotification >= ESP32_DEBOUNCE_MS) {
+          shouldNotify = true;
+          notifyReason = 'source status change';
+        }
+      }
+      
+      // Check for forced notifications (recording/streaming status changes)
+      if (forceNotify) {
+        shouldNotify = true;
+        if (forceNotify.type === 'recording') {
+          notifyReason = `recording ${forceNotify.active ? 'started' : 'stopped'}`;
+        } else if (forceNotify.type === 'streaming') {
+          notifyReason = `streaming ${forceNotify.active ? 'started' : 'stopped'}`;
+        } else {
+          notifyReason = 'forced notification';
+        }
+        console.log(`🔔 Force notification for ${device.deviceName}: ${notifyReason}`);
+      }
+      
+      if (shouldNotify) {
+        // Check debounce timing
+        const now = Date.now();
+        const lastNotification = esp32NotificationDebounce.get(deviceId) || 0;
+        
+        if (now - lastNotification >= ESP32_DEBOUNCE_MS) {
+          // Only update lastNotifiedStatus if we have a valid source status change
+          if (newStatus !== null) {
             device.lastNotifiedStatus = newStatus;
-            esp32NotificationDebounce.set(deviceId, now);
-            devicesNotified++;
-            
-            console.log(`⚡ ESP32 Real-time Update: ${device.deviceName} (${deviceId}): ${device.assignedSource} -> ${newStatus}`);
-            
-            // Send HTTP POST notification to ESP32 device (non-blocking)
-            const notificationPromise = sendTallyUpdateToESP32(device, newStatus)
-              .then(result => {
-                if (result.success) {
-                  // Update last successful notification time
-                  device.lastSuccessfulNotification = new Date().toISOString();
-                }
-                return result;
-              })
-              .catch(error => {
-                console.error(`❌ Real-time ESP32 notification failed for ${deviceId}:`, error.message);
-                // Mark device as potentially offline if multiple failures
-                if (!device.consecutiveFailures) device.consecutiveFailures = 0;
-                device.consecutiveFailures++;
-                
-                if (device.consecutiveFailures >= 3) {
-                  console.warn(`⚠️ ESP32 ${deviceId} has ${device.consecutiveFailures} consecutive failures - may be offline`);
-                  device.status = 'unreachable';
-                }
-                return { success: false, error: error.message };
-              });
-            
-            notificationPromises.push(notificationPromise);
-          } else {
-            devicesSkipped++;
-            console.log(`🚀 ESP32 notification skipped for ${deviceId} (debouncing: ${ESP32_DEBOUNCE_MS - (now - lastNotification)}ms remaining)`);
           }
+          esp32NotificationDebounce.set(deviceId, now);
+          devicesNotified++;
+          
+          // Get the current status for this device
+          // For recording/streaming notifications, use the device's current tally status
+          // If no status is available, use the last notified status or default to IDLE
+          let statusToSend;
+          if (newStatus) {
+            // For source status changes, use the new status
+            statusToSend = newStatus;
+          } else if (device.assignedSource && tallyStatus[device.assignedSource]) {
+            // For recording/streaming notifications, use the current source status
+            statusToSend = tallyStatus[device.assignedSource].status;
+          } else if (device.lastNotifiedStatus) {
+            // Fall back to last notified status
+            statusToSend = device.lastNotifiedStatus;
+          } else {
+            // Default to IDLE
+            statusToSend = 'IDLE';
+          }
+          
+          // Log the status decision process for debugging
+          console.log(`📊 Status decision for ${device.deviceName} (${deviceId}): newStatus=${newStatus}, assignedSource=${device.assignedSource}, sourceStatus=${device.assignedSource ? (tallyStatus[device.assignedSource]?.status || 'none') : 'none'}, lastNotified=${device.lastNotifiedStatus}, final=${statusToSend}`);
+          
+          console.log(`⚡ ESP32 Real-time Update: ${device.deviceName} (${deviceId}): ${notifyReason} -> ${statusToSend}`);
+          
+          // Send HTTP POST notification to ESP32 device (non-blocking)
+          const notificationPromise = sendTallyUpdateToESP32(device, statusToSend)
+            .then(result => {
+              if (result.success) {
+                // Update last successful notification time
+                device.lastSuccessfulNotification = new Date().toISOString();
+              }
+              return result;
+            })
+            .catch(error => {
+              console.error(`❌ Real-time ESP32 notification failed for ${deviceId}:`, error.message);
+              // Mark device as potentially offline if multiple failures
+              if (!device.consecutiveFailures) device.consecutiveFailures = 0;
+              device.consecutiveFailures++;
+              
+              if (device.consecutiveFailures >= 3) {
+                console.warn(`⚠️ ESP32 ${deviceId} has ${device.consecutiveFailures} consecutive failures - may be offline`);
+                device.status = 'unreachable';
+              }
+              return { success: false, error: error.message };
+            });
+          
+          notificationPromises.push(notificationPromise);
+        } else {
+          devicesSkipped++;
+          console.log(`🚀 ESP32 notification skipped for ${deviceId} (debouncing: ${ESP32_DEBOUNCE_MS - (now - lastNotification)}ms remaining)`);
         }
       }
     }
@@ -589,7 +906,6 @@ async function notifyESP32Devices() {
           }
         }
       });
-      
     } catch (error) {
       console.error('Error in parallel ESP32 notifications:', error);
     }
@@ -605,6 +921,12 @@ async function sendTallyUpdateToESP32(device, tallyStatus) {
       assignedSource: device.assignedSource,
       deviceName: device.deviceName, // Add device name to the payload
       obsConnected: obsConnectionStatus === 'connected',
+      // Send enhanced format for M5StickC compatibility
+      recordingStatus: recordingStatus, // M5StickC expects recordingStatus.active
+      streamingStatus: streamingStatus, // M5StickC expects streamingStatus.active
+      // Also send legacy format for backward compatibility
+      recording: recordingStatus.active, // ESP32 fallback format
+      streaming: streamingStatus.active, // ESP32 fallback format
       timestamp: new Date().toISOString()
     });
     
@@ -695,7 +1017,7 @@ async function monitorESP32Health() {
       const healthDuration = performance.now() - healthStartTime;
       console.log(`🏥 HEALTH CHECK: ${healthy} healthy, ${unhealthy} unhealthy ESP32 devices (${healthDuration.toFixed(1)}ms)`);
       
-      // Broadcast health status to WebSocket clients
+      // Broadcast health status to Socket.IO clients
       const healthStatus = {
         type: 'esp32-health-status',
         timestamp: new Date().toISOString(),
@@ -705,11 +1027,7 @@ async function monitorESP32Health() {
         checkDuration: healthDuration
       };
       
-      wss.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-          client.send(JSON.stringify(healthStatus));
-        }
-      });
+      io.emit('esp32-health-status', healthStatus);
       
     } catch (error) {
       console.error('Error in ESP32 health monitoring:', error);
@@ -842,12 +1160,76 @@ app.get('/api/sources', (req, res) => {
 app.post('/api/sources', (req, res) => {
   const { sources } = req.body;
   if (Array.isArray(sources)) {
+    // Store the old sources for comparison
+    const oldSources = [...tallySources];
+    
     tallySources = sources;
     initTallyStatus();
+    saveTallySources(); // Save to file
+    
+    // Check for removed sources and clear device assignments
+    const removedSources = oldSources.filter(source => !tallySources.includes(source));
+    if (removedSources.length > 0) {
+      console.log(`[SOURCES] Detected removed sources: ${removedSources.join(', ')}`);
+      
+      // Check all ESP32 devices and clear assignments for removed sources
+      let devicesUpdated = 0;
+      Object.keys(esp32Devices).forEach(deviceId => {
+        const device = esp32Devices[deviceId];
+        if (device.assignedSource && removedSources.includes(device.assignedSource)) {
+          console.log(`[SOURCES] Clearing assigned source "${device.assignedSource}" from device ${device.deviceName} (${deviceId})`);
+          
+          // Clear the assigned source
+          const oldSource = device.assignedSource;
+          device.assignedSource = '';
+          device.lastUpdate = new Date().toISOString();
+          devicesUpdated++;
+          
+          // Broadcast device update to notify clients
+          broadcastDeviceUpdate(device, 'device-source-cleared');
+          
+          // Send notification to ESP32 device to clear its display
+          if (device.ipAddress && device.status === 'online') {
+            sendTallyUpdateToESP32(device, 'Idle').catch(error => {
+              console.warn(`[SOURCES] Failed to notify ESP32 ${deviceId} of source removal:`, error.message);
+            });
+          }
+        }
+      });
+      
+      if (devicesUpdated > 0) {
+        // Save updated device assignments
+        saveESP32Devices();
+        console.log(`[SOURCES] Updated ${devicesUpdated} device(s) with cleared source assignments`);
+      }
+    }
+    
     updateTallyForSources();
     res.json({ success: true, sources: tallySources });
   } else {
     res.status(400).json({ success: false, error: 'Invalid sources' });
+  }
+});
+
+// New API endpoint to get all available sources from OBS
+app.get('/api/obs/all-sources', async (req, res) => {
+  try {
+    if (obsConnectionStatus !== 'connected') {
+      return res.json({ success: false, error: 'OBS not connected', sources: [] });
+    }
+    
+    // Get all inputs from OBS
+    const { inputs } = await obs.call('GetInputList');
+    const sources = inputs.map(input => ({
+      name: input.inputName,
+      kind: input.inputKind
+    }));
+    
+    console.log(`Retrieved ${sources.length} sources from OBS`);
+    res.json({ success: true, sources });
+  } catch (err) {
+    console.error('Error getting OBS sources:', err.message);
+    res.json({ success: false, error: err.message, sources: [] });
   }
 });
 
@@ -986,16 +1368,12 @@ app.post('/api/shutdown', (req, res) => {
       obs.disconnect();
     }
     
-    // Close WebSocket connections
-    wss.clients.forEach(client => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({ 
-          type: 'server-shutdown', 
-          message: 'Server is shutting down' 
-        }));
-        client.close();
-      }
+    // Close WebSocket connections (Socket.IO)
+    io.emit('server-shutdown', { 
+      type: 'server-shutdown', 
+      message: 'Server is shutting down' 
     });
+    io.close();
     
     // Close HTTP server
     server.close(() => {
@@ -1019,6 +1397,10 @@ const esp32ConfigPath = path.join(__dirname, 'esp32-devices.json');
 let discoveryServer = null;
 const discoveredDevices = new Map(); // Temporary storage for discovered devices
 
+// Recording and streaming status (to be removed after refactoring)
+let recordingStatus = { active: false, startTime: null, duration: 0 };
+let streamingStatus = { active: false, startTime: null, duration: 0 };
+
 // Load ESP32 devices from file
 function loadESP32Devices() {
   try {
@@ -1026,6 +1408,24 @@ function loadESP32Devices() {
       const raw = fs.readFileSync(esp32ConfigPath, 'utf8');
       esp32Devices = JSON.parse(raw);
       console.log('Loaded ESP32 devices from file:', Object.keys(esp32Devices).length);
+      
+      // Migration: Remove legacy recording/streaming status properties
+      let migrationPerformed = false;
+      Object.keys(esp32Devices).forEach(deviceId => {
+        const device = esp32Devices[deviceId];
+        if (device.hasOwnProperty('showRecordingStatus') || device.hasOwnProperty('showStreamingStatus')) {
+          console.log(`🔧 Migrating device ${device.deviceName || deviceId}: removing legacy status properties`);
+          delete device.showRecordingStatus;
+          delete device.showStreamingStatus;
+          migrationPerformed = true;
+        }
+      });
+      
+      // Save migrated data back to file if any migration was performed
+      if (migrationPerformed) {
+        console.log('💾 Saving migrated device data...');
+        saveESP32Devices();
+      }
     }
   } catch (e) {
     console.error('Error loading ESP32 devices:', e.message);
@@ -1036,9 +1436,62 @@ function loadESP32Devices() {
 // Save ESP32 devices to file
 function saveESP32Devices() {
   try {
-    fs.writeFileSync(esp32ConfigPath, JSON.stringify(esp32Devices, null, 2));
-  } catch (e) {
-    console.error('Error saving ESP32 devices:', e.message);
+    console.log(`[SAVE] Saving ${Object.keys(esp32Devices).length} devices to ${esp32ConfigPath}`);
+    
+    // Validate esp32Devices object
+    if (!esp32Devices || typeof esp32Devices !== 'object') {
+      throw new Error('esp32Devices is not a valid object');
+    }
+    
+    // Create backup of existing file if it exists
+    if (fs.existsSync(esp32ConfigPath)) {
+      const backupPath = `${esp32ConfigPath}.backup`;
+      try {
+        fs.copyFileSync(esp32ConfigPath, backupPath);
+        console.log(`[SAVE] Backup created at ${backupPath}`);
+      } catch (backupError) {
+        console.warn(`[SAVE] Warning: Could not create backup: ${backupError.message}`);
+      }
+    }
+    
+    // Validate JSON serialization
+    const jsonData = JSON.stringify(esp32Devices, null, 2);
+    if (!jsonData || jsonData === '{}') {
+      console.warn('[SAVE] Warning: Serialized data is empty or invalid');
+    }
+    
+    // Write to temporary file first, then move to final location
+    const tempPath = `${esp32ConfigPath}.tmp`;
+    fs.writeFileSync(tempPath, jsonData, 'utf8');
+    
+    // Verify the temporary file was written correctly
+    const verifyData = fs.readFileSync(tempPath, 'utf8');
+    JSON.parse(verifyData); // This will throw if JSON is invalid
+    
+    // Move temp file to final location
+    fs.renameSync(tempPath, esp32ConfigPath);
+    
+    console.log(`[SAVE] Successfully saved devices to file`);
+  } catch (error) {
+    console.error('[SAVE] Error saving ESP32 devices:', {
+      error: error.message,
+      stack: error.stack,
+      devicesCount: Object.keys(esp32Devices || {}).length,
+      configPath: esp32ConfigPath
+    });
+    
+    // Clean up temp file if it exists
+    const tempPath = `${esp32ConfigPath}.tmp`;
+    if (fs.existsSync(tempPath)) {
+      try {
+        fs.unlinkSync(tempPath);
+        console.log('[SAVE] Cleaned up temporary file');
+      } catch (cleanupError) {
+        console.error('[SAVE] Could not clean up temp file:', cleanupError.message);
+      }
+    }
+    
+    throw error; // Re-throw to let caller handle the error
   }
 }
 
@@ -1046,8 +1499,519 @@ loadESP32Devices();
 // Broadcast initial status after devices are loaded
 broadcastTally();
 
-// API endpoints for firmware management
-app.get('/api/esp32/firmware-info', async (req, res) => {
+// API endpoint to get all registered ESP32 devices
+app.get('/api/esp32/devices', (req, res) => {
+  try {
+    // Return devices in the format expected by the client
+    res.json({
+      success: true,
+      devices: esp32Devices
+    });
+  } catch (error) {
+    console.error('Error getting ESP32 devices:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Failed to get devices',
+      message: error.message 
+    });
+  }
+});
+
+// Debug API endpoint to inspect current device status mapping
+app.get('/api/debug/device-status', (req, res) => {
+  try {
+    console.log('DEBUG API: Current device status requested');
+    
+    // Get current tally status
+    const debugInfo = {
+      timestamp: new Date().toISOString(),
+      tallyStatus: tallyStatus,
+      esp32Devices: esp32Devices,
+      deviceStatusMapping: {},
+      websocketConnections: io.engine.clientsCount
+    };
+    
+    // Create device status mapping for debug
+    Object.values(esp32Devices).forEach(device => {
+      const deviceId = device.deviceId; // Use deviceId instead of device_id
+      const assignedSource = device.assignedSource; // Use assignedSource instead of assigned_source
+      const sourceStatus = tallyStatus[assignedSource];
+      const status = sourceStatus ? sourceStatus.status : 'IDLE';
+      
+      debugInfo.deviceStatusMapping[deviceId] = {
+        assignedSource: assignedSource,
+        status: status,
+        isOnline: device.status === 'online',
+        lastSeen: device.lastSeen
+      };
+    });
+    
+    console.log('DEBUG API: Returning device status debug info:', debugInfo);
+    res.json(debugInfo);
+  } catch (error) {
+    console.error('Error in debug device status API:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Failed to get debug status',
+      message: error.message 
+    });
+  }
+});
+
+// Register a new ESP32 device
+app.post('/api/esp32/devices', (req, res) => {
+  try {
+    const { deviceId, name, mac, ipAddress } = req.body;
+    
+    if (!deviceId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Device ID is required'
+      });
+    }
+    
+    // Create or update device
+    esp32Devices[deviceId] = {
+      ...esp32Devices[deviceId],
+      deviceId: deviceId,
+      deviceName: name || `Tally ${Object.keys(esp32Devices).length + 1}`,
+      macAddress: mac || '',
+      ipAddress: ipAddress || '',
+      status: 'offline',
+      createdAt: esp32Devices[deviceId]?.createdAt || new Date().toISOString(),
+      lastUpdate: new Date().toISOString()
+    };
+    
+    // Save to file
+    saveESP32Devices();
+    
+    // Broadcast device update
+    broadcastDeviceUpdate(esp32Devices[deviceId], 'device-added');
+    
+    res.json({
+      success: true,
+      device: esp32Devices[deviceId]
+    });
+  } catch (error) {
+    console.error('Error registering device:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Update a specific device
+app.post('/api/esp32/update-device/:deviceId', (req, res) => {
+  try {
+    const { deviceId } = req.params;
+    const { deviceName, assignedSource } = req.body;
+    
+    console.log(`[UPDATE] Updating device ${deviceId}:`, { 
+      deviceName, 
+      assignedSource
+    });
+    
+    if (!esp32Devices[deviceId]) {
+      console.error(`[UPDATE] Device ${deviceId} not found in esp32Devices`);
+      return res.status(404).json({
+        success: false,
+        error: 'Device not found',
+        details: `Device ID '${deviceId}' does not exist in the registry`
+      });
+    }
+    
+    // Validate input
+    if (deviceName !== undefined && (!deviceName || typeof deviceName !== 'string')) {
+      console.error(`[UPDATE] Invalid device name provided:`, deviceName);
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid device name',
+        details: 'Device name must be a non-empty string'
+      });
+    }
+    
+    // Create backup of original device data
+    const originalDevice = { ...esp32Devices[deviceId] };
+    
+    // Update the device
+    esp32Devices[deviceId] = {
+      ...esp32Devices[deviceId],
+      deviceName: deviceName || esp32Devices[deviceId].deviceName,
+      assignedSource: assignedSource !== undefined ? assignedSource : esp32Devices[deviceId].assignedSource,
+      lastUpdate: new Date().toISOString()
+    };
+    
+    // If a source is assigned and it's not already in tallySources, add it
+    // This ensures that any source assigned to a device from the device manager
+    // will be properly monitored, even if it was fetched directly from OBS
+    // and wasn't previously in the monitored sources list
+    if (assignedSource && !tallySources.includes(assignedSource)) {
+      console.log(`[AUTO-ADD] Adding source "${assignedSource}" to monitored sources list`);
+      tallySources.push(assignedSource);
+      initTallyStatus(); // Reinitialize the tally status for the new source
+      
+      // Save the updated sources
+      if (saveTallySources()) {
+        console.log(`[AUTO-ADD] Sources list updated and saved to file`);
+        updateTallyForSources(); // Update tally status with new source
+      }
+    }
+    
+    console.log(`[UPDATE] Device updated:`, {
+      deviceId,
+      oldName: originalDevice.deviceName,
+      newName: esp32Devices[deviceId].deviceName,
+      oldSource: originalDevice.assignedSource,
+      newSource: esp32Devices[deviceId].assignedSource
+    });
+    
+    // Save to file
+    try {
+      saveESP32Devices();
+      console.log(`[UPDATE] Device data saved to file successfully`);
+    } catch (saveError) {
+      console.error(`[UPDATE] Failed to save device data:`, saveError);
+      // Restore original device data
+      esp32Devices[deviceId] = originalDevice;
+      throw new Error(`Failed to save device data: ${saveError.message}`);
+    }
+    
+    // Broadcast device update
+    try {
+      broadcastDeviceUpdate(esp32Devices[deviceId], 'device-updated');
+      console.log(`[UPDATE] Device update broadcasted successfully`);
+    } catch (broadcastError) {
+      console.error(`[UPDATE] Failed to broadcast device update:`, broadcastError);
+      // Note: Don't fail the request if broadcasting fails
+    }
+    
+    res.json({
+      success: true,
+      device: esp32Devices[deviceId],
+      message: 'Device updated successfully'
+    });
+  } catch (error) {
+    console.error('Error updating device:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      details: 'Internal server error while updating device',
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// Delete a device
+app.delete('/api/esp32/devices/:deviceId', (req, res) => {
+  try {
+    const { deviceId } = req.params;
+    
+    if (!esp32Devices[deviceId]) {
+      return res.status(404).json({
+        success: false,
+        error: 'Device not found'
+      });
+    }
+    
+    // Store device info for broadcasting
+    const device = {...esp32Devices[deviceId]};
+    
+    // Delete the device
+    delete esp32Devices[deviceId];
+    
+    // Save to file
+    saveESP32Devices();
+    
+    // Broadcast device deletion
+    broadcastDeviceUpdate(device, 'device-deleted');
+    
+    res.json({
+      success: true,
+      deviceId
+    });
+  } catch (error) {
+    console.error('Error deleting device:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Register ESP32 device endpoint (expected by ESP32 firmware)
+app.post('/api/esp32/register', (req, res) => {
+  try {
+    const { deviceId, deviceName, ipAddress, macAddress, firmware, model, assignedSource } = req.body;
+    
+    if (!deviceId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Device ID is required'
+      });
+    }
+    
+    console.log(`📱 ESP32 registration request: ${deviceName} (${deviceId}) from ${ipAddress}`);
+    
+    // Create or update device
+    const device = {
+      ...esp32Devices[deviceId],
+      deviceId: deviceId,
+      deviceName: deviceName || `Tally ${Object.keys(esp32Devices).length + 1}`,
+      macAddress: macAddress || '',
+      ipAddress: ipAddress || '',
+      firmware: firmware || 'unknown',
+      model: model || '',
+      assignedSource: assignedSource || esp32Devices[deviceId]?.assignedSource || '',
+      status: 'online',
+      lastSeen: new Date().toISOString(),
+      createdAt: esp32Devices[deviceId]?.createdAt || new Date().toISOString(),
+      lastUpdate: new Date().toISOString()
+    };
+    
+    esp32Devices[deviceId] = device;
+    
+    // Save to file
+    saveESP32Devices();
+    
+    // Broadcast device update
+    broadcastDeviceUpdate(device, 'device-registered');
+    
+    console.log(`✅ ESP32 device registered: ${deviceName} (${deviceId})`);
+    
+    res.json({
+      success: true,
+      message: 'Device registered successfully',
+      device: device
+    });
+  } catch (error) {
+    console.error('Error registering ESP32 device:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// API endpoint to discover ESP32 devices on the network
+app.post('/api/esp32/discover', async (req, res) => {
+  try {
+    // Use local network scanner to find ESP32 devices
+    console.log('Starting device discovery scan...');
+    
+    // Get local IP range
+    const networkInterfaces = os.networkInterfaces();
+    let deviceCount = 0;
+    const foundDevices = [];
+    
+    // Use network information to scan for devices
+    for (const interfaceName in networkInterfaces) {
+      for (const iface of networkInterfaces[interfaceName]) {
+        // Skip non-IPv4 and internal interfaces
+        if (iface.family !== 'IPv4' || iface.internal) {
+          continue;
+        }
+        
+        // Extract IP parts to create IP range for scanning
+        const ipParts = iface.address.split('.');
+        const baseIp = `${ipParts[0]}.${ipParts[1]}.${ipParts[2]}`;
+        
+        console.log(`Scanning network: ${baseIp}.0/24`);
+        
+        // Scan common ports that ESP32 tally devices might use (80, 3000, 8080)
+        const ports = [80, 3000, 8080];
+        
+        // Use Promise.all for parallel scanning to improve speed
+        const scanPromises = [];
+        
+        for (let i = 1; i <= 254; i++) {
+          const ip = `${baseIp}.${i}`;
+          
+          for (const port of ports) {
+            // Skip the server's own IP
+            if (ip === iface.address) {
+              continue;
+            }
+            
+            scanPromises.push(
+              new Promise(async (resolve) => {
+                try {
+                  // Try to connect to device API to check if it's an ESP32 tally device
+                  const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Timeout')), 500)
+                  );
+                  
+                  const fetchPromise = fetch(`http://${ip}:${port}/api/device-info`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                  });
+                  
+                  const response = await Promise.race([fetchPromise, timeoutPromise]);
+                  const data = await response.json();
+                  
+                  // Check if this is a tally light device by looking for expected properties
+                  if (data && data.deviceId && (data.type === 'esp32-tally' || data.type === 'tally')) {
+                    console.log(`Found ESP32 device at ${ip}:${port} with ID: ${data.deviceId}`);
+                    
+                    // Register the device if it's not already registered
+                    if (!esp32Devices[data.deviceId]) {
+                      // Create device record
+                      const deviceData = {
+                        deviceId: data.deviceId,
+                        deviceName: data.deviceName || data.deviceId,
+                        ipAddress: ip,
+                        port: port,
+                        mac: data.mac || null,
+                        online: true,
+                        lastSeen: new Date().toISOString()
+                      };
+                      
+                      // Add to devices collection
+                      esp32Devices[data.deviceId] = deviceData;
+                      
+                      // Save to persistent storage
+                      saveEsp32DevicesToJson();
+                      
+                      // Add to found devices list
+                      foundDevices.push(deviceData);
+                      deviceCount++;
+                    } else {
+                      // Update existing device's IP address if it changed
+                      if (esp32Devices[data.deviceId].ipAddress !== ip) {
+                        esp32Devices[data.deviceId].ipAddress = ip;
+                        esp32Devices[data.deviceId].port = port;
+                        esp32Devices[data.deviceId].online = true;
+                        esp32Devices[data.deviceId].lastSeen = new Date().toISOString();
+                        
+                        // Save changes
+                        saveEsp32DevicesToJson();
+                      }
+                    }
+                  }
+                  resolve();
+                } catch (error) {
+                  // No device found at this IP:port or not a compatible device
+                  resolve();
+                }
+              })
+            );
+          }
+        }
+        
+        // Wait for all scan operations to complete
+        await Promise.all(scanPromises);
+      }
+    }
+    
+    console.log(`Device discovery completed. Found ${deviceCount} new devices.`);
+    
+    // Send response with results
+    res.json({
+      success: true,
+      devicesFound: deviceCount,
+      newDevices: foundDevices
+    });
+    
+  } catch (error) {
+    console.error('Error in device discovery:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to discover devices: ' + error.message
+    });
+  }
+});
+
+// API endpoint for device reset
+app.post('/api/esp32/reset-device/:deviceId', async (req, res) => {
+  try {
+    const deviceId = req.params.deviceId;
+    const device = esp32Devices[deviceId];
+    
+    if (!device) {
+      return res.status(404).json({
+        success: false,
+        error: 'Device not found'
+      });
+    }
+    
+    if (!device.ipAddress || device.ipAddress === 'Unknown') {
+      return res.status(400).json({
+        success: false,
+        error: 'Device has no known IP address'
+      });
+    }
+    
+    // Send reset command to device with firmware version compatibility
+    try {
+      let response;
+      let resetSuccess = false;
+      let resetMessage = '';
+      
+      // First, try the new API endpoint (firmware 1.0.1+)
+      try {
+        response = await fetch(`http://${device.ipAddress}/api/reset`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ reset: true }),
+          timeout: 5000
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          resetSuccess = data.success;
+          resetMessage = data.message || 'Device reset command sent successfully (API v1.0.1+)';
+        }
+      } catch (apiError) {
+        console.log(`[RESET] API endpoint failed for ${deviceId}, trying legacy endpoint: ${apiError.message}`);
+      }
+      
+      // If API endpoint failed, try legacy endpoint (firmware 1.0.0)
+      if (!resetSuccess) {
+        try {
+          response = await fetch(`http://${device.ipAddress}/reset`, {
+            method: 'GET',
+            timeout: 5000
+          });
+          
+          if (response.ok) {
+            resetSuccess = true;
+            resetMessage = 'Device reset command sent successfully (legacy v1.0.0)';
+          }
+        } catch (legacyError) {
+          console.log(`[RESET] Legacy endpoint also failed for ${deviceId}: ${legacyError.message}`);
+        }
+      }
+      
+      if (resetSuccess) {
+        res.json({
+          success: true,
+          message: resetMessage
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          error: 'Both API and legacy reset endpoints failed'
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: `Failed to send reset command: ${error.message}`
+      });
+    }
+  } catch (error) {
+    console.error('Error resetting device:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Server error: ' + error.message
+    });
+  }
+});
+
+// API endpoint for consistent device status across all pages
+app.get('/api/esp32/device-status', async (req, res) => {
   try {
     const deviceList = Object.values(esp32Devices);
     const devices = [];
@@ -1056,39 +2020,45 @@ app.get('/api/esp32/firmware-info', async (req, res) => {
     // Process each device in parallel for efficiency
     const devicePromises = deviceList.map(async (device) => {
       try {
-        // Only attempt to get info from devices with an IP address
+        // Only attempt to check devices with an IP address
         if (!device.ipAddress) {
           return {
             deviceId: device.deviceId,
             deviceName: device.deviceName || device.deviceId,
             ipAddress: 'unknown',
+            online: false,
             status: 'offline',
+            lastSeen: device.lastSeen,
             error: 'No IP address available'
           };
         }
         
-        // Request firmware info from device
+        // Quick health check to device using firmware info endpoint
         const response = await fetch(`http://${device.ipAddress}/api/firmware/info`, {
-          timeout: 5000
+          timeout: 3000
         });
         
         if (response.ok) {
-          const firmwareInfo = await response.json();
           onlineDevices++;
           
           return {
             deviceId: device.deviceId,
             deviceName: device.deviceName || device.deviceId,
             ipAddress: device.ipAddress,
-            status: 'success',
-            firmwareInfo
+            online: true,
+            status: 'online',
+            lastSeen: new Date().toISOString(),
+            source: device.assignedSource || device.source,
+            mac: device.macAddress
           };
         } else {
           return {
             deviceId: device.deviceId,
             deviceName: device.deviceName || device.deviceId,
             ipAddress: device.ipAddress,
+            online: false,
             status: 'error',
+            lastSeen: device.lastSeen,
             error: `HTTP ${response.status}: ${response.statusText}`
           };
         }
@@ -1097,7 +2067,9 @@ app.get('/api/esp32/firmware-info', async (req, res) => {
           deviceId: device.deviceId,
           deviceName: device.deviceName || device.deviceId,
           ipAddress: device.ipAddress || 'unknown',
+          online: false,
           status: 'offline',
+          lastSeen: device.lastSeen,
           error: error.message
         };
       }
@@ -1117,7 +2089,7 @@ app.get('/api/esp32/firmware-info', async (req, res) => {
       devices
     });
   } catch (error) {
-    console.error('Error getting firmware info:', error);
+    console.error('Error getting device status:', error);
     res.status(500).json({ 
       success: false, 
       error: error.message 
@@ -1125,731 +2097,74 @@ app.get('/api/esp32/firmware-info', async (req, res) => {
   }
 });
 
-// Get available firmware files from the server
-app.get('/api/esp32/available-firmware', async (req, res) => {
+// ESP32 heartbeat endpoint (expected by ESP32 firmware)
+app.post('/api/heartbeat', (req, res) => {
   try {
-    // Check if firmware catalog exists
-    const catalogPath = path.join(__dirname, 'server', 'firmware-catalog.js');
-    if (!fs.existsSync(catalogPath)) {
-      return res.json({
-        success: false,
-        error: 'Firmware catalog not found',
-        firmwareList: []
-      });
-    }
+    const { id, status, uptime, ip, assignedSource } = req.body;
     
-    const firmwareCatalog = require('./server/firmware-catalog');
-    const firmwareList = await firmwareCatalog.listAvailableFirmware();
-    
-    res.json(firmwareList);
-  } catch (error) {
-    console.error('Error listing available firmware:', error);
-    res.status(500).json({ 
-      success: false, 
-      error: error.message,
-      firmwareList: []
-    });
-  }
-});
-
-// Get firmware info for a specific device
-app.get('/api/esp32/firmware-info/:deviceId', async (req, res) => {
-  try {
-    const { deviceId } = req.params;
-    const device = esp32Devices[deviceId];
-    
-    if (!device) {
-      return res.status(404).json({ 
-        success: false, 
-        error: 'Device not found' 
-      });
-    }
-    
-    if (!device.ipAddress) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'Device has no IP address' 
-      });
-    }
-    
-    try {
-      const response = await fetch(`http://${device.ipAddress}/api/firmware/info`, {
-        timeout: 5000
-      });
-      
-      if (response.ok) {
-        const firmwareInfo = await response.json();
-        res.json({
-          success: true,
-          deviceId: device.deviceId,
-          deviceName: device.deviceName || device.deviceId,
-          firmwareInfo
-        });
-      } else {
-        res.status(response.status).json({ 
-          success: false, 
-          error: `HTTP ${response.status}: ${response.statusText}` 
-        });
-      }
-    } catch (error) {
-      res.status(500).json({ 
-        success: false, 
-        error: `Failed to communicate with device: ${error.message}` 
-      });
-    }
-  } catch (error) {
-    console.error('Error getting device firmware info:', error);
-    res.status(500).json({ 
-      success: false, 
-      error: error.message 
-    });
-  }
-});
-
-// Erase old firmware from a specific device
-app.post('/api/esp32/erase-old-firmware/:deviceId', async (req, res) => {
-  try {
-    const { deviceId } = req.params;
-    const device = esp32Devices[deviceId];
-    
-    if (!device) {
-      return res.status(404).json({ 
-        success: false, 
-        error: 'Device not found' 
-      });
-    }
-    
-    if (!device.ipAddress) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'Device has no IP address' 
-      });
-    }
-    
-    try {
-      const response = await fetch(`http://${device.ipAddress}/api/firmware/erase-old`, {
-        method: 'POST',
-        timeout: 10000
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        res.json({
-          success: true,
-          deviceId: device.deviceId,
-          deviceName: device.deviceName || device.deviceId,
-          message: result.message || 'Old firmware erased successfully'
-        });
-      } else {
-        res.status(response.status).json({ 
-          success: false, 
-          error: `HTTP ${response.status}: ${response.statusText}` 
-        });
-      }
-    } catch (error) {
-      res.status(500).json({ 
-        success: false, 
-        error: `Failed to communicate with device: ${error.message}` 
-      });
-    }
-  } catch (error) {
-    console.error('Error erasing old firmware:', error);
-    res.status(500).json({ 
-      success: false, 
-      error: error.message 
-    });
-  }
-});
-
-// Erase old firmware from all online devices
-app.post('/api/esp32/erase-old-firmware-all', async (req, res) => {
-  try {
-    const deviceList = Object.values(esp32Devices).filter(d => d.status === 'online' && d.ipAddress);
-    
-    if (deviceList.length === 0) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'No online devices found' 
-      });
-    }
-    
-    const results = [];
-    let successCount = 0;
-    let errorCount = 0;
-    
-    // Process each device sequentially to avoid overwhelming them
-    for (const device of deviceList) {
-      try {
-        const response = await fetch(`http://${device.ipAddress}/api/firmware/erase-old`, {
-          method: 'POST',
-          timeout: 10000
-        });
-        
-        if (response.ok) {
-          const result = await response.json();
-          results.push({
-            deviceId: device.deviceId,
-            deviceName: device.deviceName,
-            status: 'success',
-            message: result.message || 'Old firmware erased successfully'
-          });
-          successCount++;
-        } else {
-          results.push({
-            deviceId: device.deviceId,
-            deviceName: device.deviceName,
-            status: 'error',
-            error: `HTTP ${response.status}: ${response.statusText}`
-          });
-          errorCount++;
-        }
-      } catch (error) {
-        results.push({
-          deviceId: device.deviceId,
-          deviceName: device.deviceName,
-          status: 'error',
-          error: error.message
-        });
-        errorCount++;
-      }
-    }
-    
-    res.json({
-      success: successCount > 0,
-      totalDevices: deviceList.length,
-      successCount,
-      errorCount,
-      results
-    });
-  } catch (error) {
-    console.error('Error erasing all firmware:', error);
-    res.status(500).json({ 
-      success: false, 
-      error: error.message 
-    });
-  }
-});
-
-// Update the firmware upload code section with proper ESP32 web update handling
-app.post('/api/esp32/upload-firmware/:deviceId', async (req, res) => {
-  const deviceId = req.params.deviceId;
-  const source = req.body?.source || 'local';
-  
-  try {
-    const device = esp32Devices[deviceId];
-    
-    if (!device) {
-      return res.status(404).json({
-        success: false,
-        error: `Device ${deviceId} not found`
-      });
-    }
-    
-    if (!device.ipAddress) {
+    if (!id) {
       return res.status(400).json({
         success: false,
-        error: 'Device has no IP address'
+        error: 'Device ID is required'
       });
     }
     
-    // Broadcast firmware update start status
-    broadcastDeviceUpdate(device, 'device-firmware-uploading');
+    console.log(`💓 ESP32 heartbeat: ${id} - Status: ${status}, Uptime: ${uptime}s`);
     
-    // Validate firmware file size and type
-    let firmwareData;
-    let firmwareFilename;
-    
-    if (source === 'server') {
-      const version = req.body?.version;
-      if (!version) {
-        return res.status(400).json({
-          success: false,
-          error: 'No firmware version specified'
-        });
+    // Update device if it exists
+    if (esp32Devices[id]) {
+      const device = esp32Devices[id];
+      
+      // Update device properties from heartbeat
+      device.status = 'online';
+      device.lastSeen = new Date().toISOString();
+      device.uptime = uptime;
+      
+      // Update IP if provided and different
+      if (ip && device.ipAddress !== ip) {
+        console.log(`📍 ESP32 ${id} IP updated: ${device.ipAddress} -> ${ip}`);
+        device.ipAddress = ip;
       }
       
-      // Get firmware from catalog with validation
-      try {
-        const catalogPath = path.join(__dirname, 'server', 'firmware-catalog.js');
-        if (!fs.existsSync(catalogPath)) {
-          return res.status(404).json({
-            success: false,
-            error: 'Firmware catalog not found'
-          });
-        }
-        
-        const firmwareCatalog = require('./server/firmware-catalog');
-        const result = await firmwareCatalog.getFirmwareFile(version);
-        
-        if (!result.success) {
-          return res.status(404).json({
-            success: false,
-            error: `Firmware version ${version} not found`
-          });
-        }
-        
-        firmwareData = fs.readFileSync(result.firmware.path);
-        firmwareFilename = result.firmware.filename;
-      } catch (catalogError) {
-        return res.status(500).json({
-          success: false,
-          error: `Error accessing firmware catalog: ${catalogError.message}`
-        });
+      // Update assigned source if provided
+      if (assignedSource !== undefined) {
+        device.assignedSource = assignedSource;
       }
       
-      // Validate firmware size (max 4MB for ESP32)
-      if (firmwareData.length > 4 * 1024 * 1024) {
-        return res.status(400).json({
-          success: false,
-          error: 'Firmware file too large (max 4MB)'
-        });
-      }
-    } else {
-      // Handle file upload via express-fileupload
-      if (!req.files || !req.files.firmware) {
-        return res.status(400).json({
-          success: false,
-          error: 'No firmware file was uploaded'
-        });
+      // Save changes periodically (not on every heartbeat to avoid excessive I/O)
+      if (!device.lastHeartbeatSave || (Date.now() - new Date(device.lastHeartbeatSave).getTime()) > 60000) {
+        device.lastHeartbeatSave = new Date().toISOString();
+        saveESP32Devices();
       }
       
-      const uploadedFile = req.files.firmware;
+      // Get current tally status for this device's assigned source
+      const currentTallyStatus = device.assignedSource ? tallyStatus[device.assignedSource] || 'IDLE' : 'IDLE';
       
-      // Validate file extension and size
-      if (!uploadedFile.name.endsWith('.bin')) {
-        return res.status(400).json({
-          success: false,
-          error: 'Invalid firmware file. Only .bin files are supported'
-        });
-      }
-      
-      if (uploadedFile.size > 4 * 1024 * 1024) {
-        return res.status(400).json({
-          success: false,
-          error: 'Firmware file too large (max 4MB)'
-        });
-      }
-      
-      firmwareData = uploadedFile.data;
-      firmwareFilename = uploadedFile.name;
-    }
-    
-    console.log(`📤 Uploading firmware to ${device.deviceName} (${deviceId}): ${firmwareFilename} (${firmwareData.length} bytes)`);
-    
-    // Use improved firmware upload function
-    const uploadResult = await uploadFirmwareToESP32WithRetry(device, firmwareData, firmwareFilename);
-    
-    if (uploadResult.success) {
-      // Update device info
-      device.firmware = req.body?.version || 'custom';
-      device.lastUpdate = new Date().toISOString();
-      device.status = 'updating'; // Mark as updating
-      saveESP32Devices();
-      
-      // Broadcast update success
-      broadcastDeviceUpdate(device, 'device-firmware-updated');
-      
-      // Set device back to online after a delay (ESP32 restart time)
-      setTimeout(() => {
-        if (esp32Devices[deviceId]) {
-          esp32Devices[deviceId].status = 'online';
-          saveESP32Devices();
-          broadcastDeviceUpdate(esp32Devices[deviceId], 'device-online');
-        }
-      }, 10000); // Wait 10 seconds for ESP32 to restart
-      
+      // Respond with current tally status and configuration (recording/streaming status removed)
       res.json({
         success: true,
-        message: 'Firmware update successful. Device will restart.',
-        device: device
+        status: currentTallyStatus,
+        assignedSource: device.assignedSource,
+        deviceName: device.deviceName,
+        timestamp: new Date().toISOString()
       });
     } else {
-      // Broadcast update failure
-      device.status = 'online'; // Reset status
-      broadcastDeviceUpdate(device, 'device-firmware-failed');
-      
-      throw new Error(uploadResult.error || 'Firmware upload failed');
+      // Device not registered
+      console.log(`⚠️ ESP32 heartbeat from unregistered device: ${id}`);
+      res.status(404).json({
+        success: false,
+        error: 'Device not registered',
+        message: 'Please register the device first'
+      });
     }
-    
   } catch (error) {
-    console.error('Firmware upload error:', error);
-    
-    // Reset device status on error
-    if (esp32Devices[deviceId]) {
-      esp32Devices[deviceId].status = 'online';
-      broadcastDeviceUpdate(esp32Devices[deviceId], 'device-firmware-failed');
-    }
-    
+    console.error('Error processing ESP32 heartbeat:', error);
     res.status(500).json({
       success: false,
-      error: error.message || 'Internal server error'
+      error: error.message
     });
   }
 });
-
-// Improved firmware upload function with retry logic and better error handling
-async function uploadFirmwareToESP32WithRetry(device, firmwareData, filename, maxRetries = 3) {
-  let lastError = null;
-  
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    console.log(`📤 Firmware upload attempt ${attempt}/${maxRetries} for ${device.deviceName}`);
-    
-    // Pre-upload device check
-    try {
-      const deviceCheck = await quickDeviceCheck(device.ipAddress);
-      if (!deviceCheck.responding) {
-        console.log(`⚠️ Device ${device.deviceName} not responding, waiting before upload...`);
-        await new Promise(resolve => setTimeout(resolve, 2000));
-      }
-    } catch (checkError) {
-      console.log(`⚠️ Device check failed for ${device.deviceName}, proceeding with upload...`);
-    }
-    
-    try {
-      const result = await uploadFirmwareToESP32(device, firmwareData, filename);
-      if (result.success) {
-        return result;
-      }
-      lastError = result.error;
-      
-      // Check if the error is a "socket hang up" or early connection reset
-      if (result.error && (
-        result.error.includes('socket hang up') || 
-        result.error.includes('Early connection reset') ||
-        result.error.includes('ECONNRESET')
-      )) {
-        console.log(`🔄 Connection reset detected, checking if device is now updating...`);
-        
-        // Wait a moment and check if device is still responsive
-        await new Promise(resolve => setTimeout(resolve, 5000));
-        
-        try {
-          const checkResult = await quickDeviceCheck(device.ipAddress);
-          if (!checkResult.responding) {
-            // Device not responding likely means it's processing firmware
-            console.log(`✅ Device ${device.deviceName} not responding - likely processing firmware update`);
-            return {
-              success: true,
-              message: 'Firmware upload likely successful (device not responding indicates firmware processing)',
-              note: 'ESP32 becomes unresponsive during firmware flashing'
-            };
-          }
-        } catch (checkError) {
-          // If we can't check, assume success for now
-          console.log(`✅ Assuming successful upload for ${device.deviceName} - check failed after connection reset`);
-          return {
-            success: true,
-            message: 'Firmware upload assumed successful (connection reset pattern)',
-            note: 'Unable to verify but connection reset suggests firmware processing'
-          };
-        }
-      }
-      
-      // Wait before retry
-      if (attempt < maxRetries) {
-        const waitTime = Math.min(3000 + (attempt * 2000), 10000); // Progressive backoff
-        console.log(`⏳ Waiting ${waitTime/1000} seconds before retry...`);
-        await new Promise(resolve => setTimeout(resolve, waitTime));
-      }
-    } catch (error) {
-      lastError = error.message;
-      
-      // Wait before retry
-      if (attempt < maxRetries) {
-        const waitTime = Math.min(3000 + (attempt * 2000), 10000); // Progressive backoff
-        console.log(`⏳ Waiting ${waitTime/1000} seconds before retry...`);
-        await new Promise(resolve => setTimeout(resolve, waitTime));
-      }
-    }
-  }
-  
-  return {
-    success: false,
-    error: `Upload failed after ${maxRetries} attempts. Last error: ${lastError}`
-  };
-}
-
-// Quick device responsiveness check
-async function quickDeviceCheck(ipAddress) {
-  return new Promise((resolve) => {
-    const http = require('http');
-    
-    const req = http.request({
-      hostname: ipAddress,
-      port: 80,
-      path: '/',
-      method: 'HEAD',
-      timeout: 3000
-    }, (res) => {
-      resolve({ responding: true, status: res.statusCode });
-    });
-    
-    req.on('error', () => resolve({ responding: false }));
-    req.on('timeout', () => {
-      req.destroy();
-      resolve({ responding: false });
-    });
-    
-    req.end();
-  });
-}
-
-// Function to upload firmware directly to ESP32 using HTTP module
-async function uploadFirmwareToESP32(device, firmwareData, filename) {
-  return new Promise(async (resolve) => {
-    const startTime = Date.now();
-    
-    try {
-      // Pre-upload health check
-      console.log(`🔍 Checking device ${device.deviceName} readiness...`);
-      const deviceCheck = await quickDeviceCheck(device.ipAddress);
-      if (!deviceCheck.responding) {
-        console.log(`⚠️ Device ${device.deviceName} not responding to health check`);
-        // Don't fail immediately, but note this for troubleshooting
-      } else {
-        console.log(`✅ Device ${device.deviceName} is responding`);
-      }
-      
-      const http = require('http');
-      const FormData = require('form-data');
-      
-      // Create form data
-      const form = new FormData();
-      form.append('firmware', firmwareData, {
-        filename: 'firmware.bin',
-        contentType: 'application/octet-stream'
-      });
-      
-      // Prepare request options with better ESP32 compatibility
-      const options = {
-        hostname: device.ipAddress,
-        port: 80,
-        path: '/update',
-        method: 'POST',
-        headers: {
-          ...form.getHeaders(),
-          'Connection': 'close',
-          'User-Agent': 'OBS-Tally-Server/2.0',
-          'Cache-Control': 'no-cache',
-          'Keep-Alive': 'false',
-          'Accept': '*/*'
-        },
-        timeout: 120000, // 2 minute timeout
-        keepAlive: false,
-        maxSockets: 1,
-        // Add socket-level timeouts
-        family: 4, // Force IPv4
-        localAddress: undefined
-      };
-      
-      console.log(`🔄 Sending ${firmwareData.length} bytes to ESP32 at ${device.ipAddress}...`);
-      
-      let uploadCompleted = false;
-      let responseReceived = false;
-      let bytesUploaded = 0;
-      
-      const req = http.request(options, (res) => {
-        responseReceived = true;
-        let responseData = '';
-        
-        console.log(`📊 ESP32 initial response: ${res.statusCode} ${res.statusMessage}`);
-        
-        res.on('data', (chunk) => {
-          responseData += chunk;
-          // Log progress for large responses
-          if (responseData.length > 100) {
-            console.log(`📊 Received ${responseData.length} bytes of response data`);
-          }
-        });
-        
-        res.on('end', () => {
-          uploadCompleted = true;
-          const duration = Date.now() - startTime;
-          
-          console.log(`📊 ESP32 response completed: ${res.statusCode} (${duration}ms)`);
-          console.log(`📊 ESP32 final response: ${responseData.substring(0, 300)}...`);
-          
-          // ESP32 success indicators
-          const successIndicators = [
-            'Update Success',
-            'OK',
-            'FLASH_OK',
-            'Upload successful',
-            'Firmware updated',
-            'Restarting'
-          ];
-          
-          const isSuccess = res.statusCode === 200 || 
-                           successIndicators.some(indicator => 
-                             responseData.toLowerCase().includes(indicator.toLowerCase())
-                           );
-          
-          if (isSuccess) {
-            console.log(`✅ Firmware upload successful to ${device.deviceName} in ${duration}ms`);
-            resolve({
-              success: true,
-              message: 'Firmware uploaded successfully',
-              response: responseData,
-              duration: duration
-            });
-          } else {
-            console.error(`❌ ESP32 firmware upload failed: ${res.statusCode} - ${responseData}`);
-            resolve({
-              success: false,
-              error: `HTTP ${res.statusCode}: ${responseData || res.statusMessage}`
-            });
-          }
-        });
-        
-        res.on('error', (error) => {
-          if (!uploadCompleted) {
-            console.error(`❌ Response stream error from ${device.deviceName}:`, error.message);
-            resolve({
-              success: false,
-              error: `Response error: ${error.message}`
-            });
-          }
-        });
-      });
-      
-      req.on('error', (error) => {
-        if (!uploadCompleted) {
-          const duration = Date.now() - startTime;
-          
-          console.log(`⚠️ Request error for ${device.deviceName} after ${duration}ms: ${error.code || error.message}`);
-          
-          // Handle different types of connection errors
-          if (error.code === 'EPIPE' || 
-              error.code === 'ECONNRESET' || 
-              error.message.includes('socket hang up') ||
-              error.message.includes('Connection reset')) {
-            
-            // For ESP32, these errors can indicate successful upload if enough time has passed
-            if (duration > 8000) { // Reduced threshold to 8 seconds
-              console.log(`✅ Likely successful upload for ${device.deviceName} - connection reset after ${duration}ms indicates ESP32 is processing firmware`);
-              resolve({
-                success: true,
-                message: 'Firmware upload likely successful (ESP32 reset connection during processing)',
-                note: 'Connection reset after significant upload time indicates successful processing',
-                duration: duration
-              });
-            } else if (responseReceived) {
-              // If we got some response before the reset, likely successful
-              console.log(`✅ Likely successful upload for ${device.deviceName} - got response before connection reset`);
-              resolve({
-                success: true,
-                message: 'Firmware upload likely successful (received response before reset)',
-                note: 'Connection reset after receiving response is normal ESP32 behavior',
-                duration: duration
-              });
-            } else if (duration > 3000) {
-              // Even if early reset, if it took a few seconds there might have been some data transfer
-              console.log(`⚠️ Possible successful upload for ${device.deviceName} - connection reset after ${duration}ms`);
-              resolve({
-                success: true,
-                message: 'Firmware upload possibly successful (connection reset after partial upload)',
-                note: 'ESP32 may be processing firmware despite early connection reset',
-                duration: duration
-              });
-            } else {
-              // Very early connection reset - likely a real failure
-              console.error(`❌ Early connection reset for ${device.deviceName} after ${duration}ms`);
-              resolve({
-                success: false,
-                error: `Early connection reset: ${error.message}`
-              });
-            }
-          } else if (error.code === 'ETIMEDOUT' || error.code === 'ENOTFOUND') {
-            // Network/DNS issues
-            resolve({
-              success: false,
-              error: `Network error: ${error.message}`
-            });
-          } else {
-            // Other errors
-            console.error(`❌ Unexpected error uploading to ${device.deviceName}:`, error);
-            resolve({
-              success: false,
-              error: `Unexpected error: ${error.message}`
-            });
-          }
-        }
-      });
-      
-      req.on('timeout', () => {
-        if (!uploadCompleted) {
-          const duration = Date.now() - startTime;
-          console.error(`⏰ Upload timeout for ${device.deviceName} after ${duration}ms`);
-          req.destroy();
-          
-          // If timeout occurred after substantial time, might be successful
-          if (duration > 30000) {
-            resolve({
-              success: true,
-              message: 'Upload timeout after substantial progress - likely successful',
-              note: 'ESP32 may still be processing the firmware',
-              duration: duration
-            });
-          } else {
-            resolve({
-              success: false,
-              error: 'Upload timeout - device may be unresponsive'
-            });
-          }
-        }
-      });
-      
-      // Track upload progress
-      let formLength = 0;
-      form.on('error', (error) => {
-        if (!uploadCompleted) {
-          console.error(`❌ Form data error for ${device.deviceName}:`, error.message);
-          resolve({
-            success: false,
-            error: `Form data error: ${error.message}`
-          });
-        }
-      });
-      
-      // Monitor form data transmission
-      form.on('data', (chunk) => {
-        bytesUploaded += chunk.length;
-        if (bytesUploaded % 10240 === 0) { // Log every 10KB
-          console.log(`📊 Uploaded ${bytesUploaded} bytes to ${device.deviceName}`);
-        }
-      });
-      
-      // Enhanced pipe handling with error recovery
-      try {
-        console.log(`🚀 Starting firmware stream to ${device.deviceName}...`);
-        
-        // Pipe with explicit error handling
-        form.pipe(req);
-        
-        // Add a backup completion handler in case pipe doesn't complete properly
-        setTimeout(() => {
-          if (!uploadCompleted && !responseReceived) {
-            console.log(`⚠️ No response received after 60 seconds for ${device.deviceName}`);
-          }
-        }, 60000);
-        
-      } catch (pipeError) {
-        console.error(`❌ Error piping form data to ${device.deviceName}:`, pipeError.message);
-        resolve({
-          success: false,
-          error: `Pipe error: ${pipeError.message}`
-        });
-      }
-      
-    } catch (error) {
-      console.error(`❌ Error preparing firmware upload to ${device.deviceName}:`, error);
-      resolve({
-        success: false,
-        error: `Upload preparation failed: ${error.message}`
-      });
-    }
-  });
-}
 
 // ESP32 device discovery endpoint
 app.post('/api/esp32/discover', async (req, res) => {
@@ -1927,232 +2242,38 @@ app.post('/api/esp32/discover', async (req, res) => {
   }
 });
 
-// Configure multer for firmware uploads
-const upload = multer({
-  dest: 'uploads/',
-  limits: {
-    fileSize: 10 * 1024 * 1024 // 10MB limit
-  },
-  fileFilter: (req, file, cb) => {
-    // Accept only .bin files (compiled Arduino firmware)
-    if (file.originalname.endsWith('.bin')) {
-      cb(null, true);
-    } else {
-      cb(new Error('Only .bin firmware files are allowed'));
-    }
-  }
-});
-
-// Create uploads directory if it doesn't exist
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
-}
-
-// ESP32 OTA firmware upload endpoint
-app.post('/api/esp32/upload-firmware', upload.single('firmware'), async (req, res) => {
-  try {
-    const { deviceId } = req.body;
-    
-    if (!deviceId) {
-      return res.status(400).json({ error: 'Device ID is required' });
-    }
-    
-    if (!req.file) {
-      return res.status(400).json({ error: 'No firmware file uploaded' });
-    }
-    
-    const device = esp32Devices[deviceId];
-    if (!device) {
-      return res.status(404).json({ error: 'Device not found' });
-    }
-    
-    if (!device.ipAddress) {
-      return res.status(400).json({ error: 'Device IP address not available' });
-    }
-    
-    console.log(`Starting OTA update for device ${device.deviceName} (${deviceId}) at ${device.ipAddress}`);
-    console.log(`Firmware file: ${req.file.originalname}, size: ${req.file.size} bytes`);
-    
-    // Read the firmware file
-    const firmwareData = fs.readFileSync(req.file.path);
-    
-    // Initiate OTA update via HTTP POST to ESP32
-    const otaResult = await initiateOTAUpdate(device.ipAddress, firmwareData, deviceId);
-    
-    // Clean up uploaded file
-    fs.unlinkSync(req.file.path);
-    
-    if (otaResult.success) {
-      // Update device firmware version in database
-      esp32Devices[deviceId].firmware = req.body.firmwareVersion || 'Updated';
-      esp32Devices[deviceId].lastOTAUpdate = new Date().toISOString();
-      saveESP32Devices();
-      
-      res.json({
-        success: true,
-        message: 'OTA update completed successfully',
-        device: esp32Devices[deviceId]
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        error: otaResult.error || 'OTA update failed'
-      });
-    }
-    
-  } catch (error) {
-    console.error('Firmware upload error:', error);
-    
-    // Clean up uploaded file if it exists
-    if (req.file) {
-      try {
-        fs.unlinkSync(req.file.path);
-      } catch (cleanupError) {
-        console.error('Failed to clean up uploaded file:', cleanupError);
-      }
-    }
-    
-    res.status(500).json({ 
-      success: false, 
-      error: error.message || 'Internal server error' 
-    });
-  }
-});
-
-// ESP32 OTA status endpoint - get current OTA capability
-app.get('/api/esp32/ota-status/:deviceId', (req, res) => {
-  const { deviceId } = req.params;
-  const device = esp32Devices[deviceId];
-  
-  if (!device) {
-    return res.status(404).json({ error: 'Device not found' });
-  }
-  
-  res.json({
-    deviceId,
-    deviceName: device.deviceName,
-    ipAddress: device.ipAddress,
-    currentFirmware: device.firmware || 'unknown',
-    lastOTAUpdate: device.lastOTAUpdate || null,
-    otaReady: !!(device.ipAddress && device.status === 'online'),
-    lastSeen: device.lastSeen
-  });
-});
-
-// Function to initiate OTA update on ESP32 device
-async function initiateOTAUpdate(deviceIP, firmwareData, deviceId) {
-  return new Promise((resolve) => {
-    try {
-      const { spawn } = require('child_process');
-      
-      // Write firmware to temporary file for espota.py
-      const tempFirmwarePath = path.join(__dirname, 'uploads', `temp_${deviceId}.bin`);
-      fs.writeFileSync(tempFirmwarePath, firmwareData);
-      
-      // Find Arduino IDE installation and espota.py
-      const possibleEspotaPaths = [
-        '/Applications/Arduino.app/Contents/Java/hardware/esp32/2.0.*/tools/espota.py',
-        '/Users/*/Library/Arduino15/packages/esp32/hardware/esp32/*/tools/espota.py',
-        'espota.py' // If available in PATH
-      ];
-      
-      // For simplicity, we'll use a direct HTTP approach instead of espota.py
-      // This requires the ESP32 to have ArduinoOTA library properly configured
-      
-      const http = require('http');
-      
-      // Create HTTP request to ESP32 OTA endpoint
-      const postData = firmwareData;
-      
-      const options = {
-        hostname: deviceIP,
-        port: 3232, // ArduinoOTA default port
-        path: '/update',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/octet-stream',
-          'Content-Length': postData.length
-        },
-        timeout: 60000 // 60 seconds timeout
-      };
-      
-      const req = http.request(options, (res) => {
-        let responseData = '';
-        
-        res.on('data', (chunk) => {
-          responseData += chunk;
-        });
-        
-        res.on('end', () => {
-          // Clean up temp file
-          try {
-            fs.unlinkSync(tempFirmwarePath);
-          } catch (e) {
-            console.error('Failed to clean up temp file:', e);
-          }
-          
-          if (res.statusCode === 200) {
-            console.log(`OTA update successful for device ${deviceId}`);
-            resolve({ success: true, response: responseData });
-          } else {
-            console.error(`OTA update failed for device ${deviceId}. Status: ${res.statusCode}`);
-            resolve({ success: false, error: `HTTP ${res.statusCode}: ${response.statusText}` });
-          }
-        });
-      });
-      
-      req.on('error', (error) => {
-        console.error(`OTA update error for device ${deviceId}:`, error);
-        // Clean up temp file
-        try {
-          fs.unlinkSync(tempFirmwarePath);
-        } catch (e) {
-          console.error('Failed to clean up temp file:', e);
-        }
-        resolve({ success: false, error: error.message });
-      });
-      
-      req.on('timeout', () => {
-        console.error(`OTA update timeout for device ${deviceId}`);
-        req.destroy();
-        // Clean up temp file
-        try {
-          fs.unlinkSync(tempFirmwarePath);
-        } catch (e) {
-          console.error('Failed to clean up temp file:', e);
-        }
-        resolve({ success: false, error: 'Update timeout' });
-      });
-      
-      // Write firmware data
-      req.write(postData);
-      req.end();
-      
-    } catch (error) {
-      console.error(`OTA initiation error for device ${deviceId}:`, error);
-      resolve({ success: false, error: error.message });
-    }
-  });
-}
-
 // Broadcast device updates to WebSocket clients
 function broadcastDeviceUpdate(device, updateType = 'device-update') {
-  const message = JSON.stringify({
-    type: updateType,
-    device: device,
-    timestamp: new Date().toISOString()
-  });
-  
-  wss.clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(message);
+  try {
+    console.log(`[BROADCAST] Broadcasting device update: ${updateType} for ${device?.deviceId}`);
+    
+    if (!device) {
+      console.error('[BROADCAST] Error: No device provided for broadcast');
+      return;
     }
-  });
-  
-  // If this is a status update, also broadcast the tally status to update ESP status indicators
-  if (updateType === 'device-status-update' || updateType === 'device-heartbeat') {
-    broadcastTally();
+    
+    const message = JSON.stringify({
+      type: updateType,
+      device: device,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Broadcast via Socket.IO (already handled by io.emit)
+    let successCount = 1; // Socket.IO handles broadcast success
+    let errorCount = 0;
+    
+    console.log(`[BROADCAST] Message sent to ${successCount} clients, ${errorCount} errors`);
+    
+    // If this is a status update, also broadcast the tally status to update ESP status indicators
+    if (updateType === 'device-status-update' || updateType === 'device-heartbeat') {
+      broadcastTally();
+    }
+  } catch (error) {
+    console.error('[BROADCAST] Error in broadcastDeviceUpdate:', {
+      error: error.message,
+      updateType,
+      deviceId: device?.deviceId
+    });
   }
 }
 
@@ -2164,83 +2285,10 @@ function broadcastDeviceList() {
     timestamp: new Date().toISOString()
   });
   
-  wss.clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(message);
-    }
-  });
+  // Broadcast via Socket.IO (already handled by io.emit in calling function)
 }
 
-wss.on('connection', ws => {
-  // Send comprehensive initial state including devices and all data
-  const initialState = {
-    type: 'initial-state',
-    sources: tallySources, 
-    status: tallyStatus,
-    obsConnectionStatus,
-    obsConnectionError,
-    devices: esp32Devices, // Include ESP32 devices in initial state
-    espStatus: Object.values(esp32Devices).some(device => device.status === 'online') ? 'online' : 'offline',
-    serverConnected: true,
-    timestamp: new Date().toISOString()
-  };
-  
-  ws.send(JSON.stringify(initialState));
-  
-  // Also send tally status update for consistency
-  setTimeout(() => {
-    const tallyUpdate = {
-      type: 'tally-status',
-      sources: tallySources,
-      status: tallyStatus,
-      obsConnectionStatus,
-      obsConnectionError: obsConnectionStatus === 'disconnected' ? obsConnectionError : null,
-      espStatus: Object.values(esp32Devices).some(device => device.status === 'online') ? 'online' : 'offline',
-      timestamp: new Date().toISOString()
-    };
-    ws.send(JSON.stringify(tallyUpdate));
-  }, 100);
-  
-  // Send device list separately for clarity
-  setTimeout(() => {
-    broadcastDeviceList();
-  }, 200);
-  
-  // Track client connections
-  console.log('Client connected to tally server WebSocket. Total clients:', wss.clients.size);
-  console.log('OBS connection status:', obsConnectionStatus === 'connected' ? 'Connected to OBS' : 'Not connected to OBS');
-  
-  // Handle ESP32 device registration
-  ws.on('message', (data) => {
-    try {
-      const message = JSON.parse(data);
-      if (message.type === 'register' && message.deviceId) {
-        console.log(`ESP32 device registered via WebSocket: ${message.deviceId}`);
-        ws.deviceId = message.deviceId; // Store deviceId on the socket
-        
-        // Send current configuration to the device if it exists
-        if (esp32Devices[message.deviceId]) {
-          ws.send(JSON.stringify({
-            type: 'config',
-            deviceId: message.deviceId,
-            config: {
-              name: esp32Devices[message.deviceId].deviceName,
-              assignedSource: esp32Devices[message.deviceId].assignedSource,
-              updateInterval: 2000,
-              heartbeatInterval: 30000
-            }
-          }));
-        }
-      }
-    } catch (error) {
-      console.warn('Error parsing WebSocket message:', error.message);
-    }
-  });
-  
-  ws.on('close', () => {
-    console.log('Client disconnected from tally server. Total clients:', wss.clients.size);
-  });
-});
+// Old WebSocket handler removed - now using Socket.IO
 
 // Initialize UDP discovery server for ESP32 auto-discovery
 function initUDPDiscovery() {
@@ -2290,28 +2338,59 @@ function createNewUDPServer() {
           autoRegistered: false
         });
         
+        const currentTime = new Date().toISOString();
+        
         // Auto-register the device if not already registered
         if (!esp32Devices[data.deviceId]) {
+          // If the device announces itself with an assignedSource, always use it
+          // This ensures that devices keep their assignments even if they were deleted from the server
+          const useAssignedSource = (typeof data.assignedSource === 'string' && data.assignedSource.trim() !== '');
+          
           const device = {
             deviceId: data.deviceId,
             deviceName: data.deviceName,
             macAddress: data.macAddress || '',
             ipAddress: rinfo.address,
             firmware: data.firmware || 'unknown',
-            assignedSource: '',
-            lastSeen: new Date().toISOString(),
+            assignedSource: useAssignedSource ? data.assignedSource : '',
+            lastSeen: currentTime,
             status: 'online',
             autoRegistered: true,
-            createdAt: new Date().toISOString()
+            createdAt: currentTime
           };
-          
           esp32Devices[data.deviceId] = device;
           saveESP32Devices();
-          
-          console.log(`✅ Auto-registered ESP32 device: ${data.deviceName} (${data.deviceId})`);
-          
+          console.log(`✅ Auto-registered ESP32 device: ${data.deviceName} (${data.deviceId}) with assignedSource: ${device.assignedSource || 'None'}`);
           // Broadcast device registration
           broadcastDeviceUpdate(device, 'device-auto-register');
+        } else {
+          // Update existing device info
+          const device = esp32Devices[data.deviceId];
+          const wasOffline = device.status !== 'online';
+          const ipChanged = device.ipAddress !== rinfo.address;
+          const sourceChanged = device.assignedSource !== data.assignedSource;
+          
+          // Update key properties
+          device.ipAddress = rinfo.address;
+          device.lastSeen = currentTime;
+          device.status = 'online';
+          
+          // Update assignedSource if the device announces with one
+          if (typeof data.assignedSource === 'string') {
+            device.assignedSource = data.assignedSource;
+          }
+          
+          // Save changes and notify clients if there was a meaningful change
+          if (wasOffline || ipChanged || sourceChanged) {
+            saveESP32Devices();
+            const changes = [];
+            if (wasOffline) changes.push('now online');
+            if (ipChanged) changes.push(`IP updated to ${rinfo.address}`);
+            if (sourceChanged) changes.push(`source updated to '${device.assignedSource || 'None'}'`);
+            
+            console.log(`🔄 Device ${data.deviceName} (${data.deviceId}) announcement processed: ${changes.join(', ')}`);
+            broadcastDeviceUpdate(device, wasOffline ? 'device-online' : 'device-update');
+          }
         }
       }
     } catch (error) {
@@ -2441,16 +2520,12 @@ process.on('SIGINT', () => {
     obs.disconnect();
   }
   
-  // Close WebSocket connections
-  wss.clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify({ 
-        type: 'server-shutdown', 
-        message: 'Server is shutting down' 
-      }));
-      client.close();
-    }
+  // Close WebSocket connections (Socket.IO)
+  io.emit('server-shutdown', { 
+    type: 'server-shutdown', 
+    message: 'Server is shutting down' 
   });
+  io.close();
   
   // Close HTTP server
   server.close(() => {
@@ -2467,3 +2542,67 @@ process.on('SIGINT', () => {
 
 // Start the server
 startServer();
+
+// Test endpoint for recording control (for testing the fix only)
+app.post('/api/test/recording', async (req, res) => {
+  try {
+    const { active } = req.body;
+    
+    if (typeof active !== 'boolean') {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid request. "active" must be a boolean.'
+      });
+    }
+    
+    if (!obsConnectionStatus === 'connected') {
+      return res.status(503).json({
+        success: false,
+        error: 'OBS is not connected'
+      });
+    }
+    
+    console.log(`📋 Test API: ${active ? 'Starting' : 'Stopping'} recording`);
+    
+    if (active) {
+      await obs.call('StartRecord');
+    } else {
+      await obs.call('StopRecord');
+    }
+    
+    // Update internal recording status immediately for testing
+    recordingStatus.active = active;
+    if (active) {
+      recordingStatus.startTime = new Date();
+      recordingStatus.duration = 0;
+    } else {
+      recordingStatus.startTime = null;
+      recordingStatus.duration = 0;
+    }
+    
+    // Force notification to all ESP32 devices
+    const forceNotify = {
+      type: 'recording',
+      active: active
+    };
+    
+    // Broadcast updated status
+    await broadcastTally(forceNotify);
+    
+    res.json({
+      success: true,
+      recording: active,
+      message: `Recording ${active ? 'started' : 'stopped'} via test API`
+    });
+  } catch (error) {
+    console.error('Error in test recording endpoint:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Server error'
+    });
+  }
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
+});
