@@ -1,4 +1,9 @@
-// (moved below app initialization)
+/**
+ * OBS Tally - Main Server
+ * Version 2.0.0
+ * Modern web-based tally light system for OBS Studio with support for various ESP32 devices
+ */
+ 
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -10,6 +15,7 @@ const os = require('os');
 const QRCode = require('qrcode');
 const dgram = require('dgram');
 const FormData = require('form-data');
+const axios = require('axios');
 
 // Check for fetch availability (Node.js 18+ has built-in fetch)
 let fetch;
@@ -65,9 +71,42 @@ if (typeof globalThis.fetch === 'undefined') {
   console.log('Using built-in fetch for HTTP requests');
 }
 
-// Server configuration - allow port to be set via environment variable
-const DEFAULT_PORT = 3005;
-const PORT = process.env.PORT || DEFAULT_PORT;
+// Server configuration - centralized configuration options
+const CONFIG = {
+  // Network settings
+  port: process.env.PORT || 3005,
+  
+  // OBS WebSocket settings
+  obs: {
+    host: process.env.OBS_HOST || 'localhost',
+    port: process.env.OBS_PORT || 4455,
+    password: process.env.OBS_PASSWORD || '',
+    reconnectInterval: 5000, // Time between reconnection attempts in ms
+    maxReconnectAttempts: 20
+  },
+  
+  // ESP32 device settings
+  esp32: {
+    discoveryPort: 3006,
+    healthCheckInterval: 30000,  // 30 seconds
+    offlineThreshold: 120000,    // 2 minutes
+    retryLimit: 3,               // Number of connection retries
+    optimizedUpdateFrequency: {
+      m5stickCPlus: 0,           // Periodic refresh disabled (was 5000ms)
+      default: 1000              // Default frequency for other models
+    }
+  },
+  
+  // Logging settings
+  logging: {
+    level: process.env.LOG_LEVEL || 'info', // 'debug', 'info', 'warn', 'error'
+    logToFile: true,
+    logToConsole: true
+  }
+};
+
+// For compatibility with existing code
+const PORT = CONFIG.port;
 
 // Check if port is available before starting server
 function checkPort(port) {
@@ -133,6 +172,91 @@ async function killProcessOnPort(port) {
         });
     });
 }
+
+// Enhanced logging system
+const logger = {
+  logFile: null,
+  
+  initialize() {
+    if (CONFIG.logging.logToFile) {
+      const logDir = path.join(__dirname, 'logs');
+      if (!fs.existsSync(logDir)) {
+        fs.mkdirSync(logDir);
+      }
+      
+      const now = new Date();
+      const timestamp = now.toISOString().replace(/:/g, '-').split('.')[0];
+      const logFileName = `server-${timestamp}.log`;
+      this.logFile = path.join(logDir, logFileName);
+      
+      // Log to server startup to console
+      if (CONFIG.logging.logToConsole) {
+        console.log(`OBS Tally server process started with PID: ${process.pid}`);
+        console.log(`Logs will be written to: ${this.logFile}`);
+      }
+      
+      // Create a symbolic link to the latest log file
+      const latestLogFile = path.join(logDir, 'latest.log');
+      try {
+        if (fs.existsSync(latestLogFile)) {
+          fs.unlinkSync(latestLogFile);
+        }
+        fs.symlinkSync(logFileName, latestLogFile);
+      } catch (err) {
+        console.warn(`Failed to create symbolic link to latest log: ${err.message}`);
+      }
+    }
+  },
+  
+  log(level, message, data = null) {
+    // Check if this log level should be shown
+    const levels = { debug: 0, info: 1, warn: 2, error: 3 };
+    const configLevel = levels[CONFIG.logging.level] || 1;
+    
+    if (levels[level] < configLevel) return;
+    
+    const timestamp = new Date().toISOString();
+    const logEntry = {
+      timestamp,
+      level,
+      message,
+      ...(data && { data })
+    };
+    
+    // Format for console
+    const consoleMessage = `[${timestamp}] [${level.toUpperCase()}] ${message}${data ? ' ' + JSON.stringify(data) : ''}`;
+    
+    // Console output
+    if (CONFIG.logging.logToConsole) {
+      switch (level) {
+        case 'error':
+          console.error('\x1b[31m%s\x1b[0m', consoleMessage); // Red
+          break;
+        case 'warn':
+          console.warn('\x1b[33m%s\x1b[0m', consoleMessage); // Yellow
+          break;
+        case 'info':
+          console.log('\x1b[32m%s\x1b[0m', consoleMessage); // Green
+          break;
+        case 'debug':
+          console.log('\x1b[36m%s\x1b[0m', consoleMessage); // Cyan
+          break;
+        default:
+          console.log(consoleMessage);
+      }
+    }
+    
+    // File output
+    if (CONFIG.logging.logToFile && this.logFile) {
+      fs.appendFileSync(this.logFile, consoleMessage + '\n');
+    }
+  },
+  
+  debug(message, data) { this.log('debug', message, data); },
+  info(message, data) { this.log('info', message, data); },
+  warn(message, data) { this.log('warn', message, data); },
+  error(message, data) { this.log('error', message, data); }
+};
 
 // Get local network IP address
 function getLocalNetworkIP() {
@@ -703,42 +827,59 @@ async function broadcastTally(forceNotify = null) {
   // Format device status updates in the format expected by the device manager
   const deviceStatus = {};
   
-  // Debug logging for tally status mapping
-  console.log('🔍 [DEBUG] Current tallyStatus object:', JSON.stringify(tallyStatus, null, 2));
-  console.log('🔍 [DEBUG] Processing', Object.keys(esp32Devices).length, 'ESP32 devices');
+  // Debug logging with new logger
+  logger.debug('Current tallyStatus object:', tallyStatus);
+  logger.debug(`Processing ${Object.keys(esp32Devices).length} ESP32 devices`);
   
   // Map tally status to devices
   Object.keys(esp32Devices).forEach(deviceId => {
     const device = esp32Devices[deviceId];
-    console.log(`🔍 [DEBUG] Processing device ${deviceId}:`, {
+    logger.debug(`Processing device ${deviceId}`, {
       assignedSource: device.assignedSource,
       hasSourceInTallyStatus: !!(device.assignedSource && tallyStatus[device.assignedSource]),
-      deviceStatus: device.status
+      deviceStatus: device.status,
+      model: device.model
     });
     
+    // Status decision logic - determine tally state based on source
+    let tallyState = 'idle';
+    let sourceStatus = 'Idle';
+    
     if (device.assignedSource && tallyStatus[device.assignedSource]) {
+      // Get the current status from OBS
+      sourceStatus = tallyStatus[device.assignedSource].status;
+      
       // Convert from OBS state name to tally state name
-      let tallyState = 'idle';
-      if (tallyStatus[device.assignedSource].status === 'Live') {
+      if (sourceStatus === 'Live') {
         tallyState = 'program';
-      } else if (tallyStatus[device.assignedSource].status === 'Preview') {
+      } else if (sourceStatus === 'Preview') {
         tallyState = 'preview';
       }
-      
-      deviceStatus[deviceId] = {
-        state: tallyState,
-        sourceName: device.assignedSource,
-        online: device.status === 'online'
-      };
-      console.log(`🔍 [DEBUG] Device ${deviceId} set to:`, deviceStatus[deviceId]);
-    } else {
-      // Default state if no source assigned or source not found
-      deviceStatus[deviceId] = { 
-        state: 'idle',
-        sourceName: device.assignedSource || 'None',
-        online: device.status === 'online'
-      };
-      console.log(`🔍 [DEBUG] Device ${deviceId} set to default:`, deviceStatus[deviceId]);
+    }
+    
+    // Record the device status for the web interface
+    deviceStatus[deviceId] = {
+      state: tallyState,
+      sourceName: device.assignedSource || 'None',
+      online: device.status === 'online',
+      model: device.model || 'Unknown',
+      lastUpdate: device.lastUpdateTimestamp || 0 // Add timestamp for UI display
+    };
+    
+    // Enhanced status decision logging - more detailed to help diagnose issues
+    logger.debug(`Status decision for ${device.deviceName} (${deviceId})`, {
+      newStatus: sourceStatus,
+      assignedSource: device.assignedSource,
+      sourceStatus: sourceStatus,
+      lastNotified: device.lastNotifiedStatus,
+      lastUpdateTimestamp: device.lastUpdateTimestamp ? new Date(device.lastUpdateTimestamp).toISOString() : 'never',
+      final: sourceStatus,
+      model: device.model || 'Unknown'
+    });
+    
+    // For actual device state changes, log at INFO level for better visibility
+    if (device.lastNotifiedStatus !== sourceStatus) {
+      logger.info(`ESP32 Real-time Update: ${device.deviceName} (${deviceId}): source status change -> ${sourceStatus}`);
     }
   });
    const statusUpdate = {
@@ -791,14 +932,51 @@ async function notifyESP32Devices(forceNotify = null) {
       let shouldNotify = false;
       let newStatus = null;
       let notifyReason = '';
+      let isPeriodicUpdate = false;
       
       // Check if there's a source status change
       if (device.assignedSource && tallyStatus[device.assignedSource]) {
         newStatus = tallyStatus[device.assignedSource].status;
+        
+        // Actual status change - always notify
         if (device.lastNotifiedStatus !== newStatus) {
           shouldNotify = true;
           notifyReason = 'source status change';
+          
+          // Track when this real state change occurred
+          device.lastStateChangeTimestamp = Date.now();
+          logger.debug(`State change detected for ${device.deviceName} (${deviceId})`, {
+            from: device.lastNotifiedStatus || 'unknown',
+            to: newStatus
+          });
         }
+        // Periodic refresh feature for M5StickCPlus is now disabled
+        // If you want to re-enable the 5-second refresh, uncomment this section
+        /*
+        // Special handling for M5StickCPlus in LIVE mode - periodic refresh logic
+        else if (
+          newStatus === 'Live' && 
+          device.model === 'M5StickC-PLUS'
+        ) {
+          // Get the appropriate update frequency from config
+          const updateFrequency = CONFIG.esp32.optimizedUpdateFrequency.m5stickCPlus;
+          const now = Date.now();
+          const lastUpdate = device.lastUpdateTimestamp || 0;
+          
+          // Check if it's time for a periodic update
+          if (now - lastUpdate >= updateFrequency) {
+            shouldNotify = true;
+            notifyReason = 'periodic LIVE refresh (M5StickC-PLUS)';
+            isPeriodicUpdate = true;
+            
+            logger.debug(`Periodic LIVE refresh for M5StickC-PLUS device ${device.deviceName}`, {
+              lastUpdate: new Date(lastUpdate).toISOString(),
+              updateFrequency: updateFrequency,
+              timeSinceLastUpdate: now - lastUpdate
+            });
+          }
+        }
+        */
       }
       
       // Check for forced notifications (recording/streaming status changes)
@@ -811,20 +989,32 @@ async function notifyESP32Devices(forceNotify = null) {
         } else {
           notifyReason = 'forced notification';
         }
-        console.log(`🔔 Force notification for ${device.deviceName}: ${notifyReason}`);
+        logger.info(`Force notification for ${device.deviceName}: ${notifyReason}`);
       }
       
       if (shouldNotify) {
-        // Check debounce timing
+        // Check debounce timing - don't apply debounce for periodic updates
         const now = Date.now();
         const lastNotification = esp32NotificationDebounce.get(deviceId) || 0;
+        let skipDebounce = isPeriodicUpdate || forceNotify;
         
-        if (now - lastNotification >= ESP32_DEBOUNCE_MS) {
-          // Only update lastNotifiedStatus if we have a valid source status change
-          if (newStatus !== null) {
+        if (skipDebounce || (now - lastNotification >= ESP32_DEBOUNCE_MS)) {
+          // Only update lastNotifiedStatus if there was an actual status change
+          if (newStatus !== null && !isPeriodicUpdate) {
             device.lastNotifiedStatus = newStatus;
           }
-          esp32NotificationDebounce.set(deviceId, now);
+          
+          // Always update timestamps appropriately
+          device.lastUpdateTimestamp = now;
+          
+          // For periodic updates, we should only update the 'lastUpdateTimestamp',
+          // but not the debounce map which is for state changes
+          if (!isPeriodicUpdate) {
+            esp32NotificationDebounce.set(deviceId, now);
+          }
+          
+          // Add flag to indicate if this is a periodic update (for logging)
+          device.lastUpdateWasPeriodic = isPeriodicUpdate;
           devicesNotified++;
           
           // Get the current status for this device
@@ -846,9 +1036,25 @@ async function notifyESP32Devices(forceNotify = null) {
           }
           
           // Log the status decision process for debugging
-          console.log(`📊 Status decision for ${device.deviceName} (${deviceId}): newStatus=${newStatus}, assignedSource=${device.assignedSource}, sourceStatus=${device.assignedSource ? (tallyStatus[device.assignedSource]?.status || 'none') : 'none'}, lastNotified=${device.lastNotifiedStatus}, final=${statusToSend}`);
+          // Use structured logger for better diagnostics
+          logger.debug(`Status decision for ${device.deviceName}`, {
+            deviceId: deviceId,
+            model: device.model || 'Unknown',
+            newStatus: newStatus, 
+            assignedSource: device.assignedSource,
+            sourceStatus: device.assignedSource ? (tallyStatus[device.assignedSource]?.status || 'none') : 'none',
+            lastNotified: device.lastNotifiedStatus,
+            isPeriodicUpdate: isPeriodicUpdate,
+            notifyReason: notifyReason,
+            finalStatus: statusToSend
+          });
           
-          console.log(`⚡ ESP32 Real-time Update: ${device.deviceName} (${deviceId}): ${notifyReason} -> ${statusToSend}`);
+          // Log notification with proper level based on notification reason
+          if (isPeriodicUpdate) {
+            logger.debug(`ESP32 Update: ${device.deviceName} (${deviceId}): ${notifyReason} -> ${statusToSend}`);
+          } else {
+            logger.info(`ESP32 Real-time Update: ${device.deviceName} (${deviceId}): ${notifyReason} -> ${statusToSend}`);
+          }
           
           // Send HTTP POST notification to ESP32 device (non-blocking)
           const notificationPromise = sendTallyUpdateToESP32(device, statusToSend)
@@ -875,7 +1081,18 @@ async function notifyESP32Devices(forceNotify = null) {
           notificationPromises.push(notificationPromise);
         } else {
           devicesSkipped++;
-          console.log(`🚀 ESP32 notification skipped for ${deviceId} (debouncing: ${ESP32_DEBOUNCE_MS - (now - lastNotification)}ms remaining)`);
+          const timeRemaining = ESP32_DEBOUNCE_MS - (now - lastNotification);
+          
+          // Enhanced debounce logging with device details
+          logger.debug(`ESP32 notification skipped due to debounce`, {
+            deviceId: deviceId,
+            deviceName: device.deviceName,
+            model: device.model || 'Unknown',
+            status: newStatus,
+            debounceTimeRemaining: timeRemaining,
+            isLiveMode: newStatus === 'Live',
+            lastUpdateTimestamp: device.lastUpdateTimestamp ? new Date(device.lastUpdateTimestamp).toISOString() : 'never'
+          });
         }
       }
     }
@@ -915,6 +1132,8 @@ async function notifyESP32Devices(forceNotify = null) {
 // Send tally update to ESP32 device via HTTP POST with enhanced error handling and performance
 async function sendTallyUpdateToESP32(device, tallyStatus) {
   return new Promise((resolve, reject) => {
+    const now = new Date();
+    
     const postData = JSON.stringify({
       deviceId: device.deviceId,
       status: tallyStatus,
@@ -927,7 +1146,11 @@ async function sendTallyUpdateToESP32(device, tallyStatus) {
       // Also send legacy format for backward compatibility
       recording: recordingStatus.active, // ESP32 fallback format
       streaming: streamingStatus.active, // ESP32 fallback format
-      timestamp: new Date().toISOString()
+      // Enhanced data for M5StickCPlus - periodic refresh disabled
+      isPeriodicUpdate: false, // Always false since periodic updates are disabled
+      lastStateChange: device.lastStateChangeTimestamp ? (now.getTime() - device.lastStateChangeTimestamp) : 0,
+      optimizedUpdateFrequency: 0, // Disabled
+      timestamp: now.toISOString()
     });
     
     const options = {

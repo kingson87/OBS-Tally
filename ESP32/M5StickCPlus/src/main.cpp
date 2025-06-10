@@ -1,7 +1,12 @@
 /*
- * ESP32 OBS Tally Light System - M5StickC PLUS Edition v2.0.0
+ * ESP32 OBS Tally Light System - M5StickC PLUS Edition v2.1.0
  * 
- * CLEAN UPLOAD VERSION - Ready for deployment
+ * MODIFIED VERSION - Screen refresh only on status change
+ * 
+ * Modifications:
+ * - Removed periodic screen refreshes (including the 2-second refresh that was added for persistence)
+ * - Display now only updates when there's an actual status change from the server
+ * - Eliminates unnecessary refreshes that might cause screen flickering
  * 
  * Features:
  * - WiFi configuration portal with auto-discovery
@@ -672,40 +677,26 @@ void loop() {
     // Perform stability monitoring to prevent random restarts
     performStabilityCheck();
     
-    // Update display status only when state actually changes, or periodically in LIVE mode
+    // Update display status ONLY when state actually changes - no periodic refreshes
     static bool lastPreview = isPreview;
     static bool lastProgram = isProgram;
     static bool lastStreaming = isStreaming;
     static bool lastRecording = isRecording;
     static bool lastServerConnected = serverConnected;
-    static unsigned long lastDisplayUpdate = 0;
-    static unsigned long lastFullRedraw = 0;
-    // Use a local variable instead of macro to avoid redefinition error
-    const unsigned long fullRedrawInterval = 5000; // 5 seconds
-
+    
+    // Check if any status has changed
     bool stateChanged = (lastPreview != isPreview ||
                         lastProgram != isProgram ||
                         lastStreaming != isStreaming ||
                         lastRecording != isRecording ||
                         lastServerConnected != serverConnected);
 
-    bool needsRedraw = stateChanged;
-
-    // Periodic redraw logic: only in LIVE mode (isProgram)
-    if (!needsRedraw && isProgram) {
-        if (millis() - lastFullRedraw > fullRedrawInterval) {
-            needsRedraw = true;
-        }
-    }
-
-    if (needsRedraw) {
+    // Only draw the screen when the state has actually changed
+    if (stateChanged) {
         updateDisplay();
-        lastDisplayUpdate = millis();
-        if (isProgram) {
-            lastFullRedraw = millis();
-        } else {
-            lastFullRedraw = 0;
-        }
+        
+        // Update timestamps for debugging
+        static unsigned long lastDisplayUpdate = millis();
 
         // Update last states
         lastPreview = isPreview;
@@ -1334,7 +1325,8 @@ void setupWebServer() {
                 
 
                 
-                // Force display update to show new recording/streaming status
+                // Update display to show the new status
+                // This is now the ONLY place where the display is updated
                 updateDisplay();
                 
                 webServer.send(200, "application/json", "{\"success\":true}");
